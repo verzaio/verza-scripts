@@ -1,0 +1,48 @@
+{
+  "name": "verza-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 8085",
+    "build": "next build",
+    "build:static": "next build && next export",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "ts-check": "tsc --pretty --noEmit",
+    "prepare": "husky install",
+    "pre-commit": "npm run lint:fix && npm run ts-check"
+  },
+  "keywords": [
+    "react",
+    "three",
+    "verza",
+    "threejs"
+  ],
+  "author": "zo0r (https://github.com/zo0r)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/verzaio/verza-scripts/issues"
+  },
+  "homepage": "https://github.com/verzaio/verza-scripts#readme",
+  "dependencies": {
+    "@next/font": "13.1.5",
+    "@verza/sdk": "^1.0.10",
+    "next": "13.1.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.18",
+    "@types/react": "18.0.27",
+    "@types/react-dom": "18.0.10",
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
+    "eslint": "^8.32.0",
+    "eslint-config-next": "13.1.5",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "prettier": "^2.8.3",
+    "typescript": "4.9.4"
+  }
+}
