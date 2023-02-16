@@ -11,7 +11,7 @@
     "lint:fix": "next lint --fix",
     "ts-check": "tsc --pretty --noEmit",
     "prepare": "husky install",
-    "pre-commit": "npm run lint:fix && npm run ts-check"
+    "pre-commit": "yarn run lint:fix && yarn run ts-check"
   },
   "keywords": [
     "react",
