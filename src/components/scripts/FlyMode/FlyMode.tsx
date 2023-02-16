@@ -12,6 +12,8 @@ import {useState} from 'react';
 
 const _LOCATION = new Object3D();
 
+const _LAST_POS = new Vector3();
+
 const _ROTATE_Y = new Vector3(0, 1, 0);
 
 const _DIR1 = new Vector3();
@@ -107,6 +109,9 @@ const FlyModeRender = () => {
     if (player.controls.jump || player.controls.sprint) {
       _LOCATION.translateY(velocity * delta * (player.controls.jump ? 1 : -1));
     }
+
+    // ignore if same position
+    if (_LAST_POS.equals(_LOCATION.position)) return;
 
     // set
     player.setPosition(_LOCATION.position);
