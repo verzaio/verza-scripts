@@ -78,7 +78,7 @@ const FlyModeRender = () => {
 
     const velocity = player.controls.control
       ? 40
-      : player.controls.caps
+      : !player.controls.caps
       ? 3
       : 10;
 
