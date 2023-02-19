@@ -7,8 +7,14 @@ import {
   useFrame,
   useKey,
   usePlayerId,
+  useToolbar,
+  useEvent,
 } from '@verza/sdk/react';
 import {useState} from 'react';
+
+const TOOLBAR_ID = 'flymode_toolbar';
+
+const TOOLBAR_CANCEL_ID = 'fly_mode_cancel';
 
 const _LOCATION = new Object3D();
 
@@ -36,11 +42,13 @@ const FlyModeBase = () => {
   const player = useStreamedPlayer(usePlayerId());
   const [enabled, setEnabled] = useState(false);
 
-  const enable = () => {
+  const toggle = (setStatus?: boolean) => {
+    const newStatus = setStatus ?? !enabled;
+    if (newStatus === enabled) return;
+
     if (!player.hasAccess('fly')) return;
 
-    const newStatus = !enabled;
-    setEnabled(!enabled);
+    setEnabled(newStatus);
 
     const toggleStatus = !newStatus;
 
@@ -51,25 +59,45 @@ const FlyModeBase = () => {
 
     _LOCATION.position.copy(player.position);
     _LOCATION.quaternion.copy(player.rotation);
-
-    if (newStatus) {
-      player.sendSuccessNotification('Flying enabled');
-    } else {
-      player.sendErrorNotification('Flying disabled');
-    }
   };
 
-  useCommand('fly').on(() => enable());
-  useKey('Tab', () => enable());
+  // hooks
+  useCommand('fly').on(() => toggle());
+  useKey('Tab', () => toggle());
+  useKey('Tab', () => toggle(false), {
+    ignoreFlags: true,
+  });
 
   if (!enabled) return null;
 
-  return <FlyModeRender />;
+  return <FlyModeRender toggle={toggle} />;
 };
 
-const FlyModeRender = () => {
+type FlyModeRenderProps = {
+  toggle: () => void;
+};
+
+const FlyModeRender = ({toggle}: FlyModeRenderProps) => {
   const player = useStreamedPlayer(usePlayerId());
   const camera = useCamera();
+
+  useEvent('onToolbarItemPress', id => {
+    if (id === TOOLBAR_CANCEL_ID) {
+      toggle();
+    }
+  });
+
+  useToolbar({
+    id: TOOLBAR_ID,
+    position: 'right',
+    items: [
+      {
+        id: TOOLBAR_CANCEL_ID,
+        name: 'Disable Fly Mode',
+        key: 'TAB',
+      },
+    ],
+  });
 
   useFrame(delta => {
     if (!player) return;
