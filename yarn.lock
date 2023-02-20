@@ -314,10 +314,10 @@
     "@typescript-eslint/types" "5.52.0"
     eslint-visitor-keys "^3.3.0"
 
-"@verza/sdk@^1.0.10":
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-1.0.10.tgz#ff6f0bfe0d5fea9e80193cfcb282763f1c01d358"
-  integrity sha512-1UOrwxgsrSDl7c5l0uhSEeX0MhVXbOqSLEtqT/IJfyNUWPXM5SpgrSWUHmHJ8Aa7ZRtbZ/Co5ZMSupdV0VXsxQ==
+"@verza/sdk@^1.0.15":
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-1.0.15.tgz#956f4ebd5bf29a8f5dd0dafe2ecf170c404d7515"
+  integrity sha512-i9WPu3XMCTly2VqjnUbZXRGFEsK9+JN/NuaxLkXQUJbSAq1xqO3bqtM+Lh2GFVkPzCIKFwF0HPaChU73dtbtHQ==
   dependencies:
     events "^3.3.0"
     socket.io-client "^4.5.4"

@@ -7,10 +7,18 @@ import {
   useFrame,
   useKey,
   usePlayerId,
+  useToolbar,
+  useEvent,
 } from '@verza/sdk/react';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
+
+const TOOLBAR_ID = 'flymode_toolbar';
+
+const TOOLBAR_CANCEL_ID = 'fly_mode_cancel';
 
 const _LOCATION = new Object3D();
+
+const _LAST_POS = new Vector3();
 
 const _ROTATE_Y = new Vector3(0, 1, 0);
 
@@ -33,12 +41,16 @@ const FlyMode = () => {
 const FlyModeBase = () => {
   const player = useStreamedPlayer(usePlayerId());
   const [enabled, setEnabled] = useState(false);
+  const enabledRef = useRef(enabled);
+  enabledRef.current = enabled;
 
-  const enable = () => {
+  const toggle = (setStatus?: boolean) => {
+    const newStatus = setStatus ?? !enabled;
+    if (newStatus === enabled) return;
+
     if (!player.hasAccess('fly')) return;
 
-    const newStatus = !enabled;
-    setEnabled(!enabled);
+    setEnabled(newStatus);
 
     const toggleStatus = !newStatus;
 
@@ -49,25 +61,62 @@ const FlyModeBase = () => {
 
     _LOCATION.position.copy(player.position);
     _LOCATION.quaternion.copy(player.rotation);
-
-    if (newStatus) {
-      player.sendSuccessNotification('Flying enabled');
-    } else {
-      player.sendErrorNotification('Flying disabled');
-    }
   };
 
-  useCommand('fly').on(() => enable());
-  useKey('Tab', () => enable());
+  // hooks
+  useCommand('fly').on(() => toggle());
+
+  useKey('Tab', () => toggle());
+  useKey('Tab', () => toggle(false), {
+    ignoreFlags: true,
+  });
 
   if (!enabled) return null;
 
-  return <FlyModeRender />;
+  return <FlyModeRender toggle={toggle} />;
 };
 
-const FlyModeRender = () => {
+type FlyModeRenderProps = {
+  toggle: () => void;
+};
+
+const FlyModeRender = ({toggle}: FlyModeRenderProps) => {
   const player = useStreamedPlayer(usePlayerId());
   const camera = useCamera();
+
+  useEvent('onToolbarItemPress', id => {
+    if (id === TOOLBAR_CANCEL_ID) {
+      toggle();
+    }
+  });
+
+  useToolbar({
+    id: TOOLBAR_ID,
+    position: 'right',
+    items: [
+      {
+        name: 'Movement',
+        key: ['W', 'A', 'S', 'D'],
+      },
+      {
+        name: 'Up / Down',
+        key: ['Space', 'Shift'],
+      },
+      {
+        name: 'Normal Speed',
+        key: 'Cap Lock',
+      },
+      {
+        name: 'Speed of Light',
+        key: 'Control',
+      },
+      {
+        id: TOOLBAR_CANCEL_ID,
+        name: 'Exit Fly Mode',
+        key: 'Tab',
+      },
+    ],
+  });
 
   useFrame(delta => {
     if (!player) return;
@@ -76,7 +125,7 @@ const FlyModeRender = () => {
 
     const velocity = player.controls.control
       ? 40
-      : player.controls.caps
+      : !player.controls.caps
       ? 3
       : 10;
 
@@ -107,6 +156,9 @@ const FlyModeRender = () => {
     if (player.controls.jump || player.controls.sprint) {
       _LOCATION.translateY(velocity * delta * (player.controls.jump ? 1 : -1));
     }
+
+    // ignore if same position
+    if (_LAST_POS.equals(_LOCATION.position)) return;
 
     // set
     player.setPosition(_LOCATION.position);
