@@ -10,7 +10,7 @@ import {
   useToolbar,
   useEvent,
 } from '@verza/sdk/react';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 
 const TOOLBAR_ID = 'flymode_toolbar';
 
@@ -41,6 +41,8 @@ const FlyMode = () => {
 const FlyModeBase = () => {
   const player = useStreamedPlayer(usePlayerId());
   const [enabled, setEnabled] = useState(false);
+  const enabledRef = useRef(enabled);
+  enabledRef.current = enabled;
 
   const toggle = (setStatus?: boolean) => {
     const newStatus = setStatus ?? !enabled;
@@ -63,6 +65,7 @@ const FlyModeBase = () => {
 
   // hooks
   useCommand('fly').on(() => toggle());
+
   useKey('Tab', () => toggle());
   useKey('Tab', () => toggle(false), {
     ignoreFlags: true,
@@ -92,9 +95,25 @@ const FlyModeRender = ({toggle}: FlyModeRenderProps) => {
     position: 'right',
     items: [
       {
+        name: 'Movement',
+        key: ['W', 'A', 'S', 'D'],
+      },
+      {
+        name: 'Up / Down',
+        key: ['Space', 'Shift'],
+      },
+      {
+        name: 'Normal Speed',
+        key: 'Cap Lock',
+      },
+      {
+        name: 'Speed of Light',
+        key: 'Control',
+      },
+      {
         id: TOOLBAR_CANCEL_ID,
-        name: 'Disable Fly Mode',
-        key: 'TAB',
+        name: 'Exit Fly Mode',
+        key: 'Tab',
       },
     ],
   });

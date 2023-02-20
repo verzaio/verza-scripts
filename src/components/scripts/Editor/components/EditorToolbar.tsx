@@ -1,20 +1,20 @@
 import {ToolbarElement} from '@verza/sdk/dist/definitions/types/ui.types';
 import {
-  useEvent,
   useKey,
   useObjects,
   useToolbar,
   useToolbarItemPress,
 } from '@verza/sdk/react';
-import {useRef} from 'react';
 
 const TOOLBAR_ID = 'editor_toolbar';
 
 const TOOLBAR_SWITCH_POS_ROT_ID = 'editor_toggle_pos_rot';
 
-const TOOLBAR_TOGGLE_FREE_LOOK_ID = 'editor_free_look';
+export const TOOLBAR_TOGGLE_FREE_LOOK_ID = 'editor_free_look';
 
-const TOOLBAR_GRAB_ID = 'editor_grab';
+export const TOOLBAR_GROUND_ID = 'editor_ground';
+
+export const TOOLBAR_IN_FRONT_ID = 'editor_in_front';
 
 const TOOLBAR_EXIT_ID = 'editor_exit';
 
@@ -28,9 +28,14 @@ const TOOLBAR_ACTIONS: ToolbarElement = {
       key: 'E',
     },
     {
-      id: TOOLBAR_GRAB_ID,
-      name: 'Grab',
+      id: TOOLBAR_GROUND_ID,
+      name: 'Ground',
       key: 'G',
+    },
+    {
+      id: TOOLBAR_IN_FRONT_ID,
+      name: 'In Front',
+      key: 'B',
     },
     {
       id: TOOLBAR_TOGGLE_FREE_LOOK_ID,
@@ -49,7 +54,7 @@ type EditorToolbarProps = {
   toggleFreeLook: (newState?: boolean) => void;
 };
 
-const EditorToolbar = ({exit, toggleFreeLook}: EditorToolbarProps) => {
+const EditorToolbar = ({exit}: EditorToolbarProps) => {
   const objects = useObjects();
 
   const togglePosRot = () => {
@@ -67,40 +72,6 @@ const EditorToolbar = ({exit, toggleFreeLook}: EditorToolbarProps) => {
 
   // exit
   useToolbarItemPress(TOOLBAR_EXIT_ID, exit);
-
-  // free look
-  const isHoldingRef = useRef(false);
-  useKey(
-    'KeyF',
-    () => {
-      if (isHoldingRef.current) return;
-
-      isHoldingRef.current = true;
-      toggleFreeLook(true);
-    },
-    {
-      event: 'keydown',
-    },
-  );
-
-  useKey(
-    'KeyF',
-    () => {
-      isHoldingRef.current = false;
-      toggleFreeLook(false);
-    },
-    {
-      event: 'keyup',
-      ignoreFlags: true,
-    },
-  );
-
-  useEvent('onPointerUp', () => {
-    isHoldingRef.current = false;
-    toggleFreeLook(false);
-  });
-
-  useToolbarItemPress(TOOLBAR_TOGGLE_FREE_LOOK_ID, () => toggleFreeLook());
 
   return null;
 };

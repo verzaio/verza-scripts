@@ -1,5 +1,7 @@
 import {useEvent, useObjects, useUI, useWorld} from '@verza/sdk/react';
 import {useEffect, useState} from 'react';
+import FreeLook from './actions/FreeLook';
+import InFront from './actions/InFront';
 import EditorToolbar from './EditorToolbar';
 
 export const EDITOR_INTERFACE_ID = 'core_editor';
@@ -14,7 +16,6 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
   const [freeLook, setFreeLook] = useState(false);
 
   const ui = useUI();
-  //const isEditorInterface = useInterface(EDITOR_INTERFACE_ID);
 
   const exit = () => {
     ui.removeInterface(EDITOR_INTERFACE_ID);
@@ -36,9 +37,15 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
   }, [world, objects]);
 
   useEvent('onEntitySelected', intersects => {
-    // only if not same object or null
-    if (intersects.object?.entity.id !== objects.editingObject?.id) {
-      intersects.object?.entity.edit();
+    // cancel if no object was selected
+    if (!intersects.object) {
+      //objects.cancelEdit();
+      return;
+    }
+
+    // edit if not selected
+    if (intersects.object.entity.id !== objects.editingObject?.id) {
+      intersects.object.entity.edit();
     }
   });
 
@@ -63,9 +70,15 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
     };
   }, [ui]);
 
-  //if (!interfaces.has(EDITOR_INTERFACE_ID)) return null;
+  return (
+    <>
+      <InFront />
 
-  return <EditorToolbar toggleFreeLook={toggleFreeLook} exit={exit} />;
+      <FreeLook toggleFreeLook={toggleFreeLook} />
+
+      <EditorToolbar toggleFreeLook={toggleFreeLook} exit={exit} />
+    </>
+  );
 };
 
 export default EditorHandler;

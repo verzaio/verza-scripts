@@ -16,7 +16,11 @@ const Editor = () => {
 const EditorRender = () => {
   const [enabled, setEnabled] = useState(false);
 
-  useKey('KeyR', () => setEnabled(state => !state));
+  useKey('KeyR', event => {
+    if (event.altKey || event.metaKey) return;
+
+    setEnabled(state => !state);
+  });
 
   if (!enabled) return null;
 

@@ -27,7 +27,7 @@
   "homepage": "https://github.com/verzaio/verza-scripts#readme",
   "dependencies": {
     "@next/font": "13.1.5",
-    "@verza/sdk": "../verza-sdk",
+    "@verza/sdk": "^1.0.15",
     "next": "13.1.5",
     "react": "18.2.0",
     "react-dom": "18.2.0"
