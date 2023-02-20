@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "ts-check": "tsc --pretty --noEmit",
+    "ts-check": "tsc --pretty --noEmit --p tsconfig.prod.json",
     "prepare": "husky install",
     "pre-commit": "yarn run lint:fix && yarn run ts-check"
   },
@@ -26,9 +26,9 @@
   },
   "homepage": "https://github.com/verzaio/verza-scripts#readme",
   "dependencies": {
-    "@next/font": "13.1.5",
+    "@next/font": "^13.1.6",
     "@verza/sdk": "^1.0.15",
-    "next": "13.1.5",
+    "next": "^13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
@@ -38,7 +38,7 @@
     "@types/react-dom": "18.0.10",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "eslint": "^8.32.0",
-    "eslint-config-next": "13.1.5",
+    "eslint-config-next": "^13.1.6",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.3",

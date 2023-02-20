@@ -4,6 +4,12 @@ const nextConfig = {
     externalDir: true,
   },
 
+  typescript: {
+    ...(process.env.NODE_ENV === 'production' && {
+      tsconfigPath: './tsconfig.prod.json',
+    }),
+  },
+
   reactStrictMode: true,
 };
 

@@ -16,7 +16,10 @@
     "incremental": true,
     "baseUrl": "./",
     "paths": {
-      "@app/*": ["./src/*"]
+      "@app/*": ["./src/*"],
+      "@verza/sdk/react": ["../verza-sdk/src/framework-react"],
+      "@verza/sdk": ["../verza-sdk/src"],
+      "engine/*": ["../verza-sdk/src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
