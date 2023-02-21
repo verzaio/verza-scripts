@@ -39,6 +39,7 @@ const PlaygroundRender = () => {
       <Line id="test" points={[FROM_POINT.toArray(), TO_POINT.toArray()]} />
 
       <Box
+        id="yellowBox"
         box={{
           w: 2,
           h: 2,

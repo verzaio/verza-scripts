@@ -1,6 +1,7 @@
 import {useEvent, useObjects, useUI, useWorld} from '@verza/sdk/react';
 import {useEffect, useState} from 'react';
 import FreeLook from './actions/FreeLook';
+import Ground from './actions/Ground';
 import InFront from './actions/InFront';
 import EditorToolbar from './EditorToolbar';
 
@@ -72,6 +73,8 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
 
   return (
     <>
+      <Ground />
+
       <InFront />
 
       <FreeLook toggleFreeLook={toggleFreeLook} />
