@@ -27,10 +27,13 @@
   "homepage": "https://github.com/verzaio/verza-scripts#readme",
   "dependencies": {
     "@next/font": "^13.1.6",
-    "@verza/sdk": "^1.0.16",
+    "@svgr/webpack": "^6.5.1",
+    "@verza/sdk": "^1.0.18",
+    "leva": "^0.9.34",
     "next": "^13.1.6",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "sass": "^1.58.3"
   },
   "devDependencies": {
     "@types/node": "18.11.18",

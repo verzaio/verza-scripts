@@ -1,8 +1,10 @@
 import {useEvent, useObjects, useUI, useWorld} from '@verza/sdk/react';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
+import Coordinates from './actions/Coordinates/Coordinates';
 import FreeLook from './actions/FreeLook';
 import Ground from './actions/Ground';
 import InFront from './actions/InFront';
+import Reset from './actions/Reset';
 import EditorToolbar from './EditorToolbar';
 
 export const EDITOR_INTERFACE_ID = 'core_editor';
@@ -14,7 +16,9 @@ type EditorHandlerProps = {
 const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
   const world = useWorld();
   const objects = useObjects();
+
   const [freeLook, setFreeLook] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   const ui = useUI();
 
@@ -24,12 +28,29 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
     setEnabled(false);
   };
 
-  const toggleFreeLook = (setState?: boolean) => {
-    setFreeLook(state => setState ?? !state);
+  const toggleFreeLook = (newStatus?: boolean) => {
+    setFreeLook(state => newStatus ?? !state);
   };
 
   useEffect(() => {
     world.setEntitySelector(true);
+
+    // set initial config
+    objects.setEditSnaps(null, null, null);
+
+    objects.setEditAxes({
+      showX: true,
+      showY: true,
+      showZ: true,
+
+      showRX: false,
+      showRY: true,
+      showRZ: false,
+
+      showSX: false,
+      showSY: false,
+      showSZ: false,
+    });
 
     return () => {
       world.setEntitySelector(false);
@@ -37,10 +58,11 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
     };
   }, [world, objects]);
 
-  useEvent('onEntitySelected', intersects => {
+  const updatingRef = useRef(false);
+  useEvent('onEntitySelected', async intersects => {
     // cancel if no object was selected
     if (!intersects.object) {
-      //objects.cancelEdit();
+      objects.cancelEdit();
       return;
     }
 
@@ -50,8 +72,32 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
     }
   });
 
-  useEvent('editObject', (_, type) => {
-    console.log('editObject', type);
+  useEvent('onObjectEdit', (_, type) => {
+    //console.log(`onObjectEdit:${type}`);
+
+    switch (type) {
+      case 'start': {
+        updatingRef.current = true;
+        break;
+      }
+      case 'end': {
+        /* console.log(
+          'end',
+          _.position.toArray().map(e => e.toFixed(2)),
+        ); */
+        updatingRef.current = false;
+        break;
+      }
+      case 'select': {
+        setEditing(true);
+        updatingRef.current = false;
+        break;
+      }
+      case 'unselect': {
+        setEditing(false);
+        break;
+      }
+    }
   });
 
   useEffect(() => {
@@ -64,6 +110,20 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
     };
   }, [ui, freeLook]);
 
+  useEffect(() => {
+    if (!editing) return;
+
+    ui.setSize({
+      width: '100%',
+      height: '50%',
+    });
+    ui.show();
+
+    return () => {
+      return ui.hide();
+    };
+  }, [ui, editing]);
+
   // handle interface removal
   useEffect(() => {
     return () => {
@@ -73,13 +133,21 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
 
   return (
     <>
-      <Ground />
+      {editing && (
+        <>
+          <Ground />
 
-      <InFront />
+          <Reset />
+
+          <InFront />
+
+          <Coordinates />
+        </>
+      )}
 
       <FreeLook toggleFreeLook={toggleFreeLook} />
 
-      <EditorToolbar toggleFreeLook={toggleFreeLook} exit={exit} />
+      <EditorToolbar editing={editing} exit={exit} />
     </>
   );
 };
