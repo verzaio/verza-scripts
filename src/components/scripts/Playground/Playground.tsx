@@ -60,13 +60,14 @@ const PlaygroundRender = () => {
       />
 
       <Box
+        scale={[2, 2, 2]}
         box={{
-          w: 2,
-          h: 2,
+          w: 1,
+          h: 1,
           d: 1,
           c: 'orange',
         }}
-        position={[0, 2, 6]}
+        position={[5, 2, 6]}
       />
     </>
   );

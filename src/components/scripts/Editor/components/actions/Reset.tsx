@@ -1,4 +1,4 @@
-import {Quaternion} from '@verza/sdk';
+import {Quaternion, Vector3} from '@verza/sdk';
 import {useKey, useObjects, useToolbarItemPress} from '@verza/sdk/react';
 import {TOOLBAR_RESET_ID} from '../EditorToolbar';
 
@@ -11,6 +11,7 @@ const Reset = () => {
     const object = objects.editingObject;
 
     object.setRotationFromWorldSpace(new Quaternion());
+    object.setScale(new Vector3(1, 1, 1));
   };
 
   useToolbarItemPress(TOOLBAR_RESET_ID, reset);

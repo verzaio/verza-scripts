@@ -1,6 +1,6 @@
 import {useEvent, useObjects, useUI, useWorld} from '@verza/sdk/react';
 import {useEffect, useRef, useState} from 'react';
-import Coordinates from './actions/Coordinates/Coordinates';
+import EditorPanel from './EditorPanel/EditorPanel';
 import FreeLook from './actions/FreeLook';
 import Ground from './actions/Ground';
 import InFront from './actions/InFront';
@@ -73,18 +73,12 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
   });
 
   useEvent('onObjectEdit', (_, type) => {
-    //console.log(`onObjectEdit:${type}`);
-
     switch (type) {
       case 'start': {
         updatingRef.current = true;
         break;
       }
       case 'end': {
-        /* console.log(
-          'end',
-          _.position.toArray().map(e => e.toFixed(2)),
-        ); */
         updatingRef.current = false;
         break;
       }
@@ -110,20 +104,6 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
     };
   }, [ui, freeLook]);
 
-  useEffect(() => {
-    if (!editing) return;
-
-    ui.setSize({
-      width: '100%',
-      height: '50%',
-    });
-    ui.show();
-
-    return () => {
-      return ui.hide();
-    };
-  }, [ui, editing]);
-
   // handle interface removal
   useEffect(() => {
     return () => {
@@ -141,7 +121,7 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
 
           <InFront />
 
-          <Coordinates />
+          <EditorPanel />
         </>
       )}
 

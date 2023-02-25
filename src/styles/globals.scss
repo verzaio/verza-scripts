@@ -1,3 +1,4 @@
+@import './keyframes.scss';
 
 * {
   box-sizing: border-box;
@@ -11,10 +12,9 @@ body {
   width: 100%;
   overflow-x: hidden;
   font-family: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-  'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-  'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace
+    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
+    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 }
-
 
 body {
   background-color: transparent;
@@ -31,3 +31,8 @@ a {
   text-decoration: none;
 }
 
+/* animations */
+.fade-in {
+  opacity: 0;
+  animation: fade-in 0.25s ease-in-out forwards;
+}
