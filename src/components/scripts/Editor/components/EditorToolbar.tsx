@@ -1,15 +1,8 @@
 import {ToolbarItem} from '@verza/sdk';
 import {ToolbarElement} from '@verza/sdk/dist/definitions/types/ui.types';
-import {
-  useKey,
-  useObjects,
-  useToolbar,
-  useToolbarItemPress,
-} from '@verza/sdk/react';
+import {useToolbar, useToolbarItemPress} from '@verza/sdk/react';
 
 const TOOLBAR_ID = 'editor_toolbar';
-
-const TOOLBAR_SCALE_ID = 'editor_scale';
 
 export const TOOLBAR_TOGGLE_FREE_LOOK_ID = 'editor_free_look';
 
@@ -19,14 +12,13 @@ export const TOOLBAR_IN_FRONT_ID = 'editor_in_front';
 
 export const TOOLBAR_RESET_ID = 'editor_reset';
 
+export const TOOLBAR_DUPLICATE_ID = 'editor_duplicate';
+
+export const TOOLBAR_DESTROY_ID = 'editor_destroy';
+
 const TOOLBAR_EXIT_ID = 'editor_exit';
 
 export const TOOLBAR_EDIT_ACTIONS: ToolbarItem[] = [
-  {
-    id: TOOLBAR_SCALE_ID,
-    name: 'Scale',
-    key: 'E',
-  },
   {
     id: TOOLBAR_GROUND_ID,
     name: 'Ground',
@@ -41,6 +33,16 @@ export const TOOLBAR_EDIT_ACTIONS: ToolbarItem[] = [
     id: TOOLBAR_RESET_ID,
     name: 'Reset',
     key: 'N',
+  },
+  {
+    id: TOOLBAR_DUPLICATE_ID,
+    name: 'Duplicate',
+    key: 'E',
+  },
+  {
+    id: TOOLBAR_DESTROY_ID,
+    name: 'Destroy',
+    key: 'X',
   },
 ];
 
@@ -68,12 +70,6 @@ type EditorToolbarProps = {
 };
 
 const EditorToolbar = ({exit, editing}: EditorToolbarProps) => {
-  const objects = useObjects();
-
-  const toggleScale = () => {
-    objects;
-  };
-
   // add toolbar
   useToolbar({
     ...TOOLBAR_ACTIONS,
@@ -83,10 +79,6 @@ const EditorToolbar = ({exit, editing}: EditorToolbarProps) => {
       ...TOOLBAR_ACTIONS.items,
     ],
   });
-
-  // toggle pos/rot
-  useKey('KeyE', toggleScale);
-  useToolbarItemPress(TOOLBAR_SCALE_ID, () => toggleScale());
 
   // exit
   useToolbarItemPress(TOOLBAR_EXIT_ID, exit);

@@ -1,7 +1,7 @@
 //import styles from './EditorPanel.module.scss';
 
 import PanelWidget from '@app/components/core/PanelWidget';
-import {button, useControls} from 'leva';
+import {useControls} from 'leva';
 import {useCallback, useEffect, useRef} from 'react';
 import {useEvent, useObjects, useUI} from '@verza/sdk/react';
 
@@ -83,16 +83,26 @@ const EditorPanel = () => {
       },
     },
 
-    Destroy: button(() => {
-      objects.editingObject?.destroy();
-    }),
+    axis: {
+      label: 'Show All Axis',
+      value: false,
 
-    Duplicate: button(async () => {
-      const object = await objects.editingObject?.clone();
+      onChange: value => {
+        objects.setEditAxes({
+          showX: true,
+          showY: true,
+          showZ: true,
 
-      // select to edit
-      object.edit();
-    }),
+          showRX: value,
+          showRY: true,
+          showRZ: value,
+
+          showSX: false,
+          showSY: false,
+          showSZ: false,
+        });
+      },
+    },
   }));
 
   // show/hide ui

@@ -6,6 +6,8 @@ import Ground from './actions/Ground';
 import InFront from './actions/InFront';
 import Reset from './actions/Reset';
 import EditorToolbar from './EditorToolbar';
+import Destroy from './actions/Destroy';
+import Duplicate from './actions/Duplicate';
 
 export const EDITOR_INTERFACE_ID = 'core_editor';
 
@@ -117,9 +119,13 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
         <>
           <Ground />
 
-          <Reset />
-
           <InFront />
+
+          <Duplicate />
+
+          <Destroy />
+
+          <Reset />
 
           <EditorPanel />
         </>
