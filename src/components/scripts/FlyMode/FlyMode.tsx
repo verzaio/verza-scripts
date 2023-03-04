@@ -1,12 +1,11 @@
 import Provider from '@app/components/core/Provider';
 import {PlayerControls, Object3D, Vector3} from '@verza/sdk';
 import {
-  useStreamedPlayer,
+  useStreamedLocalPlayer,
   useCamera,
   useCommand,
   useFrame,
   useKey,
-  usePlayerId,
   useToolbar,
   useEvent,
 } from '@verza/sdk/react';
@@ -39,7 +38,7 @@ const FlyMode = () => {
 };
 
 const FlyModeBase = () => {
-  const player = useStreamedPlayer(usePlayerId());
+  const player = useStreamedLocalPlayer();
   const [enabled, setEnabled] = useState(false);
   const enabledRef = useRef(enabled);
   enabledRef.current = enabled;
@@ -81,7 +80,7 @@ type FlyModeRenderProps = {
 };
 
 const FlyModeRender = ({toggle}: FlyModeRenderProps) => {
-  const player = useStreamedPlayer(usePlayerId());
+  const player = useStreamedLocalPlayer();
   const camera = useCamera();
 
   useEvent('onToolbarItemPress', id => {
