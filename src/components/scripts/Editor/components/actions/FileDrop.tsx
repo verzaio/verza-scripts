@@ -76,7 +76,7 @@ const FileDrop = () => {
     }
 
     // then bring to front
-    _bringToFront(object);
+    await _bringToFront(object);
 
     // make permanent
     object.save();
