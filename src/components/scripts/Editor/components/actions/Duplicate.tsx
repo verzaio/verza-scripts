@@ -13,12 +13,17 @@ const Duplicate = () => {
   const duplicate = async () => {
     if (!objects.editingObject) return;
 
-    const object = await objects.editingObject?.clone();
+    const editingObject = objects.editingObject;
+
+    const object = await editingObject.clone();
 
     // select to edit
     object.edit();
 
-    engine.player.sendSuccessNotification('Object duplicated', 1000);
+    // all objects cloned by the editor are permanent
+    object.save();
+
+    engine.localPlayer.sendSuccessNotification('Object duplicated', 1000);
   };
 
   useToolbarItemPress(TOOLBAR_DUPLICATE_ID, duplicate);

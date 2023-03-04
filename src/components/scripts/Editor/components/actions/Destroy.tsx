@@ -11,9 +11,25 @@ const Destroy = () => {
   const engine = useEngine();
 
   const destroy = async () => {
-    objects.editingObject?.destroy();
+    const object = objects.editingObject;
+    if (!object) return;
 
-    engine.player.sendErrorNotification('Object destroyed', 1000);
+    if (!object.remote) {
+      object.destroy();
+    } else {
+      const parent = object.parent;
+
+      // if parent, then destroy child and keep parent
+      if (parent) {
+        object.destroy();
+        parent.save();
+      } else {
+        // if not, then just delete it
+        object.delete();
+      }
+    }
+
+    engine.localPlayer.sendErrorNotification('Object destroyed', 1000);
   };
 
   useToolbarItemPress(TOOLBAR_DESTROY_ID, destroy);

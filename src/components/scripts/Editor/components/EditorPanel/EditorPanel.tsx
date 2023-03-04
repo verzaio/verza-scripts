@@ -97,9 +97,9 @@ const EditorPanel = () => {
           showRY: true,
           showRZ: value,
 
-          showSX: false,
-          showSY: false,
-          showSZ: false,
+          showSX: value,
+          showSY: value,
+          showSZ: value,
         });
       },
     },

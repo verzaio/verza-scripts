@@ -8,6 +8,7 @@ import Reset from './actions/Reset';
 import EditorToolbar from './EditorToolbar';
 import Destroy from './actions/Destroy';
 import Duplicate from './actions/Duplicate';
+import FileDrop from './actions/FileDrop';
 
 export const EDITOR_INTERFACE_ID = 'core_editor';
 
@@ -71,10 +72,16 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
     // edit if not selected
     if (intersects.object.entity.id !== objects.editingObject?.id) {
       intersects.object.entity.edit();
+
+      /* intersects.object.entity.setData({
+        o: {
+          c: 'red',
+        },
+      }); */
     }
   });
 
-  useEvent('onObjectEdit', (_, type) => {
+  useEvent('onObjectEdit', (object, type) => {
     switch (type) {
       case 'start': {
         updatingRef.current = true;
@@ -82,6 +89,20 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
       }
       case 'end': {
         updatingRef.current = false;
+
+        console.log('END', object.permanent);
+
+        object.sync();
+
+        if (object.permanent) {
+          object.saveVolatile();
+        }
+        break;
+      }
+      case 'update': {
+        console.log('UPDATE', object.permanent);
+
+        object.sync();
         break;
       }
       case 'select': {
@@ -134,6 +155,8 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
       <FreeLook toggleFreeLook={toggleFreeLook} />
 
       <EditorToolbar editing={editing} exit={exit} />
+
+      <FileDrop />
     </>
   );
 };

@@ -48,7 +48,7 @@ const Ground = () => {
 
     // get bounding box and set it from its base
     const box = await object.computeBoundingBox();
-    toLocation.y += (box.max.y - box.min.y) / 2;
+    toLocation.y += worldLocation.position.y - box.min.y;
 
     // set from world space, hits are always in world-space
     object.setPositionFromWorldSpace(toLocation);
