@@ -23,7 +23,7 @@ const EditorRender = () => {
   const player = useLocalPlayer();
 
   // expose editor permission
-  useCommand('+editor');
+  useCommand(CORE_ACTION_EDITOR);
 
   const objects = useObjects();
   useEffect(() => {
@@ -32,7 +32,7 @@ const EditorRender = () => {
         w: 1,
         h: 1,
         d: 1,
-        c: 'purple',
+        color: 'purple',
       },
       {
         id: OBJECT_ID,

@@ -50,7 +50,8 @@ const FileDrop = () => {
       return;
     }
 
-    const object = objects.createGltf(assetId, {
+    const object = objects.create('gltf', {
+      u: assetId,
       position: [0, 0, 0],
     });
 
