@@ -73,11 +73,11 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
     if (intersects.object.entity.id !== objects.editingObject?.id) {
       intersects.object.entity.edit();
 
-      /* intersects.object.entity.setData({
+      /*intersects.object.entity.setData({
         o: {
-          c: 'red',
+          color: 'red',
         },
-      }); */
+      });*/
     }
   });
 
@@ -90,7 +90,7 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
       case 'end': {
         updatingRef.current = false;
 
-        console.log('END', object.permanent);
+        //console.log('END', object.permanent);
 
         object.sync();
 
@@ -100,7 +100,7 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
         break;
       }
       case 'update': {
-        console.log('UPDATE', object.permanent);
+        //console.log('UPDATE', object.permanent);
 
         object.sync();
         break;
