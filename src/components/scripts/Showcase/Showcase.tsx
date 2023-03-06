@@ -18,15 +18,15 @@ const WALL_HEIGHT = 5;
 
 const WALL_WIDTH = 0.2;
 
-const Playground = () => {
+const Showcase = () => {
   return (
     <Provider>
-      <PlaygroundRender />
+      <ShowcaseRender />
     </Provider>
   );
 };
 
-const PlaygroundRender = () => {
+const ShowcaseRender = () => {
   useCommand('show').on(player => {
     player.setPosition(SHOWCASE_LOCATION.position);
   });
@@ -132,4 +132,4 @@ const Scene = () => {
   );
 };
 
-export default Playground;
+export default Showcase;

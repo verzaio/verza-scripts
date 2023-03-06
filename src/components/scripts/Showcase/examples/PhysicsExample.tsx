@@ -2,7 +2,7 @@ import {ObjectManager} from '@verza/sdk';
 import {Box, Group, Sphere} from '@verza/sdk/react';
 import {useEffect, useRef} from 'react';
 import SceneTitle from '../components/SceneTitle';
-import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Playground';
+import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
 
 const PhysicsExample = () => {
   const loc = SHOWCASE_LOCATION.clone();

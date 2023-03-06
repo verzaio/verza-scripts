@@ -3,7 +3,7 @@ import {Group, Line, useRaycaster} from '@verza/sdk/react';
 import {useEffect, useRef, useState} from 'react';
 import Description from '../components/Description';
 import SceneTitle from '../components/SceneTitle';
-import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Playground';
+import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
 
 const FROM_POINT = new Vector3(0, 1, 2);
 const TO_POINT = new Vector3(0, 1, 6);

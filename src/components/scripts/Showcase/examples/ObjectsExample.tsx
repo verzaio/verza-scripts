@@ -1,9 +1,9 @@
 import {formatUrl} from '@app/utils/misc';
 import {uuid} from '@verza/sdk';
-import {Box, Gltf, Group, Sphere, Text} from '@verza/sdk/react';
+import {Box, Gltf, Group, Sphere} from '@verza/sdk/react';
 import Label from '../components/Label';
 import SceneTitle from '../components/SceneTitle';
-import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Playground';
+import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
 
 const ObjectsExample = () => {
   const loc = SHOWCASE_LOCATION.clone();
