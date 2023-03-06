@@ -20,8 +20,11 @@ const Duplicate = () => {
     // select to edit
     object.edit();
 
-    // all objects cloned by the editor are permanent
-    object.save();
+    // make object permanent only if
+    // the editing object is permanent
+    if (editingObject.permanent) {
+      object.save();
+    }
 
     engine.localPlayer.sendSuccessNotification('Object duplicated', 1000);
   };

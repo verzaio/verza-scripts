@@ -1,10 +1,20 @@
-import Provider from '@app/components/core/Provider';
-import {Vector3} from '@verza/sdk';
-import {Box, Line, Sphere, useRaycaster} from '@verza/sdk/react';
-import {useEffect} from 'react';
+import {Box, Group, useCommand} from '@verza/sdk/react';
+import {Object3D, ObjectTexture, RepeatWrapping, Vector2} from '@verza/sdk';
 
-const FROM_POINT = new Vector3(0, 1, 2);
-const TO_POINT = new Vector3(0, 1, 6);
+import Provider from '@app/components/core/Provider';
+import {formatUrl} from '@app/utils/misc';
+
+import PhysicsExample from './examples/PhysicsExample';
+import RaycasterExample from './examples/RaycasterExample';
+import ObjectsExample from './examples/ObjectsExample';
+
+export const SHOWCASE_LOCATION = new Object3D();
+
+SHOWCASE_LOCATION.position.set(30, 60, 30);
+
+export const SHOWCASE_SIZE = new Vector2(50, 50);
+
+const WALL_HEIGHT = 5;
 
 const Playground = () => {
   return (
@@ -15,85 +25,86 @@ const Playground = () => {
 };
 
 const PlaygroundRender = () => {
-  const raycaster = useRaycaster();
-
-  useEffect(() => {
-    const intervalId = setInterval(async () => {
-      /*  const intersects = await raycaster.raycastPoints(FROM_POINT, TO_POINT, {
-        //entityTypes: ['object'],
-        //excludePlayers: [1],
-      });
-
-      if (intersects.player || intersects.object) {
-        console.log('playground line', intersects);
-      } */
-    }, 1000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [raycaster]);
-
-  /* const objectRef = useRef<ObjectManager<'text'>>(null!);
-
-  useEffect(() => {
-    const object = objectRef.current;
-    const intervalId = setInterval(() => {
-      if (object.props.text.includes('Welcome')) {
-        object.setProps({
-          text: 'Verza!',
-          color: '#6D2BA1',
-          strokeColor: '#746A98',
-        });
-      } else {
-        object.setProps({
-          text: 'Welcome to',
-          color: '#432BA1',
-          strokeColor: '#746A98',
-        });
-      }
-    }, 1000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []); */
+  useCommand('show').on(player => {
+    player.setPosition(SHOWCASE_LOCATION.position);
+  });
 
   return (
     <>
-      <Line id="test" points={[FROM_POINT.toArray(), TO_POINT.toArray()]} />
+      <Scene />
 
-      <Box color="red" width={2} height={2} depth={1} position={[-2, 2, 6]} />
+      <ObjectsExample />
 
-      <Box color="blue" width={2} height={2} depth={1} position={[-2, 4, 6]} />
+      <RaycasterExample />
 
-      <Box
-        scale={[2, 2, 2]}
-        color="orange"
-        width={1}
-        height={1}
-        depth={1}
-        position={[5, 2, 6]}
-      />
-
-      {/* <Text
-        ref={objectRef}
-        fontSize={1}
-        strokeWidth={0.01}
-        strokeColor="red"
-        position={[-5, 2, -3]}
-        color="blue">
-        Welcome to!
-      </Text> */}
-
-      <Sphere
-        id="sphere"
-        color="cyan"
-        radius={1}
-        position={[2, 2, -10]}
-        collision="dynamic"
-      />
+      <PhysicsExample />
     </>
+  );
+};
+
+const Scene = () => {
+  const Wall = (
+    position: [number, number, number],
+    rotation: [number, number, number],
+  ) => {
+    const map = (name: string): ObjectTexture => {
+      return {
+        source: formatUrl(`/textures/wall/${name}`),
+        repeat: [SHOWCASE_SIZE.x, WALL_HEIGHT],
+        wrapS: RepeatWrapping,
+        wrapT: RepeatWrapping,
+      };
+    };
+
+    return (
+      <Box
+        width={SHOWCASE_SIZE.x}
+        height={WALL_HEIGHT}
+        depth={0.2}
+        position={position}
+        rotation={rotation}
+        material={{
+          map: map('concrete_53_basecolor-1K.png'),
+          roughnessMap: map('concrete_53_roughness-1K.png'),
+        }}
+        userData={{uneditable: true}}
+      />
+    );
+  };
+
+  return (
+    <Group position={SHOWCASE_LOCATION.position}>
+      {/* floor */}
+      <Box
+        width={SHOWCASE_SIZE.x}
+        height={0.2}
+        depth={SHOWCASE_SIZE.y}
+        material={{
+          map: {
+            source: formatUrl('/textures/floor_tiles_02_diff_4k.jpg'),
+            repeat: [SHOWCASE_SIZE.x, SHOWCASE_SIZE.y],
+            wrapS: RepeatWrapping,
+            wrapT: RepeatWrapping,
+          },
+          roughnessMap: {
+            source: formatUrl('/textures/floor_tiles_02_rough_4k.jpg'),
+            repeat: [SHOWCASE_SIZE.x, SHOWCASE_SIZE.y],
+            wrapS: RepeatWrapping,
+            wrapT: RepeatWrapping,
+          },
+        }}
+        userData={{uneditable: true}}
+      />
+
+      {/* walls */}
+      {Wall([0, WALL_HEIGHT / 2, SHOWCASE_SIZE.x / 2], [0, 0, 0])}
+
+      {Wall([SHOWCASE_SIZE.x / 2, WALL_HEIGHT / 2, 0], [0, Math.PI / 2, 0])}
+
+      {Wall([0, WALL_HEIGHT / 2, -SHOWCASE_SIZE.x / 2], [0, 0, 0])}
+
+      {Wall([-SHOWCASE_SIZE.x / 2, WALL_HEIGHT / 2, 0], [0, Math.PI / 2, 0])}
+    </Group>
   );
 };
 

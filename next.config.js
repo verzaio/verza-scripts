@@ -4,6 +4,15 @@ const nextConfig = {
     externalDir: true,
   },
 
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [{key: 'Access-Control-Allow-Origin', value: '*'}],
+      },
+    ];
+  },
+
   typescript: {
     ...(process.env.NODE_ENV === 'production' && {
       tsconfigPath: './tsconfig.prod.json',

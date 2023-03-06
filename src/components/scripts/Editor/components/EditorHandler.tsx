@@ -69,15 +69,16 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
       return;
     }
 
-    // edit if not selected
-    if (intersects.object.entity.id !== objects.editingObject?.id) {
-      intersects.object.entity.edit();
+    const object = intersects.object.entity;
 
-      /*intersects.object.entity.setData({
-        o: {
-          color: 'red',
-        },
-      });*/
+    // edit if not selected
+    if (object.id !== objects.editingObject?.id) {
+      if (object.userData.uneditable) {
+        objects.cancelEdit();
+        return;
+      }
+
+      object.edit();
     }
   });
 
