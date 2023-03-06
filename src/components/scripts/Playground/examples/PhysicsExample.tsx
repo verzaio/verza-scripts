@@ -6,13 +6,13 @@ import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Playground';
 
 const PhysicsExample = () => {
   const loc = SHOWCASE_LOCATION.clone();
-  loc.translateZ(SHOWCASE_SIZE.x / 2 - 0.15);
+  loc.translateZ(SHOWCASE_SIZE.y / 2 - 0.15);
   loc.translateX(10);
   loc.rotateY(Math.PI);
 
   return (
     <Group position={loc.position} rotation={loc.quaternion}>
-      <SceneTitle position={[0, 3.5, 0]}>Physics</SceneTitle>
+      <SceneTitle position={[0, 3.3, 0]}>Physics</SceneTitle>
 
       <Scene />
     </Group>

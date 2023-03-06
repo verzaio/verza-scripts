@@ -10,12 +10,12 @@ const TO_POINT = new Vector3(0, 1, 6);
 
 const RaycasterExample = () => {
   const loc = SHOWCASE_LOCATION.clone();
-  loc.translateZ(SHOWCASE_SIZE.x / 2 - 0.15);
+  loc.translateZ(SHOWCASE_SIZE.y / 2 - 0.15);
   loc.rotateY(Math.PI);
 
   return (
     <Group position={loc.position} rotation={loc.quaternion}>
-      <SceneTitle position={[0, 3.5, 0]}>Raycaster</SceneTitle>
+      <SceneTitle position={[0, 3.3, 0]}>Raycaster</SceneTitle>
 
       <Scene />
     </Group>
@@ -50,9 +50,9 @@ const Scene = () => {
       {inContact ? (
         <Description
           color="#00bc2f"
-          position={[0, 2, 0]}>{`Hi ${inContact}!`}</Description>
+          position={[0, 1.7, 0]}>{`Hi ${inContact}!`}</Description>
       ) : (
-        <Description position={[0, 2, 0]}>
+        <Description position={[0, 1.7, 0]}>
           Get in contact with the line
         </Description>
       )}

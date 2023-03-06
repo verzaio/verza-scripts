@@ -1,4 +1,4 @@
-export const formatUrl = (path: string) => `${getBaseUrl()}${path}`;
+export const formatUrl = (path: string) => `${getBaseUrl()}/${path}`;
 
 export const getBaseUrl = () => {
   if (typeof location !== 'undefined') {

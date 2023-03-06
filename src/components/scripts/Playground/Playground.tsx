@@ -12,9 +12,11 @@ export const SHOWCASE_LOCATION = new Object3D();
 
 SHOWCASE_LOCATION.position.set(30, 60, 30);
 
-export const SHOWCASE_SIZE = new Vector2(50, 50);
+export const SHOWCASE_SIZE = new Vector2(100, 40);
 
 const WALL_HEIGHT = 5;
+
+const WALL_WIDTH = 0.2;
 
 const Playground = () => {
   return (
@@ -44,12 +46,13 @@ const PlaygroundRender = () => {
 
 const Scene = () => {
   const Wall = (
+    width: number,
     position: [number, number, number],
     rotation: [number, number, number],
   ) => {
     const map = (name: string): ObjectTexture => {
       return {
-        source: formatUrl(`/textures/wall/${name}`),
+        source: formatUrl(`showcase/textures/wall/${name}`),
         repeat: [SHOWCASE_SIZE.x, WALL_HEIGHT],
         wrapS: RepeatWrapping,
         wrapT: RepeatWrapping,
@@ -58,7 +61,7 @@ const Scene = () => {
 
     return (
       <Box
-        width={SHOWCASE_SIZE.x}
+        width={width}
         height={WALL_HEIGHT}
         depth={0.2}
         position={position}
@@ -77,17 +80,22 @@ const Scene = () => {
       {/* floor */}
       <Box
         width={SHOWCASE_SIZE.x}
-        height={0.2}
+        height={WALL_WIDTH}
         depth={SHOWCASE_SIZE.y}
+        position={[0, -(WALL_WIDTH / 2), 0]}
         material={{
           map: {
-            source: formatUrl('/textures/floor_tiles_02_diff_4k.jpg'),
+            source: formatUrl(
+              'showcase/textures/floor/floor_tiles_02_diff_4k.jpg',
+            ),
             repeat: [SHOWCASE_SIZE.x, SHOWCASE_SIZE.y],
             wrapS: RepeatWrapping,
             wrapT: RepeatWrapping,
           },
           roughnessMap: {
-            source: formatUrl('/textures/floor_tiles_02_rough_4k.jpg'),
+            source: formatUrl(
+              'showcase/textures/floor/floor_tiles_02_rough_4k.jpg',
+            ),
             repeat: [SHOWCASE_SIZE.x, SHOWCASE_SIZE.y],
             wrapS: RepeatWrapping,
             wrapT: RepeatWrapping,
@@ -97,13 +105,29 @@ const Scene = () => {
       />
 
       {/* walls */}
-      {Wall([0, WALL_HEIGHT / 2, SHOWCASE_SIZE.x / 2], [0, 0, 0])}
+      {Wall(
+        SHOWCASE_SIZE.x,
+        [0, WALL_HEIGHT / 2, SHOWCASE_SIZE.y / 2],
+        [0, 0, 0],
+      )}
 
-      {Wall([SHOWCASE_SIZE.x / 2, WALL_HEIGHT / 2, 0], [0, Math.PI / 2, 0])}
+      {Wall(
+        SHOWCASE_SIZE.y,
+        [SHOWCASE_SIZE.x / 2, WALL_HEIGHT / 2, 0],
+        [0, Math.PI / 2, 0],
+      )}
 
-      {Wall([0, WALL_HEIGHT / 2, -SHOWCASE_SIZE.x / 2], [0, 0, 0])}
+      {Wall(
+        SHOWCASE_SIZE.x,
+        [0, WALL_HEIGHT / 2, -SHOWCASE_SIZE.y / 2],
+        [0, 0, 0],
+      )}
 
-      {Wall([-SHOWCASE_SIZE.x / 2, WALL_HEIGHT / 2, 0], [0, Math.PI / 2, 0])}
+      {Wall(
+        SHOWCASE_SIZE.y,
+        [-SHOWCASE_SIZE.x / 2, WALL_HEIGHT / 2, 0],
+        [0, Math.PI / 2, 0],
+      )}
     </Group>
   );
 };
