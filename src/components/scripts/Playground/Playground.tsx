@@ -4,7 +4,6 @@ import {Gltf} from '@verza/sdk/react';
 import Boxes from './components/Boxes';
 import Boxes2 from './components/Boxes2';
 import Boxes3 from './components/Boxes3';
-import InteractiveBoxes from './components/InteractiveBoxes';
 import Plane from './components/Plane';
 import Stairs from './components/Stairs';
 
@@ -41,8 +40,6 @@ const PlaygroundRender = () => {
       <Plane />
 
       <Stairs />
-
-      <InteractiveBoxes />
     </>
   );
 };

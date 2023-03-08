@@ -1,6 +1,7 @@
 import {formatUrl} from '@app/utils/misc';
 import {uuid} from '@verza/sdk';
 import {Box, Gltf, Group, Sphere} from '@verza/sdk/react';
+import Description from '../components/Description';
 import Label from '../components/Label';
 import SceneTitle from '../components/SceneTitle';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
@@ -15,6 +16,10 @@ const ObjectsExample = () => {
     <Group key={uuid()} position={loc.position} rotation={loc.quaternion}>
       <SceneTitle position={[2, 3.3, 0]}>Objects</SceneTitle>
 
+      <Description position={[2, 2.5, 0]}>
+        Primitives & GLTF Support
+      </Description>
+
       <Scene />
     </Group>
   );
@@ -26,13 +31,13 @@ const Scene = () => {
       <Group position={[-4, 1.2 / 2, 4]}>
         <Label position={[0, 1, 0]}>Box</Label>
 
-        <Box color="red" width={1.2} height={1.2} depth={1.2} />
+        <Box color="#fc34a6" width={1.2} height={1.2} depth={1.2} />
       </Group>
 
       <Group position={[0, 0.7, 4]}>
         <Label position={[0, 1, 0]}>Sphere</Label>
 
-        <Sphere id="sphere" color="cyan" radius={0.7} />
+        <Sphere color="#7812ff" radius={0.7} />
       </Group>
 
       <Group position={[4, 0.9, 4]}>
