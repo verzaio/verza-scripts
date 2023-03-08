@@ -1,18 +1,23 @@
 import {ObjectManager} from '@verza/sdk';
 import {Box, Group, Sphere} from '@verza/sdk/react';
 import {useEffect, useRef} from 'react';
+import Description from '../components/Description';
 import SceneTitle from '../components/SceneTitle';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
 
 const PhysicsExample = () => {
   const loc = SHOWCASE_LOCATION.clone();
   loc.translateZ(SHOWCASE_SIZE.y / 2 - 0.15);
-  loc.translateX(10);
+  loc.translateX(12);
   loc.rotateY(Math.PI);
 
   return (
     <Group position={loc.position} rotation={loc.quaternion}>
       <SceneTitle position={[0, 3.3, 0]}>Physics</SceneTitle>
+
+      <Description position={[0, 2.5, 0]}>
+        Collisionless, Static, Kinematic & Dynamic Support
+      </Description>
 
       <Scene />
     </Group>
@@ -42,23 +47,26 @@ const Scene = () => {
 
   return (
     <>
-      <Box color="red" position={[0, 0.5, 3]} />
+      <Box color="rgb(53, 110, 255)" position={[2, 0.5, 3]} />
 
-      <Box color="blue" position={[2, 0.5, 3]} />
+      <Box color="#01ff73" position={[0, 0.5, 3]} />
 
-      <Box color="orange" position={[-2, 0.5, 3]} />
+      <Box color="#ff5100" position={[-2, 0.5, 3]} collision={null} />
+
+      <Box color="#2cf0fe" position={[0, 0.5, 5]} collision="dynamic" />
 
       <Sphere
         ref={object1Ref}
-        color="green"
+        color="#ff1599"
         position={[0, 4, 3.7]}
+        scale={2}
         collision="dynamic"
-        radius={0.5}
+        radius={0.3}
       />
 
       <Sphere
         ref={object2Ref}
-        color="green"
+        color="#ff1599"
         position={[0, 4, 3.7]}
         collision="dynamic"
         radius={0.5}
@@ -66,10 +74,10 @@ const Scene = () => {
 
       <Sphere
         ref={object3Ref}
-        color="green"
+        color="#ff1599"
         position={[0, 4, 3.7]}
         collision="dynamic"
-        radius={0.5}
+        radius={0.7}
       />
     </>
   );

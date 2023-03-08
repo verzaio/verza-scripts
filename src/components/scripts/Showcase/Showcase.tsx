@@ -7,6 +7,9 @@ import {formatUrl} from '@app/utils/misc';
 import PhysicsExample from './examples/PhysicsExample';
 import RaycasterExample from './examples/RaycasterExample';
 import ObjectsExample from './examples/ObjectsExample';
+import TexturesExample from './examples/TexturesExample';
+import EventsExample from './examples/EventsExample';
+import CameraExample from './examples/CameraExample';
 
 export const SHOWCASE_LOCATION = new Object3D();
 
@@ -35,11 +38,17 @@ const ShowcaseRender = () => {
     <>
       <Scene />
 
-      <ObjectsExample />
+      <CameraExample />
+
+      <EventsExample />
+
+      <PhysicsExample />
 
       <RaycasterExample />
 
-      <PhysicsExample />
+      <ObjectsExample />
+
+      <TexturesExample />
     </>
   );
 };
