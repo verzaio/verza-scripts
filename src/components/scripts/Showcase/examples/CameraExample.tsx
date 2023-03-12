@@ -3,6 +3,7 @@ import {Box, Group} from '@verza/sdk/react';
 import Description from '../components/Description';
 import Label from '../components/Label';
 import SceneTitle from '../components/SceneTitle';
+import {BOX_RADIUS} from '../constants';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
 
 const CameraExample = () => {
@@ -28,7 +29,7 @@ const Scene = () => {
   return (
     <>
       <Group position={[-3, 0, 4]}>
-        <Group position={[0, 1.8, 0.2]}>
+        <Group position={[0, 1.8, 0.12]}>
           <Label fontSize={0.15} textAlign="center">
             Fixed Position
           </Label>
@@ -48,6 +49,7 @@ const Scene = () => {
           width={1.5}
           height={2}
           depth={0.2}
+          radius={BOX_RADIUS}
           onPointerDown={event => {
             const localPlayer = event.object.engine.localPlayer;
 
@@ -71,7 +73,7 @@ const Scene = () => {
       </Group>
 
       <Group position={[0, 0, 4]}>
-        <Group position={[0, 1.8, 0.2]}>
+        <Group position={[0, 1.8, 0.12]}>
           <Label fontSize={0.15} textAlign="center">
             Transition
           </Label>
@@ -91,6 +93,7 @@ const Scene = () => {
           width={1.5}
           height={2}
           depth={0.2}
+          radius={BOX_RADIUS}
           onPointerDown={event => {
             const localPlayer = event.object.engine.localPlayer;
 
@@ -128,7 +131,7 @@ const Scene = () => {
       </Group>
 
       <Group position={[3, 0, 4]}>
-        <Group position={[0, 1.8, 0.2]}>
+        <Group position={[0, 1.8, 0.12]}>
           <Label fontSize={0.15} textAlign="center">
             Bouncing Effect
           </Label>
@@ -148,6 +151,7 @@ const Scene = () => {
           width={1.5}
           height={2}
           depth={0.2}
+          radius={BOX_RADIUS}
           onPointerDown={event => {
             const localPlayer = event.object.engine.localPlayer;
 
