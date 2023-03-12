@@ -38,13 +38,24 @@ const Scene = () => {
           height={1.2}
           depth={1.2}
           radius={BOX_RADIUS}
+          material={{
+            roughness: 0,
+          }}
         />
       </Group>
 
       <Group position={[0, 0.7, 4]}>
         <Label position={[0, 1, 0]}>Sphere</Label>
 
-        <Sphere color="#7812ff" radius={0.7} />
+        <Sphere
+          color="#7812ff"
+          radius={0.7}
+          widthSegments={50}
+          heightSegments={50}
+          material={{
+            roughness: 0,
+          }}
+        />
       </Group>
 
       <Group position={[4, 0.9, 4]}>

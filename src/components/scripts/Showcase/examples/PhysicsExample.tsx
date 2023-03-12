@@ -52,15 +52,28 @@ const Scene = () => {
         color="rgb(53, 110, 255)"
         position={[2, 0.5, 3]}
         radius={BOX_RADIUS}
+        material={{
+          roughness: 0,
+        }}
       />
 
-      <Box color="#01ff73" position={[0, 0.5, 3]} radius={BOX_RADIUS} />
+      <Box
+        color="#01ff73"
+        position={[0, 0.5, 3]}
+        radius={BOX_RADIUS}
+        material={{
+          roughness: 0,
+        }}
+      />
 
       <Box
         color="#ff5100"
         position={[-2, 0.5, 3]}
         collision={null}
         radius={BOX_RADIUS}
+        material={{
+          roughness: 0,
+        }}
       />
 
       <Box
@@ -68,6 +81,9 @@ const Scene = () => {
         position={[0, 0.5, 5]}
         collision="dynamic"
         radius={BOX_RADIUS}
+        material={{
+          roughness: 0,
+        }}
       />
 
       <Sphere
@@ -77,6 +93,9 @@ const Scene = () => {
         scale={2}
         collision="dynamic"
         radius={0.3}
+        material={{
+          roughness: 0,
+        }}
       />
 
       <Sphere
@@ -85,6 +104,9 @@ const Scene = () => {
         position={[0, 4, 3.7]}
         collision="dynamic"
         radius={0.5}
+        material={{
+          roughness: 0,
+        }}
       />
 
       <Sphere
@@ -93,6 +115,9 @@ const Scene = () => {
         position={[0, 4, 3.7]}
         collision="dynamic"
         radius={0.7}
+        material={{
+          roughness: 0,
+        }}
       />
     </>
   );

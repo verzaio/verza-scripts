@@ -50,6 +50,9 @@ const Scene = () => {
           height={2}
           depth={0.2}
           radius={BOX_RADIUS}
+          material={{
+            roughness: 0,
+          }}
           onPointerDown={event => {
             const localPlayer = event.object.engine.localPlayer;
 
@@ -94,6 +97,9 @@ const Scene = () => {
           height={2}
           depth={0.2}
           radius={BOX_RADIUS}
+          material={{
+            roughness: 0,
+          }}
           onPointerDown={event => {
             const localPlayer = event.object.engine.localPlayer;
 
@@ -152,6 +158,9 @@ const Scene = () => {
           height={2}
           depth={0.2}
           radius={BOX_RADIUS}
+          material={{
+            roughness: 0,
+          }}
           onPointerDown={event => {
             const localPlayer = event.object.engine.localPlayer;
 
