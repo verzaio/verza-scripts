@@ -1,17 +1,14 @@
 # Sponza
 
-## Screenshot
+## Source
 
-Lights are shown here, they are not part of the model.
-
-![screenshot](screenshot/large.jpg)
+https://github.com/pmndrs/postprocessing/tree/main/demo/static/models/sponza
 
 ## Model notes
 
 Tangents have been computed using MikkTSpace, as the original OBJ model did not have them.
 I have manually inspected the normals, and it looks correct to me.
 Be aware that W is -1.0 for most of the tangent signs, you will need to handle tangent W for correct results.
-
 
 ## Sources
 
@@ -32,7 +29,7 @@ I also ran the vertices and indices through a mesh optimizer.
 
 ## Licensing notes
 
-Taken from copyright.txt in SponzaPBR\_Textures.rar
+Taken from copyright.txt in SponzaPBR_Textures.rar
 
 ```
 PBR textures for the Sponza model.

@@ -31,13 +31,13 @@ const PlaygroundRender = () => {
         position={[-60, 4, 0]}
       />
 
-      {/* <Gltf
+      <Gltf
         url={formatUrl('playground/models/sponza/Sponza.gltf')}
         position={[-60, 0.2, 60]}
         userData={{
           uneditable: true,
         }}
-      /> */}
+      />
 
       <Boxes />
 
