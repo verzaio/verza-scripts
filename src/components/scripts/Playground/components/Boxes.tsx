@@ -1,11 +1,25 @@
-import {Box, Sphere} from '@verza/sdk/react';
+import {ObjectManager} from '@verza/sdk';
+import {Box, Sphere, useOnTicks} from '@verza/sdk/react';
+import {useRef} from 'react';
 
 const Boxes = () => {
+  const boxRef = useRef<ObjectManager>(null!);
+
+  useOnTicks(() => {
+    const box = boxRef.current;
+    if (!box) return;
+
+    box.setRotation(box.location.clone().rotateX(Math.PI / 3).rotation);
+  }, 1);
+
   return (
     <>
       <Box position={[5, 4, 0]} mass={20} color="yellow" collision="dynamic" />
 
+      <Box ref={boxRef} id="box-test" position={[0, 2, 5]} color="violet" />
+
       <Sphere
+        id="sphere-test"
         position={[-4, 4, 4]}
         collision="dynamic"
         mass={500}

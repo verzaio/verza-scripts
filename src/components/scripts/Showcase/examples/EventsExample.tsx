@@ -3,6 +3,7 @@ import {Box, Group} from '@verza/sdk/react';
 import Description from '../components/Description';
 import Label from '../components/Label';
 import SceneTitle from '../components/SceneTitle';
+import {BOX_RADIUS} from '../constants';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
 
 const EventsExample = () => {
@@ -33,6 +34,7 @@ const Scene = () => {
           width={1.2}
           height={1.2}
           depth={1.2}
+          radius={BOX_RADIUS}
           onPointerEnter={event => {
             event.object.setRotation([Math.PI / 3, 0, Math.PI / 3]);
             event.object.setProps({
@@ -65,6 +67,7 @@ const Scene = () => {
           width={1.2}
           height={1.2}
           depth={1.2}
+          radius={BOX_RADIUS}
         />
       </Group>
 
@@ -83,6 +86,7 @@ const Scene = () => {
           width={1.2}
           height={1.2}
           depth={1.2}
+          radius={BOX_RADIUS}
         />
       </Group>
     </>

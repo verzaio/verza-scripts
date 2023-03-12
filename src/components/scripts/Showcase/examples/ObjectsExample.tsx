@@ -4,6 +4,7 @@ import {Box, Gltf, Group, Sphere} from '@verza/sdk/react';
 import Description from '../components/Description';
 import Label from '../components/Label';
 import SceneTitle from '../components/SceneTitle';
+import {BOX_RADIUS} from '../constants';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
 
 const ObjectsExample = () => {
@@ -31,7 +32,13 @@ const Scene = () => {
       <Group position={[-4, 1.2 / 2, 4]}>
         <Label position={[0, 1, 0]}>Box</Label>
 
-        <Box color="#fc34a6" width={1.2} height={1.2} depth={1.2} />
+        <Box
+          color="#fc34a6"
+          width={1.2}
+          height={1.2}
+          depth={1.2}
+          radius={BOX_RADIUS}
+        />
       </Group>
 
       <Group position={[0, 0.7, 4]}>

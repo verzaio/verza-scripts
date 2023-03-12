@@ -3,6 +3,7 @@ import {Box, Group, Sphere} from '@verza/sdk/react';
 import {useEffect, useRef} from 'react';
 import Description from '../components/Description';
 import SceneTitle from '../components/SceneTitle';
+import {BOX_RADIUS} from '../constants';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
 
 const PhysicsExample = () => {
@@ -47,13 +48,27 @@ const Scene = () => {
 
   return (
     <>
-      <Box color="rgb(53, 110, 255)" position={[2, 0.5, 3]} />
+      <Box
+        color="rgb(53, 110, 255)"
+        position={[2, 0.5, 3]}
+        radius={BOX_RADIUS}
+      />
 
-      <Box color="#01ff73" position={[0, 0.5, 3]} />
+      <Box color="#01ff73" position={[0, 0.5, 3]} radius={BOX_RADIUS} />
 
-      <Box color="#ff5100" position={[-2, 0.5, 3]} collision={null} />
+      <Box
+        color="#ff5100"
+        position={[-2, 0.5, 3]}
+        collision={null}
+        radius={BOX_RADIUS}
+      />
 
-      <Box color="#2cf0fe" position={[0, 0.5, 5]} collision="dynamic" />
+      <Box
+        color="#2cf0fe"
+        position={[0, 0.5, 5]}
+        collision="dynamic"
+        radius={BOX_RADIUS}
+      />
 
       <Sphere
         ref={object1Ref}

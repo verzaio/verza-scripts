@@ -7,7 +7,7 @@ import {formatUrl} from '@app/utils/misc';
 import PhysicsExample from './examples/PhysicsExample';
 import RaycasterExample from './examples/RaycasterExample';
 import ObjectsExample from './examples/ObjectsExample';
-import TexturesExample from './examples/TexturesExample';
+import MaterialsExample from './examples/MaterialsExample';
 import EventsExample from './examples/EventsExample';
 import CameraExample from './examples/CameraExample';
 
@@ -48,7 +48,7 @@ const ShowcaseRender = () => {
 
       <ObjectsExample />
 
-      <TexturesExample />
+      <MaterialsExample />
     </>
   );
 };
