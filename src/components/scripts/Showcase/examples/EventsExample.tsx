@@ -35,6 +35,9 @@ const Scene = () => {
           height={1.2}
           depth={1.2}
           radius={BOX_RADIUS}
+          material={{
+            roughness: 0,
+          }}
           onPointerEnter={event => {
             event.object.setRotation([Math.PI / 3, 0, Math.PI / 3]);
             event.object.setProps({
@@ -68,6 +71,9 @@ const Scene = () => {
           height={1.2}
           depth={1.2}
           radius={BOX_RADIUS}
+          material={{
+            roughness: 0,
+          }}
         />
       </Group>
 
@@ -87,6 +93,9 @@ const Scene = () => {
           height={1.2}
           depth={1.2}
           radius={BOX_RADIUS}
+          material={{
+            roughness: 0,
+          }}
         />
       </Group>
     </>
