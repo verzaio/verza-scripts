@@ -26,7 +26,7 @@ const Boxes3 = () => {
         height={1}
         depth={7}
         color="purple"
-        collision="kinematic"
+        collision="kinematicPosition"
         position={[12, 0.2 / 2, 2]}
       />
     </>
