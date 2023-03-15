@@ -15,6 +15,9 @@ const Plane = () => {
         width={60}
         height={1}
         depth={10}
+        userData={{
+          uneditable: true,
+        }}
       />
 
       <Box
@@ -28,6 +31,9 @@ const Plane = () => {
         width={60}
         height={1}
         depth={10}
+        userData={{
+          uneditable: true,
+        }}
       />
     </>
   );
