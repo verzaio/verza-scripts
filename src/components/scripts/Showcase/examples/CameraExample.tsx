@@ -107,7 +107,7 @@ const Scene = () => {
 
             localPlayer.camera.setMode('world');
 
-            localPlayer.camera.setTransitions([
+            localPlayer.camera.startTransitions([
               {
                 to: loc.clone().translateY(30).translateZ(-40).translateX(-80)
                   .position,
@@ -168,7 +168,7 @@ const Scene = () => {
 
             localPlayer.camera.setMode('world');
 
-            localPlayer.camera.setTransitions([
+            localPlayer.camera.startTransitions([
               {
                 to: loc.clone().translateY(15).translateX(-20).position,
                 lookAt: localPlayer.position,
