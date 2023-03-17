@@ -26,7 +26,11 @@ const EventsExample = () => {
 const Scene = () => {
   return (
     <>
-      <Group position={[-3, 1.2 / 2, 4]}>
+      <Group
+        position={[-3, 1.2 / 2, 4]}
+        userData={{
+          uneditable: true,
+        }}>
         <Label position={[0, 1, 0]}>I will deform on aim</Label>
 
         <Box
@@ -57,15 +61,15 @@ const Scene = () => {
         />
       </Group>
 
-      <Group position={[0, 1.2 / 2, 4]}>
+      <Group
+        position={[0, 1.2 / 2, 4]}
+        userData={{
+          uneditable: true,
+        }}>
         <Label position={[0, 1, 0]}>I will bounce on click</Label>
 
         <Box
           collision="dynamic"
-          onPointerDown={event => {
-            event.object.setLinearVelocity([0, 7, 0]);
-            event.object.setAngularVelocity([0, 7, 0]);
-          }}
           color="#fff70e"
           width={1.2}
           height={1.2}
@@ -74,20 +78,21 @@ const Scene = () => {
           material={{
             roughness: 0,
           }}
+          onPointerDown={event => {
+            event.object.setLinearVelocity([0, 7, 0]);
+            event.object.setAngularVelocity([0, 7, 0]);
+          }}
         />
       </Group>
 
-      <Group position={[3, 1.2 / 2, 4]}>
+      <Group
+        position={[3, 1.2 / 2, 4]}
+        userData={{
+          uneditable: true,
+        }}>
         <Label position={[0, 1, 0]}>I will disappear on click</Label>
 
         <Box
-          onPointerDown={event => {
-            event.object.setVisible(false);
-
-            setTimeout(() => {
-              event.object.setVisible(true);
-            }, 1000);
-          }}
           color="#f92020"
           width={1.2}
           height={1.2}
@@ -95,6 +100,13 @@ const Scene = () => {
           radius={BOX_RADIUS}
           material={{
             roughness: 0,
+          }}
+          onPointerDown={event => {
+            event.object.setVisible(false);
+
+            setTimeout(() => {
+              event.object.setVisible(true);
+            }, 1000);
           }}
         />
       </Group>

@@ -10,7 +10,7 @@ import ObjectsExample from './examples/ObjectsExample';
 import MaterialsExample from './examples/MaterialsExample';
 import EventsExample from './examples/EventsExample';
 import CameraExample from './examples/CameraExample';
-import SkyExample from './examples/SkyExamples';
+import SkyExample from './examples/SkyExample';
 import MoonPhaseExample from './examples/MoonPhaseExample';
 
 export const SHOWCASE_LOCATION = new Object3D();
@@ -90,7 +90,7 @@ const Scene = () => {
   };
 
   return (
-    <Group position={SHOWCASE_LOCATION.position}>
+    <Group position={SHOWCASE_LOCATION.position} userData={{uneditable: true}}>
       {/* floor */}
       <Box
         width={SHOWCASE_SIZE.x}
@@ -115,7 +115,6 @@ const Scene = () => {
             wrapT: RepeatWrapping,
           },
         }}
-        userData={{uneditable: true}}
       />
 
       {/* walls */}
