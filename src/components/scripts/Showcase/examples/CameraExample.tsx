@@ -17,7 +17,7 @@ const CameraExample = () => {
       <SceneTitle position={[0, 3.8, 0]}>Camera</SceneTitle>
 
       <Description position={[0, 3, 0]}>
-        Full control & Transitions (built-in easing!)
+        Full control & Transitions (built-in easing and cubic-bezier!)
       </Description>
 
       <Scene />
@@ -28,7 +28,30 @@ const CameraExample = () => {
 const Scene = () => {
   return (
     <>
-      <Group position={[-3, 0, 4]}>
+      <Group
+        position={[-3, 0, 4]}
+        onPointerDown={event => {
+          const localPlayer = event.object.engine.localPlayer;
+
+          const loc = localPlayer.location.clone();
+          loc.translateX(-10);
+          loc.translateY(15);
+          loc.translateZ(-10);
+
+          localPlayer.camera.setMode('world');
+
+          localPlayer.camera.setPosition({
+            to: loc.position,
+            lookAt: localPlayer.position,
+          });
+
+          setTimeout(() => {
+            localPlayer.camera.setMode('player');
+          }, 2000);
+        }}
+        userData={{
+          uneditable: true,
+        }}>
         <Group position={[0, 1.8, 0.12]}>
           <Label fontSize={0.15} textAlign="center">
             Fixed Position
@@ -53,29 +76,47 @@ const Scene = () => {
           material={{
             roughness: 0,
           }}
-          onPointerDown={event => {
-            const localPlayer = event.object.engine.localPlayer;
-
-            const loc = localPlayer.location.clone();
-            loc.translateX(-10);
-            loc.translateY(15);
-            loc.translateZ(-10);
-
-            localPlayer.camera.setMode('world');
-
-            localPlayer.camera.setPosition({
-              to: loc.position,
-              lookAt: localPlayer.position,
-            });
-
-            setTimeout(() => {
-              localPlayer.camera.setMode('player');
-            }, 2000);
-          }}
         />
       </Group>
 
-      <Group position={[0, 0, 4]}>
+      <Group
+        position={[0, 0, 4]}
+        onPointerDown={event => {
+          const localPlayer = event.object.engine.localPlayer;
+
+          const loc = localPlayer.location.clone();
+
+          localPlayer.camera.setMode('world');
+
+          localPlayer.camera.startTransitions([
+            {
+              to: loc.clone().translateY(30).translateZ(-40).translateX(-80)
+                .position,
+              lookAt: localPlayer.position,
+              duration: 3000,
+              easing: 'easeInOutQuad',
+            },
+            {
+              to: loc.clone().translateY(15).translateX(-20).position,
+              lookAt: localPlayer.position,
+              duration: 3000,
+              easing: 'easeInOutQuad',
+            },
+            {
+              to: loc.clone().translateY(5).translateZ(-10).position,
+              lookAt: localPlayer.position.clone(),
+              duration: 3000,
+              easing: 'easeInOutQuad',
+            },
+          ]);
+
+          setTimeout(() => {
+            localPlayer.camera.setMode('player', false);
+          }, 9000);
+        }}
+        userData={{
+          uneditable: true,
+        }}>
         <Group position={[0, 1.8, 0.12]}>
           <Label fontSize={0.15} textAlign="center">
             Transition
@@ -100,46 +141,43 @@ const Scene = () => {
           material={{
             roughness: 0,
           }}
-          onPointerDown={event => {
-            const localPlayer = event.object.engine.localPlayer;
-
-            const loc = localPlayer.location.clone();
-
-            localPlayer.camera.setMode('world');
-
-            localPlayer.camera.startTransitions([
-              {
-                to: loc.clone().translateY(30).translateZ(-40).translateX(-80)
-                  .position,
-                lookAt: localPlayer.position,
-                duration: 3000,
-                easing: 'easeInOutQuad',
-              },
-              {
-                to: loc.clone().translateY(15).translateX(-20).position,
-                lookAt: localPlayer.position,
-                duration: 3000,
-                easing: 'easeInOutQuad',
-              },
-              {
-                to: loc.clone().translateY(5).translateZ(-10).position,
-                lookAt: localPlayer.position.clone(),
-                duration: 3000,
-                easing: 'easeInOutQuad',
-              },
-            ]);
-
-            setTimeout(() => {
-              localPlayer.camera.setMode('player', false);
-            }, 9000);
-          }}
         />
       </Group>
 
-      <Group position={[3, 0, 4]}>
+      <Group
+        position={[3, 0, 4]}
+        onPointerDown={event => {
+          const localPlayer = event.object.engine.localPlayer;
+
+          const loc = localPlayer.location.clone();
+
+          localPlayer.camera.setMode('world');
+
+          localPlayer.camera.startTransitions([
+            {
+              to: loc.clone().translateY(15).translateX(-20).position,
+              lookAt: localPlayer.position,
+              duration: 3000,
+              easing: 'easeInElastic',
+            },
+            {
+              to: loc.clone().translateY(5).translateZ(-10).position,
+              lookAt: localPlayer.position.clone(),
+              duration: 3000,
+              easing: 'easeOutElastic',
+            },
+          ]);
+
+          setTimeout(() => {
+            localPlayer.camera.setMode('player', false);
+          }, 6000);
+        }}
+        userData={{
+          uneditable: true,
+        }}>
         <Group position={[0, 1.8, 0.12]}>
           <Label fontSize={0.15} textAlign="center">
-            Bouncing Effect
+            Elastic Effect
           </Label>
 
           <Label
@@ -160,32 +198,6 @@ const Scene = () => {
           radius={BOX_RADIUS}
           material={{
             roughness: 0,
-          }}
-          onPointerDown={event => {
-            const localPlayer = event.object.engine.localPlayer;
-
-            const loc = localPlayer.location.clone();
-
-            localPlayer.camera.setMode('world');
-
-            localPlayer.camera.startTransitions([
-              {
-                to: loc.clone().translateY(15).translateX(-20).position,
-                lookAt: localPlayer.position,
-                duration: 3000,
-                easing: 'easeInOutBounce',
-              },
-              {
-                to: loc.clone().translateY(5).translateZ(-10).position,
-                lookAt: localPlayer.position.clone(),
-                duration: 3000,
-                easing: 'easeOutBounce',
-              },
-            ]);
-
-            setTimeout(() => {
-              localPlayer.camera.setMode('player', false);
-            }, 6000);
           }}
         />
       </Group>

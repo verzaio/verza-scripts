@@ -9,8 +9,19 @@ import EditorToolbar from './EditorToolbar';
 import Destroy from './actions/Destroy';
 import Duplicate from './actions/Duplicate';
 import FileDrop from './actions/FileDrop';
+import {ObjectManager} from '@verza/sdk';
 
 export const EDITOR_INTERFACE_ID = 'core_editor';
+
+const isUneditable = async (object: ObjectManager): Promise<boolean> => {
+  if (!object) return false;
+
+  if (object.userData.uneditable) {
+    return true;
+  }
+
+  return isUneditable((await object.resolveParent())!);
+};
 
 type EditorHandlerProps = {
   setEnabled: (state: boolean) => void;
@@ -73,7 +84,7 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
 
     // edit if not selected
     if (object.id !== objects.editingObject?.id) {
-      if (object.userData.uneditable) {
+      if (await isUneditable(object)) {
         objects.cancelEdit();
         return;
       }
