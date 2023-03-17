@@ -10,6 +10,8 @@ import ObjectsExample from './examples/ObjectsExample';
 import MaterialsExample from './examples/MaterialsExample';
 import EventsExample from './examples/EventsExample';
 import CameraExample from './examples/CameraExample';
+import SkyExample from './examples/SkyExamples';
+import MoonPhaseExample from './examples/MoonPhaseExample';
 
 export const SHOWCASE_LOCATION = new Object3D();
 
@@ -49,6 +51,9 @@ const ShowcaseRender = () => {
       <ObjectsExample />
 
       <MaterialsExample />
+
+      <SkyExample />
+      <MoonPhaseExample />
     </>
   );
 };
