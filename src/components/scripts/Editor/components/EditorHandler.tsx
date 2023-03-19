@@ -1,7 +1,6 @@
 import {useEvent, useObjects, useUI, useWorld} from '@verza/sdk/react';
 import {useEffect, useRef, useState} from 'react';
 import EditorPanel from './EditorPanel/EditorPanel';
-import FreeLook from './actions/FreeLook';
 import Ground from './actions/Ground';
 import InFront from './actions/InFront';
 import Reset from './actions/Reset';
@@ -10,8 +9,7 @@ import Destroy from './actions/Destroy';
 import Duplicate from './actions/Duplicate';
 import FileDrop from './actions/FileDrop';
 import {ObjectManager} from '@verza/sdk';
-
-export const EDITOR_INTERFACE_ID = 'core_editor';
+import FreeLook from './actions/FreeLook';
 
 const isUneditable = async (object: ObjectManager): Promise<boolean> => {
   if (!object) return false;
@@ -31,19 +29,14 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
   const world = useWorld();
   const objects = useObjects();
 
-  const [freeLook, setFreeLook] = useState(false);
   const [editing, setEditing] = useState(false);
 
   const ui = useUI();
 
   const exit = () => {
-    ui.removeInterface(EDITOR_INTERFACE_ID);
+    ui.hideCursor();
     world.setEntitySelector(false);
     setEnabled(false);
-  };
-
-  const toggleFreeLook = (newStatus?: boolean) => {
-    setFreeLook(state => newStatus ?? !state);
   };
 
   useEffect(() => {
@@ -129,20 +122,18 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
     }
   });
 
-  useEffect(() => {
-    if (freeLook) return;
-
-    ui.addInterface(EDITOR_INTERFACE_ID);
-
-    return () => {
-      ui.removeInterface(EDITOR_INTERFACE_ID);
-    };
-  }, [ui, freeLook]);
+  const initialRenderRef = useRef(false);
 
   // handle interface removal
   useEffect(() => {
+    if (!initialRenderRef.current) {
+      initialRenderRef.current = true;
+      ui.showCursor();
+    }
+
     return () => {
-      ui.removeInterface(EDITOR_INTERFACE_ID);
+      initialRenderRef.current = false;
+      ui.hideCursor();
     };
   }, [ui]);
 
@@ -164,11 +155,11 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
         </>
       )}
 
-      <FreeLook toggleFreeLook={toggleFreeLook} />
-
       <EditorToolbar editing={editing} exit={exit} />
 
       <FileDrop />
+
+      <FreeLook />
     </>
   );
 };

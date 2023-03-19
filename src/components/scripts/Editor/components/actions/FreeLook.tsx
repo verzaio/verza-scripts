@@ -1,20 +1,14 @@
-import {useKey, usePointer, useToolbarItemPress} from '@verza/sdk/react';
+import {useKey, useToolbarItemPress, useUI} from '@verza/sdk/react';
 import {TOOLBAR_TOGGLE_FREE_LOOK_ID} from '../EditorToolbar';
 
-type FreeLookProps = {
-  toggleFreeLook: (newState?: boolean) => void;
-};
+const FreeLook = () => {
+  const ui = useUI();
 
-const FreeLook = ({toggleFreeLook}: FreeLookProps) => {
-  useToolbarItemPress(TOOLBAR_TOGGLE_FREE_LOOK_ID, () => {
-    toggleFreeLook();
-  });
+  const freeLook = () => ui.toggleCursor();
 
-  useKey('KeyF', () => toggleFreeLook());
+  useToolbarItemPress(TOOLBAR_TOGGLE_FREE_LOOK_ID, freeLook);
 
-  usePointer(() => {
-    toggleFreeLook(false);
-  });
+  useKey('KeyG', freeLook);
 
   return null;
 };
