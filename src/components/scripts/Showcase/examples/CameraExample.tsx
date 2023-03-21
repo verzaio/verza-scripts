@@ -158,13 +158,13 @@ const Scene = () => {
               to: loc.clone().translateY(15).translateX(-20).position,
               lookAt: localPlayer.position,
               duration: 3000,
-              easing: 'easeInElastic',
+              easing: 'easeInOutBounce',
             },
             {
               to: loc.clone().translateY(5).translateZ(-10).position,
               lookAt: localPlayer.position.clone(),
               duration: 3000,
-              easing: 'easeOutElastic',
+              easing: 'easeInOutBounce',
             },
           ]);
 
@@ -177,7 +177,7 @@ const Scene = () => {
         }}>
         <Group position={[0, 1.8, 0.12]}>
           <Label fontSize={0.15} textAlign="center">
-            Elastic Effect
+            Bouncing Effect
           </Label>
 
           <Label
