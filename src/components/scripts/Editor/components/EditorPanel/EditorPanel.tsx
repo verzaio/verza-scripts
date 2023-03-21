@@ -67,7 +67,7 @@ const EditorPanel = () => {
       label: 'Scale',
       step: 0.01,
       min: 0.01,
-      max: 15,
+      max: 150,
       value: {
         x: 1,
         y: 1,
