@@ -18,6 +18,8 @@ const MovingPlatforms = () => {
           toRotation: [0, Math.PI / 2, 0],
           duration: 5000,
           loop: true,
+
+          easing: 'easeInOutQuad',
         },
 
         {
@@ -26,42 +28,31 @@ const MovingPlatforms = () => {
         },
 
         {
-          id: 'end',
           toRotation: [0, 0, 0],
           duration: 5000,
           loop: true,
-        },
-      ]);
 
-      /* object1.startTransitions([
-        {
-          from: [-10, 0.5, 15],
-          fromRotation: [0, 0, 0],
-
-          to: [0, 0.5, 15],
-          duration: 5000,
-          easing: 'easeInOutQuad',
-        },
-
-        {
-          toRotation: [0, Math.PI / 2, 0],
-          duration: 5000,
-          easing: 'easeInOutQuad',
-        },
-
-        {
-          to: [-10, 0.5, 15],
-          duration: 5000,
           easing: 'easeInOutQuad',
         },
 
         {
           id: 'end',
-          toRotation: [0, 0, 0],
-          duration: 5000,
-          easing: 'easeInOutQuad',
+          duration: 1500,
+          loop: true,
         },
-      ]); */
+        /* {
+          //from: [-10, 0.5, 15],
+          fromRotation: [0, 0, 0],
+          toRotation: [0, Math.PI, 0],
+          duration: 3000,
+          loop: true,
+        },
+        {
+          toRotation: [0, Math.PI * 2, 0],
+          duration: 3000,
+          loop: true,
+        }, */
+      ]);
     };
 
     animate();
