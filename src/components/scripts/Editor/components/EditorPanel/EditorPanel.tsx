@@ -111,6 +111,10 @@ const EditorPanel = () => {
 
       objects.editingObject.setCollision(newStatus);
 
+      if (objects.editingObject.permanent) {
+        objects.editingObject.save();
+      }
+
       if (newStatus) {
         engine.localPlayer.sendSuccessNotification('Collision Enabled');
       } else {
