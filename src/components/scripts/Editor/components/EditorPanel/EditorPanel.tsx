@@ -1,13 +1,14 @@
 //import styles from './EditorPanel.module.scss';
 
 import PanelWidget from '@app/components/core/PanelWidget';
-import {useControls} from 'leva';
+import {button, useControls} from 'leva';
 import {useCallback, useEffect, useRef} from 'react';
-import {useEvent, useObjects, useUI} from '@verza/sdk/react';
+import {useEngine, useEvent, useObjects, useUI} from '@verza/sdk/react';
 
 import {Euler, MathUtils, ObjectManager, Vector3} from '@verza/sdk';
 
 const EditorPanel = () => {
+  const engine = useEngine();
   const objects = useObjects();
   const ui = useUI();
 
@@ -103,6 +104,19 @@ const EditorPanel = () => {
         });
       },
     },
+    'Toggle Collision': button(() => {
+      if (!objects.editingObject) return;
+
+      const newStatus = objects.editingObject.collision ? null : 'static';
+
+      objects.editingObject.setCollision(newStatus);
+
+      if (newStatus) {
+        engine.localPlayer.sendSuccessNotification('Collision Enabled');
+      } else {
+        engine.localPlayer.sendErrorNotification('Collision Disabled');
+      }
+    }),
   }));
 
   // show/hide ui
