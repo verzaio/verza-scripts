@@ -24,13 +24,14 @@ const SkyExample = () => {
 };
 
 const Scene = () => {
-  const {sky} = useWorld();
+  const world = useWorld();
+
   return (
     <>
       <Group
         position={[-3, 1, 0.5]}
         onPointerDown={() => {
-          sky.setTimeRepresentation(7);
+          world.setTimeRepresentation(7);
         }}
         userData={{
           uneditable: true,
@@ -50,7 +51,7 @@ const Scene = () => {
       <Group
         position={[-1, 1, 0.5]}
         onPointerDown={() => {
-          sky.setTimeRepresentation(13);
+          world.setTimeRepresentation(13);
         }}
         userData={{
           uneditable: true,
@@ -70,7 +71,7 @@ const Scene = () => {
       <Group
         position={[1, 1, 0.5]}
         onPointerDown={() => {
-          sky.setTimeRepresentation(19);
+          world.setTimeRepresentation(19);
         }}
         userData={{
           uneditable: true,
@@ -90,7 +91,7 @@ const Scene = () => {
       <Group
         position={[3, 1, 0.5]}
         onPointerDown={() => {
-          sky.setTimeRepresentation(5);
+          world.setTimeRepresentation(5);
         }}
         userData={{
           uneditable: true,
