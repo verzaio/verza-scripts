@@ -1,6 +1,6 @@
 import {formatUrl} from '@app/utils/misc';
-import {Vector3} from '@verza/sdk';
-import {Gltf} from '@verza/sdk/react';
+import {EulerArray, Vector3, Vector3Array} from '@verza/sdk';
+import {Box, Gltf} from '@verza/sdk/react';
 import SampleBox from './SampleBox';
 
 const Stairs = () => {
@@ -49,8 +49,98 @@ const Stairs = () => {
           />
         );
       })}
+
+      {/* <Group position={[5, 0, 30]}>
+        <StairsLow />
+      </Group>
+
+      <Group position={[10, 0, 30]}>
+        <StairsMedium />
+      </Group>
+
+      <Group position={[15, 0, 30]}>
+        <StairsHigh />
+      </Group> */}
     </>
   );
 };
+
+type StairProps = {
+  width: number;
+  height: number;
+  depth: number;
+  position: Vector3Array;
+  rotation: EulerArray;
+};
+
+const Stair = ({width, height, depth, position, rotation}: StairProps) => (
+  <Box
+    width={width}
+    height={height}
+    depth={depth}
+    position={position}
+    rotation={rotation}
+    color="blue"
+    userData={{
+      uneditable: true,
+    }}
+  />
+);
+
+type StairsBlockProps = {
+  stairCount: number;
+  stairWidth: number;
+  stairHeight: number;
+  stairDepth: number;
+};
+
+const StairsBlock = ({
+  stairCount,
+  stairWidth,
+  stairHeight,
+  stairDepth,
+}: StairsBlockProps) => {
+  const stairs = [];
+  for (let i = 0; i < stairCount; i++) {
+    stairs.push(
+      <Stair
+        key={i}
+        width={stairWidth}
+        height={stairHeight}
+        depth={stairDepth}
+        position={[0, stairHeight * i, stairDepth * i]}
+        rotation={[0, 0, 0]}
+      />,
+    );
+  }
+  return <>{stairs}</>;
+};
+
+export const StairsLow = () => (
+  <StairsBlock
+    stairCount={30}
+    stairWidth={5}
+    stairHeight={0.2}
+    stairDepth={0.3}
+  />
+);
+
+export const StairsMedium = () => (
+  <StairsBlock
+    stairCount={30}
+    stairWidth={5}
+    stairHeight={0.2}
+    stairDepth={0.3}
+  />
+);
+
+export const StairsHigh = () => (
+  <StairsBlock
+    stairCount={30}
+    stairWidth={5}
+    stairHeight={0.2}
+    stairDepth={0.3}
+  />
+);
 
 export default Stairs;

@@ -1,6 +1,10 @@
 # Verza Scripts
 
-Install & run server:
+This repository contains the official scripts for the Verza platform.
+
+## Getting Started
+
+To set up the scripts locally, follow these steps:
 
 ```bash
 # clone & checkout

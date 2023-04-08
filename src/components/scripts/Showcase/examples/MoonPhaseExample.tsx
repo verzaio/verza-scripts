@@ -25,27 +25,16 @@ const MoonPhaseExample = () => {
   );
 };
 
-/**
- * 
- * 'NEW_MOON',
-   'WAXING_CRESCENT',
-   'FIRST_QUARTER',
-   'WAXING_GIBBOUS',
-   'FULL_MOON',
-   'WANING_CRESCENT',
-   'LAST_QUARTER',
-   'WANING_GIBBOUS'
- */
-
 const Scene = () => {
-  const {sky} = useWorld();
+  const world = useWorld();
+
   return (
     <>
       <Group
         position={[-3.5, 1.5, 0.5]}
         onPointerDown={() => {
-          sky.setTimeRepresentation(5);
-          sky.setMoonPhase('NEW_MOON');
+          world.setTimeRepresentation(5);
+          world.sky.setMoonPhase('NEW_MOON');
         }}
         userData={{
           uneditable: true,
@@ -65,8 +54,8 @@ const Scene = () => {
       <Group
         position={[-1.25, 1.5, 0.5]}
         onPointerDown={() => {
-          sky.setTimeRepresentation(5);
-          sky.setMoonPhase('WANING_CRESCENT');
+          world.setTimeRepresentation(5);
+          world.sky.setMoonPhase('WANING_CRESCENT');
         }}
         userData={{
           uneditable: true,
@@ -86,8 +75,8 @@ const Scene = () => {
       <Group
         position={[1.25, 1.5, 0.5]}
         onPointerDown={() => {
-          sky.setTimeRepresentation(5);
-          sky.setMoonPhase('FIRST_QUARTER');
+          world.setTimeRepresentation(5);
+          world.sky.setMoonPhase('FIRST_QUARTER');
         }}
         userData={{
           uneditable: true,
@@ -107,8 +96,8 @@ const Scene = () => {
       <Group
         position={[3.5, 1.5, 0.5]}
         onPointerDown={() => {
-          sky.setTimeRepresentation(5);
-          sky.setMoonPhase('WAXING_GIBBOUS');
+          world.setTimeRepresentation(5);
+          world.sky.setMoonPhase('WAXING_GIBBOUS');
         }}
         userData={{
           uneditable: true,
@@ -129,8 +118,8 @@ const Scene = () => {
       <Group
         position={[-3.5, 0.25, 0.5]}
         onPointerDown={() => {
-          sky.setTimeRepresentation(5);
-          sky.setMoonPhase('FULL_MOON');
+          world.setTimeRepresentation(5);
+          world.sky.setMoonPhase('FULL_MOON');
         }}
         userData={{
           uneditable: true,
@@ -150,8 +139,8 @@ const Scene = () => {
       <Group
         position={[-1.25, 0.25, 0.5]}
         onPointerDown={() => {
-          sky.setTimeRepresentation(5);
-          sky.setMoonPhase('WAXING_CRESCENT');
+          world.setTimeRepresentation(5);
+          world.sky.setMoonPhase('WAXING_CRESCENT');
         }}
         userData={{
           uneditable: true,
@@ -171,8 +160,8 @@ const Scene = () => {
       <Group
         position={[1.25, 0.25, 0.5]}
         onPointerDown={() => {
-          sky.setTimeRepresentation(5);
-          sky.setMoonPhase('LAST_QUARTER');
+          world.setTimeRepresentation(5);
+          world.sky.setMoonPhase('LAST_QUARTER');
         }}
         userData={{
           uneditable: true,
@@ -192,8 +181,8 @@ const Scene = () => {
       <Group
         position={[3.5, 0.25, 0.5]}
         onPointerDown={() => {
-          sky.setTimeRepresentation(5);
-          sky.setMoonPhase('WANING_GIBBOUS');
+          world.setTimeRepresentation(5);
+          world.sky.setMoonPhase('WANING_GIBBOUS');
         }}
         userData={{
           uneditable: true,
