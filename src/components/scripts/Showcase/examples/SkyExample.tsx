@@ -5,6 +5,10 @@ import Label from '../components/Label';
 import SceneTitle from '../components/SceneTitle';
 import {BOX_RADIUS} from '../constants';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
+import {formatUrl} from '@app/utils/misc';
+
+const format = (name: string) =>
+  formatUrl(`showcase/textures/skybox/${name}.png`);
 
 const SkyExample = () => {
   const loc = SHOWCASE_LOCATION.clone();
@@ -31,6 +35,7 @@ const Scene = () => {
       <Group
         position={[-3, 1, 0.5]}
         onPointerDown={() => {
+          world.sky.setSkybox(null);
           world.setTimeRepresentation(7);
         }}
         userData={{
@@ -51,6 +56,7 @@ const Scene = () => {
       <Group
         position={[-1, 1, 0.5]}
         onPointerDown={() => {
+          world.sky.setSkybox(null);
           world.setTimeRepresentation(13);
         }}
         userData={{
@@ -71,6 +77,7 @@ const Scene = () => {
       <Group
         position={[1, 1, 0.5]}
         onPointerDown={() => {
+          world.sky.setSkybox(null);
           world.setTimeRepresentation(19);
         }}
         userData={{
@@ -91,6 +98,7 @@ const Scene = () => {
       <Group
         position={[3, 1, 0.5]}
         onPointerDown={() => {
+          world.sky.setSkybox(null);
           world.setTimeRepresentation(5);
         }}
         userData={{
@@ -99,6 +107,33 @@ const Scene = () => {
         <Label position={[0, 0, 0.15]}>Night</Label>
         <Box
           color="#242424"
+          width={1.5}
+          height={2}
+          depth={0.2}
+          radius={BOX_RADIUS}
+          material={{
+            roughness: 0,
+          }}
+        />
+      </Group>
+      <Group
+        position={[5, 1, 0.5]}
+        onPointerDown={() => {
+          world.sky.setSkybox({
+            right: format('right'),
+            left: format('left'),
+            top: format('top'),
+            bottom: format('bottom'),
+            front: format('front'),
+            back: format('back'),
+          });
+        }}
+        userData={{
+          uneditable: true,
+        }}>
+        <Label position={[0, 0, 0.15]}>Skybox</Label>
+        <Box
+          color="#ff38eb"
           width={1.5}
           height={2}
           depth={0.2}
