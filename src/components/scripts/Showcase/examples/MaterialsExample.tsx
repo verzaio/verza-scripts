@@ -44,7 +44,7 @@ const Scene = () => {
               'RustMixedOnPaint012/RustMixedOnPaint012_NRM_1K.jpg',
             ),
             metalness: 0.3,
-            roughness: 0.8,
+            roughness: 0.5,
             metalnessMap: format(
               'RustMixedOnPaint012/RustMixedOnPaint012_REFL_1K.jpg',
             ),
@@ -124,7 +124,7 @@ const Scene = () => {
           heightSegments={100}
           material={{
             map: format('WoodFlooring044/WoodFlooring044_COL_2K.jpg'),
-            normalMap: format('WoodFlooring044/WoodFlooring044_NRM_2K.jpg'),
+            //normalMap: format('WoodFlooring044/WoodFlooring044_NRM_2K.jpg'),
             roughnessMap: format('WoodFlooring044/WoodFlooring044_REFL_2K.jpg'),
           }}
         />

@@ -16,7 +16,7 @@ const Boxes = () => {
     <>
       <Box position={[5, 4, 0]} mass={20} color="yellow" collision="dynamic" />
 
-      <Box ref={boxRef} id="box-test" position={[0, 2, 5]} color="violet" />
+      {/* <Box ref={boxRef} id="box-test" position={[0, 2, 5]} color="violet" /> */}
 
       <Sphere
         id="sphere-test"

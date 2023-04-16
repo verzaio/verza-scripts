@@ -82,6 +82,7 @@ const Scene = () => {
         rotation={rotation}
         material={{
           map: map('concrete_53_basecolor-1K.png'),
+          roughness: 1,
           roughnessMap: map('concrete_53_roughness-1K.png'),
         }}
         userData={{uneditable: true}}
@@ -106,6 +107,7 @@ const Scene = () => {
             wrapS: RepeatWrapping,
             wrapT: RepeatWrapping,
           },
+          envMapIntensity: 0.15,
           roughnessMap: {
             source: formatUrl(
               'showcase/textures/floor/floor_tiles_02_rough_4k.jpg',
