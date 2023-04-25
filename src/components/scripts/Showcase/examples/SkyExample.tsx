@@ -35,7 +35,7 @@ const Scene = () => {
       <Group
         position={[-3, 1, 0.5]}
         onPointerDown={() => {
-          world.sky.setSkybox(null);
+          world.setSkybox(null);
           world.setTimeRepresentation(7);
         }}
         userData={{
@@ -56,7 +56,7 @@ const Scene = () => {
       <Group
         position={[-1, 1, 0.5]}
         onPointerDown={() => {
-          world.sky.setSkybox(null);
+          world.setSkybox(null);
           world.setTimeRepresentation(13);
         }}
         userData={{
@@ -77,7 +77,7 @@ const Scene = () => {
       <Group
         position={[1, 1, 0.5]}
         onPointerDown={() => {
-          world.sky.setSkybox(null);
+          world.setSkybox(null);
           world.setTimeRepresentation(19);
         }}
         userData={{
@@ -98,7 +98,7 @@ const Scene = () => {
       <Group
         position={[3, 1, 0.5]}
         onPointerDown={() => {
-          world.sky.setSkybox(null);
+          world.setSkybox(null);
           world.setTimeRepresentation(5);
         }}
         userData={{
@@ -119,7 +119,7 @@ const Scene = () => {
       <Group
         position={[5, 1, 0.5]}
         onPointerDown={() => {
-          world.sky.setSkybox({
+          world.setSkybox({
             right: format('right'),
             left: format('left'),
             top: format('top'),
