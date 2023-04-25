@@ -5,7 +5,7 @@ const Models = () => {
   return (
     <>
       <Gltf
-        url={formatUrl('playground/models/chair.glb')}
+        url={formatUrl('playground-dev/models/chair.glb')}
         scale={[0.1, 0.1, 0.1]}
         position={[3, 1, 4]}
         collision="dynamic"
@@ -14,7 +14,7 @@ const Models = () => {
 
       <Gltf
         id="blue-playground"
-        url={formatUrl('playground/models/collision-world.glb')}
+        url={formatUrl('playground-dev/models/collision-world.glb')}
         position={[-60, 4, 0]}
         userData={{
           uneditable: true,
@@ -22,7 +22,7 @@ const Models = () => {
       />
 
       {/* <Gltf
-        url={formatUrl('playground/models/sponza/Sponza.gltf')}
+        url={formatUrl('playground-dev/models/sponza/Sponza.gltf')}
         position={[-60, 0.2, 60]}
         userData={{
           uneditable: true,

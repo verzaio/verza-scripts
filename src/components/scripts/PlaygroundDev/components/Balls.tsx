@@ -4,6 +4,7 @@ const Balls = () => {
   return (
     <>
       <Sphere
+        drawDistance="low"
         position={[0, 1, 7]}
         radius={1}
         heightSegments={50}
@@ -16,6 +17,7 @@ const Balls = () => {
       />
 
       <Sphere
+        drawDistance="mid"
         position={[3, 1, 7]}
         radius={1}
         heightSegments={50}

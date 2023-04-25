@@ -10,7 +10,7 @@ const Stairs = () => {
   return (
     <>
       <Gltf
-        url={formatUrl('playground/models/stairs/double_stairs.glb')}
+        url={formatUrl('playground-dev/models/stairs/double_stairs.glb')}
         position={[-20, 0, 5]}
         scale={0.02}
         userData={{
@@ -19,7 +19,7 @@ const Stairs = () => {
       />
 
       <Gltf
-        url={formatUrl('playground/models/stairs/double_stairs.glb')}
+        url={formatUrl('playground-dev/models/stairs/double_stairs.glb')}
         position={[-26, 0, 5]}
         scale={0.016}
         userData={{
@@ -28,7 +28,7 @@ const Stairs = () => {
       />
 
       <Gltf
-        url={formatUrl('playground/models/stairs/double_stairs.glb')}
+        url={formatUrl('playground-dev/models/stairs/double_stairs.glb')}
         position={[-31, 0, 5]}
         scale={0.013}
         userData={{
