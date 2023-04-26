@@ -1,12 +1,9 @@
 import Provider from '@app/components/core/Provider';
-import Boxes from './components/Boxes';
-import Boxes2 from './components/Boxes2';
-import Boxes3 from './components/Boxes3';
-import Models from './components/Models';
-import MovingPlatforms from './components/MovingPlatforms';
-import Plane from './components/Plane';
-import Poles from './components/Poles';
-import Stairs from './components/Stairs';
+import {formatUrl} from '@app/utils/misc';
+import {RepeatWrapping} from '@verza/sdk';
+import {Plane} from '@verza/sdk/react';
+
+const PLAYGROUND_SIZE = 1024 * 2;
 
 const Playground = () => {
   return (
@@ -19,21 +16,31 @@ const Playground = () => {
 const PlaygroundRender = () => {
   return (
     <>
-      <Models />
-
-      <MovingPlatforms />
-
-      <Poles />
-
-      <Stairs />
-
-      <Boxes />
-
-      <Boxes2 />
-
-      <Boxes3 />
-
-      <Plane />
+      <Plane
+        id="playground_surface"
+        surface
+        restitution={0}
+        position={[0, 0, 2]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        width={PLAYGROUND_SIZE}
+        height={PLAYGROUND_SIZE}
+        widthSegments={10}
+        heightSegments={10}
+        material={{
+          color: '#767676',
+          map: {
+            source: formatUrl(
+              'playground/textures/prototype/Light/texture_13.png',
+            ),
+            repeat: [PLAYGROUND_SIZE / 4, PLAYGROUND_SIZE / 4],
+            wrapS: RepeatWrapping,
+            wrapT: RepeatWrapping,
+          },
+        }}
+        userData={{
+          uneditable: true,
+        }}
+      />
     </>
   );
 };

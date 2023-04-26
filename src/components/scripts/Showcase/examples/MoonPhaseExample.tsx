@@ -34,7 +34,7 @@ const Scene = () => {
         position={[-3.5, 1.5, 0.5]}
         onPointerDown={() => {
           world.setTimeRepresentation(5);
-          world.sky.setMoonPhase('NEW_MOON');
+          world.setMoonPhase('NEW_MOON');
         }}
         userData={{
           uneditable: true,
@@ -55,7 +55,7 @@ const Scene = () => {
         position={[-1.25, 1.5, 0.5]}
         onPointerDown={() => {
           world.setTimeRepresentation(5);
-          world.sky.setMoonPhase('WANING_CRESCENT');
+          world.setMoonPhase('WANING_CRESCENT');
         }}
         userData={{
           uneditable: true,
@@ -76,7 +76,7 @@ const Scene = () => {
         position={[1.25, 1.5, 0.5]}
         onPointerDown={() => {
           world.setTimeRepresentation(5);
-          world.sky.setMoonPhase('FIRST_QUARTER');
+          world.setMoonPhase('FIRST_QUARTER');
         }}
         userData={{
           uneditable: true,
@@ -97,7 +97,7 @@ const Scene = () => {
         position={[3.5, 1.5, 0.5]}
         onPointerDown={() => {
           world.setTimeRepresentation(5);
-          world.sky.setMoonPhase('WAXING_GIBBOUS');
+          world.setMoonPhase('WAXING_GIBBOUS');
         }}
         userData={{
           uneditable: true,
@@ -119,7 +119,7 @@ const Scene = () => {
         position={[-3.5, 0.25, 0.5]}
         onPointerDown={() => {
           world.setTimeRepresentation(5);
-          world.sky.setMoonPhase('FULL_MOON');
+          world.setMoonPhase('FULL_MOON');
         }}
         userData={{
           uneditable: true,
@@ -140,7 +140,7 @@ const Scene = () => {
         position={[-1.25, 0.25, 0.5]}
         onPointerDown={() => {
           world.setTimeRepresentation(5);
-          world.sky.setMoonPhase('WAXING_CRESCENT');
+          world.setMoonPhase('WAXING_CRESCENT');
         }}
         userData={{
           uneditable: true,
@@ -161,7 +161,7 @@ const Scene = () => {
         position={[1.25, 0.25, 0.5]}
         onPointerDown={() => {
           world.setTimeRepresentation(5);
-          world.sky.setMoonPhase('LAST_QUARTER');
+          world.setMoonPhase('LAST_QUARTER');
         }}
         userData={{
           uneditable: true,
@@ -182,7 +182,7 @@ const Scene = () => {
         position={[3.5, 0.25, 0.5]}
         onPointerDown={() => {
           world.setTimeRepresentation(5);
-          world.sky.setMoonPhase('WANING_GIBBOUS');
+          world.setMoonPhase('WANING_GIBBOUS');
         }}
         userData={{
           uneditable: true,

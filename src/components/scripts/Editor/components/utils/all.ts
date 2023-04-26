@@ -18,8 +18,8 @@ export const bringToFront = async (
   toLocation.y -= -FLOOR_DISTANCE;
 
   const result = await raycaster.raycastPoints(fromLocation, toLocation, {
-    entityTypes: ['object'],
-    excludeObjects: [object.id],
+    filterEntityTypes: ['object'],
+    excludeObjectIds: [object.id],
   });
 
   if (result.hit) {

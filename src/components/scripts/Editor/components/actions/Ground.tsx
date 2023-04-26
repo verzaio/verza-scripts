@@ -25,8 +25,8 @@ const Ground = () => {
     toLocation.y -= FLOOR_DISTANCE;
 
     let result = await raycaster.raycastPoints(fromLocation, toLocation, {
-      entityTypes: ['object'],
-      excludeObjects: [object.id],
+      filterEntityTypes: ['object'],
+      excludeObjectIds: [object.id],
     });
 
     if (!result.hit) {
@@ -35,8 +35,8 @@ const Ground = () => {
       fromLocation.y += FLOOR_DISTANCE;
 
       result = await raycaster.raycastPoints(fromLocation, toLocation, {
-        entityTypes: ['object'],
-        excludeObjects: [object.id],
+        filterEntityTypes: ['object'],
+        excludeObjectIds: [object.id],
       });
     }
 
