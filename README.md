@@ -2,7 +2,24 @@
 
 This repository contains the official scripts for the Verza platform.
 
-## Getting Started
+## Scripts List
+
+| Script                                     | Description                                             |
+| ------------------------------------------ | ------------------------------------------------------- |
+| `https://scripts.verza-cdn.net/essentials` | Essentials script that bundles `editor` and `fly-mode`. |
+| `https://scripts.verza-cdn.net/fly-mode`   | Fly mode script.                                        |
+| `https://scripts.verza-cdn.net/editor`     | Editor script.                                          |
+| `https://scripts.verza-cdn.net/playground` | Playground that includes a solid plane.                 |
+
+## Development Scripts List
+
+| Script                                         | Description                                  |
+| ---------------------------------------------- | -------------------------------------------- |
+| `https://scripts.verza-cdn.net/debug/time`     | A script to test time.                       |
+| `https://scripts.verza-cdn.net/playground-dev` | A dev playground to test different features. |
+| `https://scripts.verza-cdn.net/showcase`       | A showcase to test different features.       |
+
+## Installation
 
 To set up the scripts locally, follow these steps:
 
