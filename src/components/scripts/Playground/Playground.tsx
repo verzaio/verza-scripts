@@ -17,11 +17,13 @@ const PlaygroundRender = () => {
   return (
     <>
       <Plane
+        id="playground_surface"
         surface
+        restitution={0}
         position={[0, 0, 2]}
         rotation={[-Math.PI / 2, 0, 0]}
-        width={1024 * 4}
-        height={1024 * 4}
+        width={PLAYGROUND_SIZE}
+        height={PLAYGROUND_SIZE}
         widthSegments={10}
         heightSegments={10}
         material={{
