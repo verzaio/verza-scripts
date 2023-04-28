@@ -1,10 +1,10 @@
 import {useEvent, useObjects, useUI, useWorld} from '@verza/sdk/react';
-import {useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import EditorPanel from './EditorPanel/EditorPanel';
 import Ground from './actions/Ground';
 import InFront from './actions/InFront';
 import Reset from './actions/Reset';
-import EditorToolbar from './EditorToolbar';
+import EditorToolbar, {TOOLBAR_TOGGLE_FREE_LOOK_ID} from './EditorToolbar';
 import Destroy from './actions/Destroy';
 import Duplicate from './actions/Duplicate';
 import FileDrop from './actions/FileDrop';
@@ -32,6 +32,17 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
   const [editing, setEditing] = useState(false);
 
   const ui = useUI();
+
+  const setCursor = useCallback(
+    (status: boolean) => {
+      if (status) {
+        ui.addInterface(TOOLBAR_TOGGLE_FREE_LOOK_ID);
+      } else {
+        ui.removeInterface(TOOLBAR_TOGGLE_FREE_LOOK_ID);
+      }
+    },
+    [ui],
+  );
 
   const exit = () => {
     ui.hideCursor();
@@ -128,14 +139,14 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
   useEffect(() => {
     if (!initialRenderRef.current) {
       initialRenderRef.current = true;
-      ui.showCursor();
+      setCursor(true);
     }
 
     return () => {
       initialRenderRef.current = false;
-      ui.hideCursor();
+      setCursor(false);
     };
-  }, [ui]);
+  }, [ui, setCursor]);
 
   return (
     <>
@@ -159,7 +170,7 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
 
       <FileDrop />
 
-      <FreeLook />
+      <FreeLook setCursor={setCursor} />
     </>
   );
 };

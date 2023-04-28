@@ -130,6 +130,7 @@ const EditorPanel = () => {
       height: '100%',
       top: '0px',
       left: '0px',
+      zIndex: 100,
     });
     ui.show();
 
@@ -185,7 +186,10 @@ const EditorPanel = () => {
 
   return (
     <>
-      <div className="fade-in" onPointerDown={e => e.stopPropagation()}>
+      <div
+        className="fade-in"
+        onPointerDown={e => e.stopPropagation()}
+        onPointerUp={e => e.stopPropagation()}>
         <PanelWidget
           title={`${
             objects.editingObject?.objectType

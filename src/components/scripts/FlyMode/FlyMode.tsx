@@ -8,6 +8,7 @@ import {
   useKey,
   useToolbar,
   useEvent,
+  useMainToolbarItem,
 } from '@verza/sdk/react';
 import {useRef, useState} from 'react';
 
@@ -68,6 +69,12 @@ const FlyModeBase = () => {
   useKey('Tab', () => toggle());
   useKey('Tab', () => toggle(false), {
     ignoreFlags: true,
+  });
+
+  useMainToolbarItem({
+    id: 'fly-mode',
+    name: 'Fly Mode',
+    key: 'Tab',
   });
 
   if (!enabled) return null;
