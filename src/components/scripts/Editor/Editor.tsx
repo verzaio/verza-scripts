@@ -1,9 +1,14 @@
 import Provider from '@app/components/core/Provider';
 import {CORE_ACTION_EDITOR} from '@verza/sdk';
 
-import {useCommand, useKey, useLocalPlayer, useObjects} from '@verza/sdk/react';
+import {
+  useCommand,
+  useKey,
+  useLocalPlayer,
+  useMainToolbarItem,
+} from '@verza/sdk/react';
 
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 
 import EditorHandler from './components/EditorHandler';
 
@@ -25,31 +30,11 @@ const EditorRender = () => {
   // expose editor permission
   useCommand(CORE_ACTION_EDITOR);
 
-  const objects = useObjects();
-  useEffect(() => {
-    /* const object = objects.createBox(
-      {
-        w: 1,
-        h: 1,
-        d: 1,
-        color: 'purple',
-      },
-      {
-        id: OBJECT_ID,
-        position: [2, 2, 2],
-      },
-    );
-
-    object.save(); */
-
-    async () => {
-      //OBJECT_ID
-    };
-
-    return () => {
-      //object.delete();
-    };
-  }, [objects]);
+  useMainToolbarItem({
+    id: 'editor',
+    name: 'Map Editor',
+    key: 'R',
+  });
 
   useKey('KeyR', event => {
     if (event.altKey || event.metaKey) return;

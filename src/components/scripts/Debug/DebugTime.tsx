@@ -68,7 +68,10 @@ const DebugTimeRender = () => {
 
   return (
     <>
-      <div className="fade-in" onPointerDown={e => e.stopPropagation()}>
+      <div
+        className="fade-in"
+        onPointerDown={e => e.stopPropagation()}
+        onPointerUp={e => e.stopPropagation()}>
         <PanelWidget
           collapsed
           title="Time"
