@@ -1705,15 +1705,15 @@
   dependencies:
     "@use-gesture/core" "10.2.24"
 
-"@verza/sdk@^1.0.51":
-  version "1.0.51"
-  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-1.0.51.tgz#efd343fd6c3d684751534b71f03575ed11341df1"
-  integrity sha512-Xud16+wtk+O1PW1r+j2iCjbEx+Uy0rLiu0gQ0QbPYj5SCJ0cGOmQr+8fDpVqEMkPlqRmMu0KJMtopKMok16lmQ==
+"@verza/sdk@^1.0.52":
+  version "1.0.52"
+  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-1.0.52.tgz#445d1a30e3293c0672a5b165d9bb73035ed556a0"
+  integrity sha512-bbYW83vYyu9CiZ/Mm4PAqTlF4uGtYu39utB0Yzu5qpvbbw4DQC9dclYaHa/KO/ZB7iqrP8ZbzgaGd7AItNPZaA==
   dependencies:
     events "^3.3.0"
     socket.io-client "^4.5.4"
     socket.io-msgpack-parser "^3.0.2"
-    three "^0.152.0"
+    three "^0.152.2"
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
     uuid "^9.0.0"
@@ -4043,10 +4043,10 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==
 
-three@^0.152.0:
-  version "0.152.1"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.152.1.tgz#943f1056b4dd140a44ec2d0c8f8b035f483e0f20"
-  integrity sha512-6812YuxSnsCQ3DgI27jtuwIW0cgn/ooVshPIcKpuPQ2kygeDTOQtRkYffl4E1IcQElEyHbPjyQznE2jti7fXoA==
+three@^0.152.2:
+  version "0.152.2"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.152.2.tgz#2ee0f2c504d31a4bc29b45495c12bded9fda7bfc"
+  integrity sha512-Ff9zIpSfkkqcBcpdiFo2f35vA9ZucO+N8TNacJOqaEE6DrB0eufItVMib8bK8Pcju/ZNT6a7blE1GhTpkdsILw==
 
 tiny-glob@^0.2.9:
   version "0.2.9"

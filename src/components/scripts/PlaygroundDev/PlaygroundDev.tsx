@@ -9,6 +9,8 @@ import Poles from './components/Poles';
 import Stairs from './components/Stairs';
 import Balls from './components/Balls';
 
+const DEBUG = false;
+
 const PlaygroundDev = () => {
   return (
     <Provider>
@@ -20,23 +22,27 @@ const PlaygroundDev = () => {
 const PlaygroundRender = () => {
   return (
     <>
-      <Models />
-
       <MovingPlatforms />
 
-      <Poles />
+      {!DEBUG && (
+        <>
+          <Models />
 
-      <Stairs />
+          <Poles />
 
-      <Boxes />
+          <Stairs />
 
-      <Boxes2 />
+          <Boxes />
 
-      <Boxes3 />
+          <Boxes2 />
 
-      <Plane />
+          <Boxes3 />
 
-      <Balls />
+          <Plane />
+
+          <Balls />
+        </>
+      )}
     </>
   );
 };
