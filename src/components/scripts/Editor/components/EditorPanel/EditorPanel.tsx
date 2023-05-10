@@ -5,7 +5,9 @@ import {button, useControls} from 'leva';
 import {useCallback, useEffect, useRef} from 'react';
 import {useEngine, useEvent, useObjects, useUI} from '@verza/sdk/react';
 
-import {Euler, MathUtils, ObjectManager, Vector3} from '@verza/sdk';
+import {ObjectManager, Euler, Vector3} from '@verza/sdk';
+
+import {MathUtils} from '@verza/sdk/utils';
 
 const EditorPanel = () => {
   const engine = useEngine();

@@ -1,11 +1,6 @@
-import {
-  fileToDataUrl,
-  ClotheItem,
-  GLTF,
-  GLTFLoader,
-  SkinMaskItem,
-  THREE,
-} from '@verza/sdk';
+import {fileToDataUrl, ClotheItem, SkinMaskItem} from '@verza/sdk';
+
+import {GLTF, GLTFLoader, THREE} from '@verza/sdk/utils';
 
 export type ParsedResult = {
   animations: string[];

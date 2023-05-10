@@ -1,4 +1,4 @@
-import {uuid} from '@verza/sdk';
+import {uuid} from '@verza/sdk/utils';
 import {Box, Group} from '@verza/sdk/react';
 import Description from '../components/Description';
 import Label from '../components/Label';

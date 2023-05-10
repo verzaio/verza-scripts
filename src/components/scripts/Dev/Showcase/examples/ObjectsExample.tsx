@@ -1,5 +1,5 @@
 import {formatUrl} from '@app/utils/misc';
-import {uuid} from '@verza/sdk';
+import {uuid} from '@verza/sdk/utils';
 import {Box, Gltf, Group, Sphere} from '@verza/sdk/react';
 import Description from '../components/Description';
 import Label from '../components/Label';
