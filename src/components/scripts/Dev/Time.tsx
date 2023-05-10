@@ -53,7 +53,7 @@ const TimeRender = () => {
 
   // show/hide ui
   useEffect(() => {
-    ui.setSize({
+    ui.setProps({
       width: '100%',
       height: '100%',
       top: '0px',

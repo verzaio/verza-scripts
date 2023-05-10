@@ -69,7 +69,7 @@ const CharacterRender = () => {
       '{fuchsia}[Animations] Commands: /play [name], /stop, /list',
     );
 
-    engine.ui.setSize({
+    engine.ui.setProps({
       width: '100%',
       height: '50%',
 

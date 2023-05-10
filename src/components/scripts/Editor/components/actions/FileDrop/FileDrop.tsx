@@ -1,6 +1,11 @@
 import styles from './FileDrop.module.scss';
 
-import {ObjectManager, Vector3, createFileTransferFromFile} from '@verza/sdk';
+import {
+  CORE_ACTION_EDITOR,
+  ObjectManager,
+  Vector3,
+  createFileTransferFromFile,
+} from '@verza/sdk';
 import {
   useAssets,
   useEngine,
@@ -16,7 +21,12 @@ const MAX_SIZE = 50; // meters
 
 const SCALE_SIZE = 2; // meters
 
-const FileDrop = () => {
+type FileDropProps = {
+  setEnabled: (state: boolean) => void;
+  enabled: boolean;
+};
+
+const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
   const objects = useObjects();
   const engine = useEngine();
   const raycaster = useRaycaster();
@@ -27,7 +37,7 @@ const FileDrop = () => {
 
   // configure UI
   useEffect(() => {
-    engine.ui.setSize({
+    engine.ui.setProps({
       width: '100%',
       height: '50%',
 
@@ -38,13 +48,23 @@ const FileDrop = () => {
   }, [engine]);
 
   useEvent('onDragEnter', () => {
+    if (!engine.localPlayer.hasAccess(CORE_ACTION_EDITOR)) return;
+
     engine.ui.show();
+
     setRender(true);
   });
 
   useEvent('onDragLeave', () => {
-    engine.ui.hide();
+    if (!enabled) {
+      engine.ui.hide();
+    }
+
     setRender(false);
+
+    engine.ui.setProps({
+      zIndex: 100,
+    });
   });
 
   const onDropFiles = useCallback(
@@ -112,13 +132,16 @@ const FileDrop = () => {
         object.setScale(scaledVector);
       }
 
+      //setEnabled(true);
+      setEnabled;
+
       // then bring to front
       await _bringToFront(object);
 
       // make permanent
       object.save();
     },
-    [engine, assets, objects, raycaster],
+    [setEnabled, engine, assets, objects, raycaster],
   );
 
   if (!render) return null;
