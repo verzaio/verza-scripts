@@ -3,7 +3,7 @@ import Provider from '@app/components/core/Provider';
 import {useCommand, useEngine, useEvent} from '@verza/sdk/react';
 import {useCallback, useEffect, useState} from 'react';
 import FileContainer from '../../../misc/FileContainer/FileContainer';
-import {ParsedResult, parseGltf, parseMask} from '@app/utils/parser';
+import {ParsedResult, parseFbx, parseGltf, parseMask} from '@app/utils/parser';
 import {CommandParam} from '@verza/sdk';
 
 const Character = () => {
@@ -69,7 +69,7 @@ const CharacterRender = () => {
       '{fuchsia}[Animations] Commands: /play [name], /stop, /list',
     );
 
-    engine.ui.setSize({
+    engine.ui.setProps({
       width: '100%',
       height: '50%',
 
@@ -97,8 +97,11 @@ const CharacterRender = () => {
           );
 
           const isImage = file.type.includes('image');
+
           const isGltf =
             file.name.includes('.glb') || file.name.includes('.gltf');
+
+          const isFbx = file.name.includes('.fbx');
 
           if (isImage) {
             await parseMask(file, result);
@@ -107,6 +110,11 @@ const CharacterRender = () => {
 
           if (isGltf) {
             await parseGltf(engine.utils.gltfLoader, file, result);
+            return;
+          }
+
+          if (isFbx) {
+            await parseFbx(file, result);
             return;
           }
 

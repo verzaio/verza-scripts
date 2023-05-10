@@ -7,8 +7,8 @@ import {BOX_RADIUS} from '../constants';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
 import {formatUrl} from '@app/utils/misc';
 
-const format = (name: string) =>
-  formatUrl(`showcase/textures/skybox/${name}.png`);
+const formatPath = (name: string) =>
+  formatUrl(`showcase/textures/skybox/${name}`);
 
 const SkyExample = () => {
   const loc = SHOWCASE_LOCATION.clone();
@@ -119,14 +119,16 @@ const Scene = () => {
       <Group
         position={[5, 1, 0.5]}
         onPointerDown={() => {
-          world.setSkybox({
-            right: format('right'),
-            left: format('left'),
-            top: format('top'),
-            bottom: format('bottom'),
-            front: format('front'),
-            back: format('back'),
-          });
+          world.setSkybox(formatPath('landscape.jpg'));
+
+          /* world.setSkybox({
+            right: formatPath('cubemap/right.png'),
+            left: formatPath('cubemap/left.png'),
+            top: formatPath('cubemap/top.png'),
+            bottom: formatPath('cubemap/bottom.png'),
+            front: formatPath('cubemap/front.png'),
+            back: formatPath('cubemap/back.png'),
+          }); */
         }}
         userData={{
           uneditable: true,

@@ -1,6 +1,6 @@
 import {fileToDataUrl, ClotheItem, SkinMaskItem} from '@verza/sdk';
 
-import {GLTF, GLTFLoader, THREE} from '@verza/sdk/utils';
+import {FBXLoader, GLTF, GLTFLoader, THREE} from '@verza/sdk/utils';
 
 export type ParsedResult = {
   animations: string[];
@@ -54,6 +54,41 @@ export const parseGltf = async (
       id: clotheId,
       url: url,
     });
+    return;
+  }
+};
+
+export const parseFbx = async (file: File, result: ParsedResult) => {
+  let fbx: THREE.Group = null!;
+
+  try {
+    const fbxLoader = new FBXLoader();
+
+    fbx = fbxLoader.parse(await file.arrayBuffer(), '');
+
+    console.log(fbx);
+  } catch (e) {
+    console.warn(e);
+    return result;
+  }
+
+  // TODO: Implement
+  const hasAnimations = !!fbx.animations.length;
+
+  if (!hasAnimations) {
+    return;
+  }
+
+  // debug
+  console.log('fbx', fbx);
+
+  if (hasAnimations) {
+    // TODO: Implement bones retargeting
+
+    /* const url = await fileToDataUrl(file);
+
+    result.animations.push(url); */
+
     return;
   }
 };

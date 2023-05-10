@@ -11,6 +11,7 @@ import {
 import {useState} from 'react';
 
 import EditorHandler from './components/EditorHandler';
+import FileDrop from './components/actions/FileDrop/FileDrop';
 
 const Editor = () => {
   return (
@@ -44,9 +45,13 @@ const EditorRender = () => {
     setEnabled(state => !state);
   });
 
-  if (!enabled) return null;
+  return (
+    <>
+      <FileDrop setEnabled={setEnabled} enabled={enabled} />
 
-  return <EditorHandler setEnabled={setEnabled} />;
+      {enabled && <EditorHandler setEnabled={setEnabled} />}
+    </>
+  );
 };
 
 export default Editor;
