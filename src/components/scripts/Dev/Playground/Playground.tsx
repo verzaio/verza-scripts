@@ -11,7 +11,7 @@ import Balls from './components/Balls';
 
 const DEBUG = false;
 
-const PlaygroundDev = () => {
+const Playground = () => {
   return (
     <Provider>
       <PlaygroundRender />
@@ -47,4 +47,4 @@ const PlaygroundRender = () => {
   );
 };
 
-export default PlaygroundDev;
+export default Playground;

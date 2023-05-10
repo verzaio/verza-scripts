@@ -13,11 +13,12 @@ This repository contains the official scripts for the Verza platform.
 
 ## Development Scripts List
 
-| Script                                         | Description                                  |
-| ---------------------------------------------- | -------------------------------------------- |
-| `https://scripts.verza-cdn.net/debug/time`     | A script to test time.                       |
-| `https://scripts.verza-cdn.net/playground-dev` | A dev playground to test different features. |
-| `https://scripts.verza-cdn.net/showcase`       | A showcase to test different features.       |
+| Script                                         | Description                                           |
+| ---------------------------------------------- | ----------------------------------------------------- |
+| `https://scripts.verza-cdn.net/dev/playground` | A dev playground to test different features.          |
+| `https://scripts.verza-cdn.net/dev/showcase`   | A showcase to test different features.                |
+| `https://scripts.verza-cdn.net/dev/time`       | A script to debug time.                               |
+| `https://scripts.verza-cdn.net/dev/character`  | A script to debug character chlothing and animations. |
 
 ## Installation
 
