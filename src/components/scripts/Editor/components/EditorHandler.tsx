@@ -7,7 +7,7 @@ import Reset from './actions/Reset';
 import EditorToolbar, {TOOLBAR_TOGGLE_FREE_LOOK_ID} from './EditorToolbar';
 import Destroy from './actions/Destroy';
 import Duplicate from './actions/Duplicate';
-import FileDrop from './actions/FileDrop';
+import FileDrop from './actions/FileDrop/FileDrop';
 import {ObjectManager} from '@verza/sdk';
 import FreeLook from './actions/FreeLook';
 

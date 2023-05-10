@@ -17,8 +17,9 @@
     "baseUrl": "./",
     "paths": {
       "@app/*": ["./src/*"],
-      "@verza/sdk/react": ["../verza-sdk/src/framework-react"],
       "@verza/sdk": ["../verza-sdk/src"],
+      "@verza/sdk/utils": ["../verza-sdk/src/utils"],
+      "@verza/sdk/react": ["../verza-sdk/src/framework-react"],
       "engine/*": ["../verza-sdk/src/*"]
     }
   },

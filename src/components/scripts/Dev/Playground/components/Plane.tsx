@@ -1,4 +1,4 @@
-import {MathUtils} from '@verza/sdk';
+import {MathUtils} from '@verza/sdk/utils';
 import {Box} from '@verza/sdk/react';
 
 const Plane = () => {

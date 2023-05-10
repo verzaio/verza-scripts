@@ -4,15 +4,15 @@ import {useFrame, useUI, useWorld} from '@verza/sdk/react';
 import {useControls} from 'leva';
 import {useEffect, useRef} from 'react';
 
-const DebugTime = () => {
+const Time = () => {
   return (
     <Provider>
-      <DebugTimeRender />
+      <TimeRender />
     </Provider>
   );
 };
 
-const DebugTimeRender = () => {
+const TimeRender = () => {
   const world = useWorld();
   const ui = useUI();
 
@@ -85,4 +85,4 @@ const DebugTimeRender = () => {
   );
 };
 
-export default DebugTime;
+export default Time;
