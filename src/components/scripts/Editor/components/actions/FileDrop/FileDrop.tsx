@@ -2,7 +2,6 @@ import styles from './FileDrop.module.scss';
 
 import {
   CORE_ACTION_EDITOR,
-  ObjectManager,
   Vector3,
   createFileTransferFromFile,
 } from '@verza/sdk';
@@ -48,6 +47,11 @@ const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
   }, [engine]);
 
   useEvent('onDragEnter', () => {
+    console.log(
+      'onDragEnter',
+      engine.localPlayer.hasAccess(CORE_ACTION_EDITOR),
+    );
+
     if (!engine.localPlayer.hasAccess(CORE_ACTION_EDITOR)) return;
 
     engine.ui.show();
@@ -56,15 +60,15 @@ const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
   });
 
   useEvent('onDragLeave', () => {
-    if (!enabled) {
-      engine.ui.hide();
-    }
-
     setRender(false);
 
     engine.ui.setProps({
       zIndex: 100,
     });
+
+    if (!enabled) {
+      engine.ui.hide();
+    }
   });
 
   const onDropFiles = useCallback(
@@ -75,10 +79,6 @@ const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
       if (!files.length) return;
 
       // TODO: Support multiple files upload
-
-      const _bringToFront = (object: ObjectManager) => {
-        return bringToFront(engine.localPlayer, object, raycaster);
-      };
 
       let assetId: string = null!;
 
@@ -106,9 +106,11 @@ const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
         return;
       }
 
+      const frontLocation = engine.localPlayer.location.clone().translateZ(2);
+
       const object = objects.create('gltf', {
         u: assetId,
-        position: [0, 0, 0],
+        position: frontLocation.position.toArray(),
       });
 
       // wait for object to stream-in
@@ -136,7 +138,7 @@ const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
       setEnabled;
 
       // then bring to front
-      await _bringToFront(object);
+      await bringToFront(engine.localPlayer, object, raycaster);
 
       // make permanent
       object.save();

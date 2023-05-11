@@ -1,7 +1,6 @@
 import styles from './FileContainer.module.scss';
 
-import {useEngine} from '@verza/sdk/react';
-import {useEffect, useRef} from 'react';
+import {DragEvent, useCallback, useRef} from 'react';
 
 import FileIcon from './res/file-icon.svg';
 
@@ -11,16 +10,12 @@ type FileContainerProps = {
 };
 
 const FileContainer = ({onDropFiles, label}: FileContainerProps) => {
-  const engine = useEngine();
-
   const containerRef = useRef<HTMLDivElement>(null!);
 
-  useEffect(() => {
-    if (!onDropFiles) return;
+  const onDrop = useCallback(
+    (event: DragEvent) => {
+      if (!onDropFiles) return;
 
-    const el = containerRef.current;
-
-    const onDrop = async (event: DragEvent) => {
       event.preventDefault();
       event.stopPropagation();
 
@@ -35,14 +30,9 @@ const FileContainer = ({onDropFiles, label}: FileContainerProps) => {
       }
 
       onDropFiles(files);
-    };
-
-    el.addEventListener('drop', onDrop);
-
-    return () => {
-      el.removeEventListener('drop', onDrop);
-    };
-  }, [engine, onDropFiles]);
+    },
+    [onDropFiles],
+  );
 
   return (
     <div
@@ -58,7 +48,10 @@ const FileContainer = ({onDropFiles, label}: FileContainerProps) => {
           e.preventDefault();
           e.stopPropagation();
         }
-      }}>
+
+        console.log('here?');
+      }}
+      onDrop={onDrop}>
       <FileIcon className={styles.icon} />
 
       <span className={styles.label}>{label ?? 'Drop File'}</span>
