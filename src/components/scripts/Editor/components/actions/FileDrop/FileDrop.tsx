@@ -49,6 +49,10 @@ const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
   useEvent('onDragEnter', () => {
     if (!engine.localPlayer.hasAccess(CORE_ACTION_EDITOR)) return;
 
+    engine.ui.setProps({
+      zIndex: 1000,
+    });
+
     engine.ui.show();
 
     setRender(true);
@@ -58,7 +62,7 @@ const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
     setRender(false);
 
     engine.ui.setProps({
-      zIndex: 100,
+      zIndex: 0,
     });
 
     if (!enabled) {

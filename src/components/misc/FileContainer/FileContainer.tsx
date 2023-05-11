@@ -48,8 +48,6 @@ const FileContainer = ({onDropFiles, label}: FileContainerProps) => {
           e.preventDefault();
           e.stopPropagation();
         }
-
-        console.log('here?');
       }}
       onDrop={onDrop}>
       <FileIcon className={styles.icon} />

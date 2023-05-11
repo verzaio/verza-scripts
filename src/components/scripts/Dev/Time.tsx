@@ -58,6 +58,8 @@ const TimeRender = () => {
       height: '100%',
       top: '0px',
       left: '0px',
+
+      zIndex: 1,
     });
     ui.show();
 
