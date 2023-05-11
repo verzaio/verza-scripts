@@ -1,6 +1,8 @@
-# Verza Scripts
+<p align="center">
+  <img width="150" src="https://docs.verza.io/img/logo.svg" alt="Verza">
 
-This repository contains the official scripts for the Verza platform.
+  <p align="center">Official scripts for <a href="https://verza.io" target="_blank">verza.io</a> platform.</p>
+</p>
 
 ## Scripts List
 
