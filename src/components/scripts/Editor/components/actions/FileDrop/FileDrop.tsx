@@ -47,11 +47,6 @@ const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
   }, [engine]);
 
   useEvent('onDragEnter', () => {
-    console.log(
-      'onDragEnter',
-      engine.localPlayer.hasAccess(CORE_ACTION_EDITOR),
-    );
-
     if (!engine.localPlayer.hasAccess(CORE_ACTION_EDITOR)) return;
 
     engine.ui.show();
