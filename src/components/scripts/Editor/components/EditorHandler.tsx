@@ -7,10 +7,11 @@ import Reset from './actions/Reset';
 import EditorToolbar, {TOOLBAR_TOGGLE_FREE_LOOK_ID} from './EditorToolbar';
 import Destroy from './actions/Destroy';
 import Duplicate from './actions/Duplicate';
-import {ObjectManager} from '@verza/sdk';
+import {IntersectsResult, ObjectManager} from '@verza/sdk';
 import FreeLook from './actions/FreeLook';
+import EntitySelector from './actions/EntitySelector';
 
-const isUneditable = async (object: ObjectManager): Promise<boolean> => {
+export const isUneditable = async (object: ObjectManager): Promise<boolean> => {
   if (!object) return false;
 
   if (object.userData.uneditable) {
@@ -45,13 +46,10 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
 
   const exit = () => {
     ui.hideCursor();
-    world.setEntitySelector(false);
     setEnabled(false);
   };
 
   useEffect(() => {
-    world.setEntitySelector(true);
-
     // set initial config
     objects.setEditSnaps(null, null, null);
 
@@ -70,31 +68,34 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
     });
 
     return () => {
-      world.setEntitySelector(false);
       objects.cancelEdit();
     };
   }, [world, objects]);
 
-  const updatingRef = useRef(false);
-  useEvent('onEntitySelected', async intersects => {
-    // cancel if no object was selected
-    if (!intersects.object) {
-      objects.cancelEdit();
-      return;
-    }
+  const onEntitySelected = useCallback(
+    async (intersects: IntersectsResult) => {
+      // cancel if no object was selected
+      if (!intersects.object) {
+        objects.cancelEdit();
+        return;
+      }
 
-    const object = intersects.object.entity;
+      const object = intersects.object.entity;
 
-    // edit if not selected
-    if (object.id !== objects.editingObject?.id) {
+      // edit if not selected
+      if (object.id === objects.editingObject?.id) return;
+
       if (await isUneditable(object)) {
         objects.cancelEdit();
         return;
       }
 
       object.edit();
-    }
-  });
+    },
+    [objects],
+  );
+
+  const updatingRef = useRef(false);
 
   useEvent('onObjectEdit', (object, type) => {
     switch (type) {
@@ -136,19 +137,47 @@ const EditorHandler = ({setEnabled}: EditorHandlerProps) => {
 
   // handle interface removal
   useEffect(() => {
+    ui.setProps({
+      width: '100%',
+      height: '100%',
+
+      top: '0px',
+
+      zIndex: 0,
+    });
+
     if (!initialRenderRef.current) {
+      ui.show();
       initialRenderRef.current = true;
       setCursor(true);
     }
 
     return () => {
+      ui.hide();
       initialRenderRef.current = false;
       setCursor(false);
     };
   }, [ui, setCursor]);
 
+  useEffect(() => {
+    ui.setProps({
+      zIndex: editing ? 100 : 0,
+    });
+
+    return () => {
+      ui.setProps({
+        zIndex: 0,
+      });
+    };
+  }, [ui, editing]);
+
   return (
     <>
+      <EntitySelector
+        onEntitySelected={onEntitySelected}
+        isUpdating={updatingRef}
+      />
+
       {editing && (
         <>
           <Ground />
