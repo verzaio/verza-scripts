@@ -13,7 +13,7 @@ import {
   useRaycaster,
 } from '@verza/sdk/react';
 import {bringToFront} from '../../utils/all';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useState} from 'react';
 import FileContainer from '@app/components/misc/FileContainer/FileContainer';
 
 const MAX_SIZE = 50; // meters
@@ -33,18 +33,6 @@ const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
   const assets = useAssets();
 
   const [render, setRender] = useState(false);
-
-  // configure UI
-  useEffect(() => {
-    engine.ui.setProps({
-      width: '100%',
-      height: '50%',
-
-      top: '0px',
-
-      zIndex: 1000,
-    });
-  }, [engine]);
 
   useEvent('onDragEnter', () => {
     if (!engine.localPlayer.hasAccess(CORE_ACTION_EDITOR)) return;

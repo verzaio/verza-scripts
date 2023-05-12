@@ -19,6 +19,9 @@ const Destroy = () => {
     } else {
       const parent = object.parent;
 
+      // hide object
+      object.setVisible(false);
+
       // if parent, then destroy child and keep parent
       if (parent) {
         object.destroy();
