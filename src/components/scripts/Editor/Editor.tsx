@@ -3,30 +3,32 @@ import {CORE_ACTION_EDITOR} from '@verza/sdk';
 
 import {
   useCommand,
+  useControllerProp,
   useKey,
   useLocalPlayer,
   useMainToolbarItem,
 } from '@verza/sdk/react';
 
-import {useState} from 'react';
-
 import EditorHandler from './components/EditorHandler';
 import FileDrop from './components/actions/FileDrop/FileDrop';
+import EditorProvider, {useEditor} from './EditorProvider';
 
 const Editor = () => {
   return (
     <Provider>
-      <EditorRender />
+      <EditorProvider>
+        <EditorRender />
+      </EditorProvider>
     </Provider>
   );
 };
 
-//const OBJECT_ID = '145bb3da-ae85-4fbb-9c3a-0e8e17f882f8';
-
 const EditorRender = () => {
-  const [enabled, setEnabled] = useState(false);
+  const editor = useEditor();
 
   const player = useLocalPlayer();
+
+  const enabled = useControllerProp(editor.controller, 'enabled');
 
   // expose editor permission
   useCommand(CORE_ACTION_EDITOR);
@@ -42,14 +44,14 @@ const EditorRender = () => {
 
     if (!player.hasAccess(CORE_ACTION_EDITOR)) return;
 
-    setEnabled(state => !state);
+    editor.enabled = !editor.enabled;
   });
 
   return (
     <>
-      <FileDrop setEnabled={setEnabled} enabled={enabled} />
+      <FileDrop />
 
-      {enabled && <EditorHandler setEnabled={setEnabled} />}
+      {enabled && <EditorHandler />}
     </>
   );
 };

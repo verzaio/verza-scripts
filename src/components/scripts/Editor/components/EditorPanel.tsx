@@ -1,9 +1,7 @@
-//import styles from './EditorPanel.module.scss';
-
 import PanelWidget from '@app/components/core/PanelWidget';
 import {button, useControls} from 'leva';
 import {useCallback, useEffect, useRef} from 'react';
-import {useEngine, useEvent, useObjects, useUI} from '@verza/sdk/react';
+import {useEngine, useEvent, useObjects} from '@verza/sdk/react';
 
 import {ObjectManager, Euler, Vector3} from '@verza/sdk';
 
@@ -12,7 +10,6 @@ import {MathUtils} from '@verza/sdk/utils';
 const EditorPanel = () => {
   const engine = useEngine();
   const objects = useObjects();
-  const ui = useUI();
 
   const isEditingRef = useRef(false);
 
@@ -125,15 +122,6 @@ const EditorPanel = () => {
     }),
   }));
 
-  // show/hide ui
-  useEffect(() => {
-    ui.show();
-
-    return () => {
-      return ui.hide();
-    };
-  }, [ui]);
-
   const updatePanel = useCallback(
     async (object: ObjectManager) => {
       if (isEditingRef.current) return;
@@ -191,7 +179,7 @@ const EditorPanel = () => {
           } (${objects.editingObject?.id.substring(0, 10)})`}
           position={{
             x: 0,
-            y: 400,
+            y: 200,
           }}
         />
       </div>
