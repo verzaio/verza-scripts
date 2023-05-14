@@ -27,7 +27,7 @@
   "homepage": "https://github.com/verzaio/verza-scripts#readme",
   "dependencies": {
     "@svgr/webpack": "^8.0.1",
-    "@verza/sdk": "^2.0.3",
+    "@verza/sdk": "^2.0.4",
     "leva": "^0.9.34",
     "next": "13.1.6",
     "react": "^18.2.0",

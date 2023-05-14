@@ -1,24 +1,33 @@
-import {IntersectsResult, PointerEvent} from '@verza/sdk';
+import {ObjectManager, PointerEvent} from '@verza/sdk';
 import {useEngine, useEvent} from '@verza/sdk/react';
-import {MutableRefObject} from 'react';
+import {useRef} from 'react';
 import {isUneditable} from '../EditorHandler';
+import {useEditor} from '../../EditorProvider';
+import {HIGHLIGHT_INACTIVE_COLOR} from '../../misc/constants';
 
 let timeoutId: ReturnType<typeof setTimeout> | null = null;
 let lastPointerEvent: PointerEvent | null = null;
 
-type EntitySelectorProps = {
-  onEntitySelected: (intersects: IntersectsResult) => void;
-  isUpdating: MutableRefObject<boolean>;
-};
-
-const EntitySelector = ({
-  onEntitySelected,
-  isUpdating: isUpating,
-}: EntitySelectorProps) => {
+const EntitySelector = () => {
   const engine = useEngine();
 
+  const editor = useEditor();
+
   const canUpdate = () =>
-    !(engine.ui.isSystemMenu() || engine.ui.cursorLock || isUpating.current);
+    !(engine.ui.isSystemMenu() || engine.ui.cursorLock || editor.updating);
+
+  const hoverObjectRef = useRef<ObjectManager | null>(null);
+
+  const clearHighlight = () => {
+    const object = hoverObjectRef.current;
+
+    if (!object || engine.objects.editingObject?.id === object.id) {
+      return;
+    }
+
+    hoverObjectRef.current = null;
+    object?.disableHighlight();
+  };
 
   const highlightItem = async (event: PointerEvent) => {
     const result = await engine.world.raycaster.raycastScreenPoint(
@@ -33,17 +42,35 @@ const EntitySelector = ({
     const object = result.object?.entity;
 
     if (!object || (await isUneditable(object))) {
+      clearHighlight();
       return;
     }
 
-    result;
+    if (engine.objects.editingObject?.id === object?.id) {
+      return;
+    }
+
+    if (hoverObjectRef.current === object) {
+      return;
+    }
+
+    clearHighlight();
+
+    object.enableHighlight({
+      color: HIGHLIGHT_INACTIVE_COLOR,
+    });
+
+    hoverObjectRef.current = object;
   };
 
   const checkHighlight = (event: PointerEvent) => {
-    if (!canUpdate()) return;
-
     if (timeoutId) {
       lastPointerEvent = event;
+      return;
+    }
+
+    if (!canUpdate()) {
+      clearHighlight();
       return;
     }
 
@@ -57,12 +84,10 @@ const EntitySelector = ({
       if (lastPointerEvent) {
         checkHighlight(lastPointerEvent);
       }
-    }, 50);
+    }, 20);
   };
 
-  checkHighlight;
-
-  //useEvent('onPointerMove', checkHighlight);
+  useEvent('onPointerMove', checkHighlight);
 
   useEvent('onPointerDown', async event => {
     if (!canUpdate()) return;
@@ -76,7 +101,7 @@ const EntitySelector = ({
       },
     );
 
-    onEntitySelected(result);
+    editor.onEntitySelected(result);
   });
 
   return null;

@@ -1,20 +1,17 @@
 import {ToolbarItem} from '@verza/sdk';
 import {ToolbarElement} from '@verza/sdk/dist/definitions/types/ui.types';
 import {useToolbar, useToolbarItemPress} from '@verza/sdk/react';
+import {useEditor} from '../EditorProvider';
+import {
+  TOOLBAR_DESTROY_ID,
+  TOOLBAR_DUPLICATE_ID,
+  TOOLBAR_GROUND_ID,
+  TOOLBAR_IN_FRONT_ID,
+  TOOLBAR_RESET_ID,
+  TOOLBAR_TOGGLE_FREE_LOOK_ID,
+} from '../misc/constants';
 
 const TOOLBAR_ID = 'editor_toolbar';
-
-export const TOOLBAR_TOGGLE_FREE_LOOK_ID = 'editor_free_look';
-
-export const TOOLBAR_GROUND_ID = 'editor_ground';
-
-export const TOOLBAR_IN_FRONT_ID = 'editor_in_front';
-
-export const TOOLBAR_RESET_ID = 'editor_reset';
-
-export const TOOLBAR_DUPLICATE_ID = 'editor_duplicate';
-
-export const TOOLBAR_DESTROY_ID = 'editor_destroy';
 
 const TOOLBAR_EXIT_ID = 'editor_exit';
 
@@ -64,24 +61,21 @@ const TOOLBAR_ACTIONS: ToolbarElement = {
   ],
 };
 
-type EditorToolbarProps = {
-  editing: boolean;
-  exit: () => void;
-};
+const EditorToolbar = () => {
+  const editor = useEditor();
 
-const EditorToolbar = ({exit, editing}: EditorToolbarProps) => {
   // add toolbar
   useToolbar({
     ...TOOLBAR_ACTIONS,
 
     items: [
-      ...(editing ? [...TOOLBAR_EDIT_ACTIONS] : []),
+      ...(editor.editing ? [...TOOLBAR_EDIT_ACTIONS] : []),
       ...TOOLBAR_ACTIONS.items,
     ],
   });
 
   // exit
-  useToolbarItemPress(TOOLBAR_EXIT_ID, exit);
+  useToolbarItemPress(TOOLBAR_EXIT_ID, () => (editor.enabled = false));
 
   return null;
 };

@@ -4,9 +4,11 @@ import {
   useObjects,
   useToolbarItemPress,
 } from '@verza/sdk/react';
-import {TOOLBAR_DUPLICATE_ID} from '../EditorToolbar';
+import {TOOLBAR_DUPLICATE_ID} from '../../misc/constants';
+import {useEditor} from '../../EditorProvider';
 
 const Duplicate = () => {
+  const editor = useEditor();
   const objects = useObjects();
   const engine = useEngine();
 
@@ -18,7 +20,7 @@ const Duplicate = () => {
     const object = await editingObject.clone();
 
     // select to edit
-    object.edit();
+    editor.editObject(object);
 
     // make object permanent only if
     // the editing object is permanent

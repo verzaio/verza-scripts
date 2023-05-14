@@ -6,21 +6,25 @@
 
 ## Scripts List
 
-| Script                                     | Description                                             |
-| ------------------------------------------ | ------------------------------------------------------- |
-| `https://scripts.verza-cdn.net/essentials` | Essentials script that bundles `editor` and `fly-mode`. |
-| `https://scripts.verza-cdn.net/fly-mode`   | Fly mode script.                                        |
-| `https://scripts.verza-cdn.net/editor`     | Editor script.                                          |
-| `https://scripts.verza-cdn.net/playground` | Playground that includes a solid plane.                 |
+The following scripts are available for use in your server:
+
+| Script                                     | Description                                                    |
+| ------------------------------------------ | -------------------------------------------------------------- |
+| `https://scripts.verza-cdn.net/essentials` | Bundle of essential scripts including `editor` and `fly-mode`. |
+| `https://scripts.verza-cdn.net/fly-mode`   | Script for enabling fly mode in the server.                    |
+| `https://scripts.verza-cdn.net/editor`     | Script providing in-game editing capabilities.                 |
+| `https://scripts.verza-cdn.net/playground` | Script containing a solid plane for testing purposes.          |
 
 ## Development Scripts List
 
-| Script                                         | Description                                          |
-| ---------------------------------------------- | ---------------------------------------------------- |
-| `https://scripts.verza-cdn.net/dev/playground` | A dev playground to test different features.         |
-| `https://scripts.verza-cdn.net/dev/showcase`   | A showcase to test different features.               |
-| `https://scripts.verza-cdn.net/dev/time`       | A script to debug time.                              |
-| `https://scripts.verza-cdn.net/dev/character`  | A script to debug character clothing and animations. |
+The following development scripts are available for testing and debugging purposes:
+
+| Script                                         | Description                                                                 |
+| ---------------------------------------------- | --------------------------------------------------------------------------- |
+| `https://scripts.verza-cdn.net/dev/playground` | Development Playground script for testing features.                         |
+| `https://scripts.verza-cdn.net/dev/showcase`   | Development Showcase script for testing features.                           |
+| `https://scripts.verza-cdn.net/dev/time`       | Time Debugging script for debugging time-related functionality.             |
+| `https://scripts.verza-cdn.net/dev/character`  | Character Debugging script for debugging character clothing and animations. |
 
 ## Installation
 

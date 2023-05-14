@@ -79,7 +79,7 @@ const TimeRender = () => {
           title="Time"
           position={{
             x: 0,
-            y: 400,
+            y: 200,
           }}
         />
       </div>

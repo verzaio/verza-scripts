@@ -6,8 +6,8 @@ import {
   useToolbarItemPress,
 } from '@verza/sdk/react';
 
-import {TOOLBAR_IN_FRONT_ID} from '../EditorToolbar';
-import {bringToFront} from '../utils/all';
+import {bringToFront} from '../../misc/utils';
+import {TOOLBAR_IN_FRONT_ID} from '../../misc/constants';
 
 const InFront = () => {
   const objects = useObjects();

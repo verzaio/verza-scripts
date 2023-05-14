@@ -1,6 +1,6 @@
 import {Quaternion, Vector3} from '@verza/sdk';
 import {useKey, useObjects, useToolbarItemPress} from '@verza/sdk/react';
-import {TOOLBAR_RESET_ID} from '../EditorToolbar';
+import {TOOLBAR_RESET_ID} from '../../misc/constants';
 
 const Reset = () => {
   const objects = useObjects();

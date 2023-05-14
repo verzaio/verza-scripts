@@ -12,20 +12,18 @@ import {
   useObjects,
   useRaycaster,
 } from '@verza/sdk/react';
-import {bringToFront} from '../../utils/all';
+import {bringToFront} from '../../../misc/utils';
 import {useCallback, useState} from 'react';
 import FileContainer from '@app/components/misc/FileContainer/FileContainer';
+import {useEditor} from '../../../EditorProvider';
 
 const MAX_SIZE = 50; // meters
 
 const SCALE_SIZE = 2; // meters
 
-type FileDropProps = {
-  setEnabled: (state: boolean) => void;
-  enabled: boolean;
-};
+const FileDrop = () => {
+  const editor = useEditor();
 
-const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
   const objects = useObjects();
   const engine = useEngine();
   const raycaster = useRaycaster();
@@ -38,7 +36,7 @@ const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
     if (!engine.localPlayer.hasAccess(CORE_ACTION_EDITOR)) return;
 
     engine.ui.setProps({
-      zIndex: 1000,
+      zIndex: 10000,
     });
 
     engine.ui.show();
@@ -50,10 +48,10 @@ const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
     setRender(false);
 
     engine.ui.setProps({
-      zIndex: 0,
+      zIndex: editor.editing ? 100 : 0,
     });
 
-    if (!enabled) {
+    if (!editor.enabled) {
       engine.ui.hide();
     }
   });
@@ -121,16 +119,13 @@ const FileDrop = ({setEnabled, enabled}: FileDropProps) => {
         object.setScale(scaledVector);
       }
 
-      //setEnabled(true);
-      setEnabled;
-
       // then bring to front
       await bringToFront(engine.localPlayer, object, raycaster);
 
       // make permanent
       object.save();
     },
-    [setEnabled, engine, assets, objects, raycaster],
+    [engine, assets, objects, raycaster],
   );
 
   if (!render) return null;

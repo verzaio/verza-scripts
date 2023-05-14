@@ -4,7 +4,7 @@ import {
   useObjects,
   useToolbarItemPress,
 } from '@verza/sdk/react';
-import {TOOLBAR_DESTROY_ID} from '../EditorToolbar';
+import {TOOLBAR_DESTROY_ID} from '../../misc/constants';
 
 const Destroy = () => {
   const objects = useObjects();
