@@ -6,10 +6,12 @@ import {useEngine, useEvent, useObjects} from '@verza/sdk/react';
 import {ObjectManager, Euler, Vector3} from '@verza/sdk';
 
 import {MathUtils} from '@verza/sdk/utils';
+import {useEditor} from '../EditorProvider';
 
 const EditorPanel = () => {
-  const engine = useEngine();
   const objects = useObjects();
+  const engine = useEngine();
+  const editor = useEditor();
 
   const isEditingRef = useRef(false);
 
@@ -29,9 +31,9 @@ const EditorPanel = () => {
       onEditStart,
       onEditEnd,
       onChange: (value: Vector3) => {
-        if (!isEditingRef.current || !objects.editingObject) return;
+        if (!isEditingRef.current || !editor.activeObject) return;
 
-        objects.editingObject.setPositionFromWorldSpace([
+        editor.activeObject.setPositionFromWorldSpace([
           value.x,
           value.y,
           value.z,
@@ -53,9 +55,9 @@ const EditorPanel = () => {
       onEditStart,
       onEditEnd,
       onChange: (value: Euler) => {
-        if (!isEditingRef.current || !objects.editingObject) return;
+        if (!isEditingRef.current || !editor.activeObject) return;
 
-        objects.editingObject.setRotationFromWorldSpace([
+        editor.activeObject.setRotationFromWorldSpace([
           MathUtils.degToRad(value.x),
           MathUtils.degToRad(value.y),
           MathUtils.degToRad(value.z),
@@ -77,9 +79,9 @@ const EditorPanel = () => {
       onEditStart,
       onEditEnd,
       onChange: (value: Vector3) => {
-        if (!isEditingRef.current || !objects.editingObject) return;
+        if (!isEditingRef.current || !editor.activeObject) return;
 
-        objects.editingObject.setScale([value.x, value.y, value.z]);
+        editor.activeObject.setScale([value.x, value.y, value.z]);
       },
     },
 
@@ -104,14 +106,14 @@ const EditorPanel = () => {
       },
     },
     'Toggle Collision': button(() => {
-      if (!objects.editingObject) return;
+      if (!editor.activeObject) return;
 
-      const newStatus = objects.editingObject.collision ? null : 'static';
+      const newStatus = editor.activeObject.collision ? null : 'static';
 
-      objects.editingObject.setCollision(newStatus);
+      editor.activeObject.setCollision(newStatus);
 
-      if (objects.editingObject.permanent) {
-        objects.editingObject.save();
+      if (editor.activeObject.permanent) {
+        editor.activeObject.save();
       }
 
       if (newStatus) {
@@ -157,10 +159,10 @@ const EditorPanel = () => {
 
   // initial update
   useEffect(() => {
-    if (!objects.editingObject) return;
+    if (!editor.activeObject) return;
 
-    updatePanel(objects.editingObject);
-  }, [updatePanel, objects]);
+    updatePanel(editor.activeObject);
+  }, [updatePanel, editor]);
 
   // keep panel updated
   useEvent('onObjectEdit', object => {
@@ -174,12 +176,13 @@ const EditorPanel = () => {
         onPointerDown={e => e.stopPropagation()}
         onPointerUp={e => e.stopPropagation()}>
         <PanelWidget
+          drag={false}
           title={`${
-            objects.editingObject?.objectType
-          } (${objects.editingObject?.id.substring(0, 10)})`}
+            editor.activeObject?.objectType
+          } (${editor.activeObject?.id.substring(0, 10)})`}
           position={{
             x: 0,
-            y: 200,
+            y: 10,
           }}
         />
       </div>

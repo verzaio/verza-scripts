@@ -1,21 +1,15 @@
-import {
-  useEngine,
-  useKey,
-  useObjects,
-  useToolbarItemPress,
-} from '@verza/sdk/react';
+import {useEngine, useKey, useToolbarItemPress} from '@verza/sdk/react';
 import {TOOLBAR_DUPLICATE_ID} from '../../misc/constants';
 import {useEditor} from '../../EditorProvider';
 
 const Duplicate = () => {
   const editor = useEditor();
-  const objects = useObjects();
   const engine = useEngine();
 
   const duplicate = async () => {
-    if (!objects.editingObject) return;
+    if (!editor.activeObject) return;
 
-    const editingObject = objects.editingObject;
+    const editingObject = editor.activeObject;
 
     const object = await editingObject.clone();
 

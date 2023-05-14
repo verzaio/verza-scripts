@@ -11,7 +11,6 @@ let lastPointerEvent: PointerEvent | null = null;
 
 const EntitySelector = () => {
   const engine = useEngine();
-
   const editor = useEditor();
 
   const canUpdate = () =>

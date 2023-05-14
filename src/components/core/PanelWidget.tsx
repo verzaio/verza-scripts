@@ -8,23 +8,30 @@ type PanelWidgetProps = {
 
   drag?: boolean;
 
+  filter?: boolean;
+
   position?: {
     x?: number;
     y?: number;
   };
 };
 
-const PanelWidget = ({title, collapsed, drag, position}: PanelWidgetProps) => {
+const PanelWidget = ({
+  title,
+  collapsed,
+  drag,
+  position,
+  filter = false,
+}: PanelWidgetProps) => {
   return (
     <Leva
       titleBar={{
         title,
         drag,
-        filter: false,
+        filter,
         position,
       }}
       collapsed={collapsed}
-      flat
       hideCopyButton
     />
   );

@@ -19,6 +19,10 @@ class EditorManager {
     updating: false,
   });
 
+  get activeObject() {
+    return this._engine.objects.editingObject;
+  }
+
   private get _objects() {
     return this._engine.objects;
   }
@@ -152,7 +156,7 @@ class EditorManager {
     const object = intersects.object.entity;
 
     // edit if not selected
-    if (object.id === this._objects.editingObject?.id) return;
+    if (object.id === this.activeObject?.id) return;
 
     if (await isObjectUneditable(object)) {
       this.cancelEdit();
@@ -163,18 +167,19 @@ class EditorManager {
   };
 
   editObject(object: ObjectManager) {
-    this._objects.editingObject?.disableHighlight();
+    this.activeObject?.disableHighlight();
 
     object.edit();
+
+    object.disableHighlight();
 
     /* object.enableHighlight({
       color: HIGHLIGHT_ACTIVE_COLOR,
     }); */
-    object.disableHighlight();
   }
 
   cancelEdit() {
-    this._objects.editingObject?.disableHighlight();
+    this.activeObject?.disableHighlight();
 
     this._objects.cancelEdit();
   }
