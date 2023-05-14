@@ -6,20 +6,9 @@ import Reset from './actions/Reset';
 import EditorToolbar from './EditorToolbar';
 import Destroy from './actions/Destroy';
 import Duplicate from './actions/Duplicate';
-import {ObjectManager} from '@verza/sdk';
 import FreeLook from './actions/FreeLook';
 import EntitySelector from './actions/EntitySelector';
 import {useEditor} from '../EditorProvider';
-
-export const isUneditable = async (object: ObjectManager): Promise<boolean> => {
-  if (!object) return false;
-
-  if (object.userData.uneditable) {
-    return true;
-  }
-
-  return isUneditable((await object.resolveParent())!);
-};
 
 const EditorHandler = () => {
   const editor = useEditor();

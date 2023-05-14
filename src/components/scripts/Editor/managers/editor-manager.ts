@@ -5,10 +5,8 @@ import {
   createControllerManager,
 } from '@verza/sdk';
 import {ObjectEditActionType} from '@verza/sdk/index';
-import {
-  HIGHLIGHT_ACTIVE_COLOR,
-  TOOLBAR_TOGGLE_FREE_LOOK_ID,
-} from '../misc/constants';
+import {TOOLBAR_TOGGLE_FREE_LOOK_ID} from '../misc/constants';
+import {isObjectUneditable} from '../misc/utils';
 
 class EditorManager {
   private _engine: EngineManager;
@@ -156,7 +154,7 @@ class EditorManager {
     // edit if not selected
     if (object.id === this._objects.editingObject?.id) return;
 
-    if (await isUneditable(object)) {
+    if (await isObjectUneditable(object)) {
       this.cancelEdit();
       return;
     }
@@ -169,9 +167,10 @@ class EditorManager {
 
     object.edit();
 
-    object.enableHighlight({
+    /* object.enableHighlight({
       color: HIGHLIGHT_ACTIVE_COLOR,
-    });
+    }); */
+    object.disableHighlight();
   }
 
   cancelEdit() {
@@ -180,15 +179,5 @@ class EditorManager {
     this._objects.cancelEdit();
   }
 }
-
-export const isUneditable = async (object: ObjectManager): Promise<boolean> => {
-  if (!object) return false;
-
-  if (object.userData.uneditable) {
-    return true;
-  }
-
-  return isUneditable((await object.resolveParent())!);
-};
 
 export default EditorManager;

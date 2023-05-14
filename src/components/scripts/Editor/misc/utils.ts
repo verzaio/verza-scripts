@@ -35,3 +35,15 @@ export const bringToFront = async (
   object.setPositionFromWorldSpace(frontLocation.position);
   object.setRotationFromWorldSpace(frontLocation.quaternion);
 };
+
+export const isObjectUneditable = async (
+  object: ObjectManager,
+): Promise<boolean> => {
+  if (!object) return false;
+
+  if (object.userData.uneditable) {
+    return true;
+  }
+
+  return isObjectUneditable((await object.resolveParent())!);
+};

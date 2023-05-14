@@ -68,10 +68,13 @@ const FileDrop = () => {
       let assetId: string = null!;
 
       try {
+        engine.ui.showIndicator('uploading_model', 'Uploading model...');
         const file = await createFileTransferFromFile(files[0]);
 
         assetId = await assets.upload(file);
       } catch (e) {
+        engine.ui.hideIndicator('uploading_model');
+
         console.error(e);
 
         const isExternalStorage =
@@ -91,39 +94,48 @@ const FileDrop = () => {
         return;
       }
 
-      const frontLocation = engine.localPlayer.location.clone().translateZ(2);
+      try {
+        const frontLocation = engine.localPlayer.location.clone().translateZ(2);
 
-      const object = objects.create('gltf', {
-        u: assetId,
-        position: frontLocation.position.toArray(),
-      });
+        const object = objects.create('gltf', {
+          u: assetId,
+          position: frontLocation.position.toArray(),
+        });
 
-      // wait for object to stream-in
-      await object.waitForStream();
+        // wait for object to stream-in
+        await object.waitForStream();
 
-      const box = await object.computeBoundingBox();
-      const distance = box.max.distanceTo(box.min);
+        const box = await object.computeBoundingBox();
+        const distance = box.max.distanceTo(box.min);
 
-      // scale it down
-      if (distance > MAX_SIZE) {
-        engine.localPlayer.sendSuccessNotification('Object scaled down');
+        // scale it down
+        if (distance > MAX_SIZE) {
+          engine.localPlayer.sendSuccessNotification('Object scaled down');
 
-        const scaledMeters = (distance / 100) * SCALE_SIZE;
-        const scaledSize = (scaledMeters * 100) / distance;
+          const scaledMeters = (distance / 100) * SCALE_SIZE;
+          const scaledSize = (scaledMeters * 100) / distance;
 
-        const scaledVector = new Vector3(
-          scaledSize,
-          scaledSize,
-          scaledSize,
-        ).divideScalar(100);
-        object.setScale(scaledVector);
+          const scaledVector = new Vector3(
+            scaledSize,
+            scaledSize,
+            scaledSize,
+          ).divideScalar(100);
+          object.setScale(scaledVector);
+        }
+
+        // then bring to front
+        await bringToFront(engine.localPlayer, object, raycaster);
+
+        // make permanent
+        object.save();
+      } catch (e) {
+        console.error(e);
+
+        engine.localPlayer.sendErrorNotification('Failed to process object');
       }
 
-      // then bring to front
-      await bringToFront(engine.localPlayer, object, raycaster);
-
-      // make permanent
-      object.save();
+      // hide indicator
+      engine.ui.hideIndicator('uploading_model');
     },
     [engine, assets, objects, raycaster],
   );

@@ -1,9 +1,10 @@
 import {ObjectManager, PointerEvent} from '@verza/sdk';
 import {useEngine, useEvent} from '@verza/sdk/react';
 import {useRef} from 'react';
-import {isUneditable} from '../EditorHandler';
+
 import {useEditor} from '../../EditorProvider';
 import {HIGHLIGHT_INACTIVE_COLOR} from '../../misc/constants';
+import {isObjectUneditable} from '../../misc/utils';
 
 let timeoutId: ReturnType<typeof setTimeout> | null = null;
 let lastPointerEvent: PointerEvent | null = null;
@@ -41,7 +42,7 @@ const EntitySelector = () => {
 
     const object = result.object?.entity;
 
-    if (!object || (await isUneditable(object))) {
+    if (!object || (await isObjectUneditable(object))) {
       clearHighlight();
       return;
     }
