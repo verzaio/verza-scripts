@@ -1,10 +1,11 @@
-import {uuid} from '@verza/sdk/utils';
-import {Box, Group, useWorld} from '@verza/sdk/react';
 import Description from '../components/Description';
 import Label from '../components/Label';
 import SceneTitle from '../components/SceneTitle';
 import {BOX_RADIUS} from '../constants';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
+
+import {Box, Group, useWorld} from '@verza/sdk/react';
+import {uuid} from '@verza/sdk/utils';
 
 const MoonPhaseExample = () => {
   const loc = SHOWCASE_LOCATION.clone();

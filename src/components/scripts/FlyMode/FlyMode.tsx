@@ -1,3 +1,5 @@
+import {useRef, useState} from 'react';
+
 import Provider from '@app/components/core/Provider';
 import {PlayerControls, Object3D, Vector3} from '@verza/sdk';
 import {
@@ -10,7 +12,6 @@ import {
   useEvent,
   useMainToolbarItem,
 } from '@verza/sdk/react';
-import {useRef, useState} from 'react';
 
 const TOOLBAR_ID = 'flymode_toolbar';
 

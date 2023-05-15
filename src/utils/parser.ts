@@ -1,5 +1,4 @@
 import {fileToDataUrl, ClotheItem, SkinMaskItem} from '@verza/sdk';
-
 import {FBXLoader, GLTF, GLTFLoader, THREE} from '@verza/sdk/utils';
 
 export type ParsedResult = {

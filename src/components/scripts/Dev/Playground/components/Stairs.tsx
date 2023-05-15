@@ -1,7 +1,8 @@
+import SampleBox from './SampleBox';
+
 import {formatUrl} from '@app/utils/misc';
 import {EulerArray, Vector3, Vector3Array} from '@verza/sdk';
 import {Box, Gltf} from '@verza/sdk/react';
-import SampleBox from './SampleBox';
 
 const Stairs = () => {
   const pos = new Vector3(-5, 0, -5);

@@ -1,6 +1,8 @@
-import {ObjectManager, Vector3} from '@verza/sdk';
 import {useRef, useState} from 'react';
+
 import SampleBox from './SampleBox';
+
+import {ObjectManager, Vector3} from '@verza/sdk';
 
 const Boxes2 = () => {
   const [pos1] = useState(() => new Vector3(10, 0.5, 10));

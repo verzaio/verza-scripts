@@ -1,13 +1,13 @@
+import {useEditor} from '../../EditorProvider';
+import {TOOLBAR_IN_FRONT_ID} from '../../misc/constants';
+import {bringToFront} from '../../misc/utils';
+
 import {
   useEngine,
   useKey,
   useRaycaster,
   useToolbarItemPress,
 } from '@verza/sdk/react';
-
-import {bringToFront} from '../../misc/utils';
-import {TOOLBAR_IN_FRONT_ID} from '../../misc/constants';
-import {useEditor} from '../../EditorProvider';
 
 const InFront = () => {
   const editor = useEditor();

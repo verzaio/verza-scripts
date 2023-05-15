@@ -1,5 +1,5 @@
-import {MathUtils} from '@verza/sdk/utils';
 import {Box} from '@verza/sdk/react';
+import {MathUtils} from '@verza/sdk/utils';
 
 const Plane = () => {
   return (

@@ -1,6 +1,9 @@
+import FileDrop from './components/actions/FileDrop/FileDrop';
+import EditorHandler from './components/EditorHandler';
+import EditorProvider, {useEditor} from './EditorProvider';
+
 import Provider from '@app/components/core/Provider';
 import {CORE_ACTION_EDITOR} from '@verza/sdk';
-
 import {
   useCommand,
   useControllerProp,
@@ -8,10 +11,6 @@ import {
   useLocalPlayer,
   useMainToolbarItem,
 } from '@verza/sdk/react';
-
-import EditorHandler from './components/EditorHandler';
-import FileDrop from './components/actions/FileDrop/FileDrop';
-import EditorProvider, {useEditor} from './EditorProvider';
 
 const Editor = () => {
   return (

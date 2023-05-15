@@ -1,9 +1,11 @@
-import {ObjectManager, Vector3} from '@verza/sdk';
-import {Group, Line, useRaycaster} from '@verza/sdk/react';
 import {useEffect, useRef, useState} from 'react';
+
 import Description from '../components/Description';
 import SceneTitle from '../components/SceneTitle';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
+
+import {ObjectManager, Vector3} from '@verza/sdk';
+import {Group, Line, useRaycaster} from '@verza/sdk/react';
 
 const FROM_POINT = new Vector3(0, 1, 2);
 const TO_POINT = new Vector3(0, 1, 6);

@@ -1,7 +1,7 @@
+import {forwardRef} from 'react';
+
 import {ColorType, ObjectManager} from '@verza/sdk';
 import {Box} from '@verza/sdk/react';
-
-import {forwardRef} from 'react';
 
 type SampleBoxProps = {
   size?: [number, number, number];

@@ -1,4 +1,9 @@
-import {PlayerManager, ObjectManager, RaycasterManager} from '@verza/sdk';
+import {
+  PlayerManager,
+  ObjectManager,
+  RaycasterManager,
+  ObjectType,
+} from '@verza/sdk';
 
 const FRONT_DISTANCE = 2;
 
@@ -46,4 +51,8 @@ export const isObjectUneditable = async (
   }
 
   return isObjectUneditable((await object.resolveParent())!);
+};
+
+export const doesObjectSupportMaterial = (type: ObjectType) => {
+  return !(type === 'group' || type === 'gltf' || type === 'model');
 };

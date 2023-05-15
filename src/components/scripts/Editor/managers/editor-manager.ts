@@ -1,3 +1,6 @@
+import {TOOLBAR_TOGGLE_FREE_LOOK_ID} from '../misc/constants';
+import {isObjectUneditable} from '../misc/utils';
+
 import {
   EngineManager,
   IntersectsResult,
@@ -5,8 +8,6 @@ import {
   createControllerManager,
 } from '@verza/sdk';
 import {ObjectEditActionType} from '@verza/sdk/index';
-import {TOOLBAR_TOGGLE_FREE_LOOK_ID} from '../misc/constants';
-import {isObjectUneditable} from '../misc/utils';
 
 class EditorManager {
   private _engine: EngineManager;
@@ -42,6 +43,8 @@ class EditorManager {
       this.setCursor(false);
 
       this.cancelEdit();
+
+      this.controller.editing = false;
     }
 
     this.controller.enabled = status;
@@ -52,15 +55,9 @@ class EditorManager {
   }
 
   set editing(status: boolean) {
-    if (status) {
-      this._ui.setProps({
-        zIndex: 100,
-      });
-    } else {
-      this._ui.setProps({
-        zIndex: 0,
-      });
-    }
+    this._ui.setProps({
+      zIndex: 100,
+    });
 
     this.controller.editing = status;
   }
@@ -81,6 +78,16 @@ class EditorManager {
     this._engine = engine;
 
     this._init();
+
+    engine.ui.setProps({
+      width: '100%',
+      height: '100%',
+
+      top: '0px',
+      left: '0px',
+
+      zIndex: 100,
+    });
   }
 
   private _init() {

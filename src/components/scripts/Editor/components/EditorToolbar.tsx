@@ -1,6 +1,3 @@
-import {ToolbarItem} from '@verza/sdk';
-import {ToolbarElement} from '@verza/sdk/dist/definitions/types/ui.types';
-import {useToolbar, useToolbarItemPress} from '@verza/sdk/react';
 import {useEditor} from '../EditorProvider';
 import {
   TOOLBAR_DESTROY_ID,
@@ -10,6 +7,10 @@ import {
   TOOLBAR_RESET_ID,
   TOOLBAR_TOGGLE_FREE_LOOK_ID,
 } from '../misc/constants';
+
+import {ToolbarItem} from '@verza/sdk';
+import {ToolbarElement} from '@verza/sdk/dist/definitions/types/ui.types';
+import {useToolbar, useToolbarItemPress} from '@verza/sdk/react';
 
 const TOOLBAR_ID = 'editor_toolbar';
 

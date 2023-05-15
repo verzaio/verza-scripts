@@ -8,10 +8,30 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
+  "plugins": ["@typescript-eslint", "eslint-plugin-import-helpers", "import"],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
     "no-return-await": "warn",
     "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/no-this-alias": "off"
+    "@typescript-eslint/no-this-alias": "off",
+
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          ["/scss$/"],
+          ["/^react$/"],
+          ["/^verza/sdk$/"],
+
+          ["parent", "sibling", "index"]
+        ],
+
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": true
+        }
+      }
+    ]
   }
 }

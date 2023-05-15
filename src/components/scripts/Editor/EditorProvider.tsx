@@ -1,5 +1,7 @@
 import React, {ReactNode, createContext, useContext, useState} from 'react';
+
 import EditorManager from './managers/editor-manager';
+
 import {useEngine} from '@verza/sdk/react';
 
 const EditorContext = createContext<EditorManager>(null!);

@@ -1,6 +1,7 @@
-import {useEngine, useKey, useToolbarItemPress} from '@verza/sdk/react';
-import {TOOLBAR_DUPLICATE_ID} from '../../misc/constants';
 import {useEditor} from '../../EditorProvider';
+import {TOOLBAR_DUPLICATE_ID} from '../../misc/constants';
+
+import {useEngine, useKey, useToolbarItemPress} from '@verza/sdk/react';
 
 const Duplicate = () => {
   const editor = useEditor();

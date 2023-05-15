@@ -1,6 +1,7 @@
+import {useEffect, useRef} from 'react';
+
 import {ObjectManager} from '@verza/sdk';
 import {Box} from '@verza/sdk/react';
-import {useEffect, useRef} from 'react';
 
 const MovingPlatforms = () => {
   const object1Ref = useRef<ObjectManager>(null!);

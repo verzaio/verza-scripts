@@ -1,8 +1,9 @@
+import {useEffect, useRef} from 'react';
+
 import PanelWidget from '@app/components/core/PanelWidget';
 import Provider from '@app/components/core/Provider';
 import {useFrame, useUI, useWorld} from '@verza/sdk/react';
 import {useControls} from 'leva';
-import {useEffect, useRef} from 'react';
 
 const Time = () => {
   return (
@@ -79,7 +80,7 @@ const TimeRender = () => {
           title="Time"
           position={{
             x: 0,
-            y: 200,
+            y: 400,
           }}
         />
       </div>

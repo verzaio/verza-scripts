@@ -1,11 +1,12 @@
-import {formatUrl} from '@app/utils/misc';
-import {uuid} from '@verza/sdk/utils';
-import {Box, Gltf, Group, Sphere} from '@verza/sdk/react';
 import Description from '../components/Description';
 import Label from '../components/Label';
 import SceneTitle from '../components/SceneTitle';
 import {BOX_RADIUS} from '../constants';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
+
+import {formatUrl} from '@app/utils/misc';
+import {Box, Gltf, Group, Sphere} from '@verza/sdk/react';
+import {uuid} from '@verza/sdk/utils';
 
 const ObjectsExample = () => {
   const loc = SHOWCASE_LOCATION.clone();

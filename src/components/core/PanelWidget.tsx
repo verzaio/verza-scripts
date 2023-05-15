@@ -1,5 +1,6 @@
-import {Leva} from 'leva';
 import {ReactNode} from 'react';
+
+import {Leva} from 'leva';
 
 type PanelWidgetProps = {
   title?: ReactNode;
@@ -9,6 +10,8 @@ type PanelWidgetProps = {
   drag?: boolean;
 
   filter?: boolean;
+
+  fill?: boolean;
 
   position?: {
     x?: number;
@@ -22,6 +25,7 @@ const PanelWidget = ({
   drag,
   position,
   filter = false,
+  fill,
 }: PanelWidgetProps) => {
   return (
     <Leva
@@ -31,6 +35,7 @@ const PanelWidget = ({
         filter,
         position,
       }}
+      fill={fill}
       collapsed={collapsed}
       hideCopyButton
     />

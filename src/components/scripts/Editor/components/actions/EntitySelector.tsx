@@ -1,10 +1,11 @@
-import {ObjectManager, PointerEvent} from '@verza/sdk';
-import {useEngine, useEvent} from '@verza/sdk/react';
 import {useRef} from 'react';
 
 import {useEditor} from '../../EditorProvider';
 import {HIGHLIGHT_INACTIVE_COLOR} from '../../misc/constants';
 import {isObjectUneditable} from '../../misc/utils';
+
+import {ObjectManager, PointerEvent} from '@verza/sdk';
+import {useEngine, useEvent} from '@verza/sdk/react';
 
 let timeoutId: ReturnType<typeof setTimeout> | null = null;
 let lastPointerEvent: PointerEvent | null = null;

@@ -1,10 +1,11 @@
-import {formatUrl} from '@app/utils/misc';
-import {uuid} from '@verza/sdk/utils';
-import {Group, Sphere} from '@verza/sdk/react';
 import Description from '../components/Description';
 import Label from '../components/Label';
 import SceneTitle from '../components/SceneTitle';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
+
+import {formatUrl} from '@app/utils/misc';
+import {Group, Sphere} from '@verza/sdk/react';
+import {uuid} from '@verza/sdk/utils';
 
 const format = (name: string) =>
   formatUrl(`showcase/textures/textures/${name}`);

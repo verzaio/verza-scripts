@@ -1,17 +1,16 @@
-import {Box, Group, useCommand} from '@verza/sdk/react';
-import {Object3D, ObjectTexture, RepeatWrapping, Vector2} from '@verza/sdk';
+import CameraExample from './examples/CameraExample';
+import EventsExample from './examples/EventsExample';
+import MaterialsExample from './examples/MaterialsExample';
+import MoonPhaseExample from './examples/MoonPhaseExample';
+import ObjectsExample from './examples/ObjectsExample';
+import PhysicsExample from './examples/PhysicsExample';
+import RaycasterExample from './examples/RaycasterExample';
+import SkyExample from './examples/SkyExample';
 
 import Provider from '@app/components/core/Provider';
 import {formatUrl} from '@app/utils/misc';
-
-import PhysicsExample from './examples/PhysicsExample';
-import RaycasterExample from './examples/RaycasterExample';
-import ObjectsExample from './examples/ObjectsExample';
-import MaterialsExample from './examples/MaterialsExample';
-import EventsExample from './examples/EventsExample';
-import CameraExample from './examples/CameraExample';
-import SkyExample from './examples/SkyExample';
-import MoonPhaseExample from './examples/MoonPhaseExample';
+import {Object3D, ObjectTexture, RepeatWrapping, Vector2} from '@verza/sdk';
+import {Box, Group, useCommand} from '@verza/sdk/react';
 
 export const SHOWCASE_LOCATION = new Object3D();
 

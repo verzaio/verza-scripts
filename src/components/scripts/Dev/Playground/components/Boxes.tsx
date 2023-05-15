@@ -1,6 +1,7 @@
+import {useRef} from 'react';
+
 import {ObjectManager} from '@verza/sdk';
 import {Box, Sphere, useOnTicks} from '@verza/sdk/react';
-import {useRef} from 'react';
 
 const Boxes = () => {
   const boxRef = useRef<ObjectManager>(null!);

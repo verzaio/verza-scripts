@@ -1,3 +1,5 @@
+export const PANEL_GROUP_OBJECT = 'object';
+
 export const HIGHLIGHT_ACTIVE_COLOR = '#068bff';
 
 export const HIGHLIGHT_INACTIVE_COLOR = '#aeaeae';

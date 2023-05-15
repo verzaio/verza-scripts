@@ -1,5 +1,11 @@
 import styles from './FileDrop.module.scss';
 
+import {useCallback, useState} from 'react';
+
+import {useEditor} from '../../../EditorProvider';
+import {bringToFront} from '../../../misc/utils';
+
+import FileContainer from '@app/components/misc/FileContainer/FileContainer';
 import {
   CORE_ACTION_EDITOR,
   Vector3,
@@ -12,10 +18,6 @@ import {
   useObjects,
   useRaycaster,
 } from '@verza/sdk/react';
-import {bringToFront} from '../../../misc/utils';
-import {useCallback, useState} from 'react';
-import FileContainer from '@app/components/misc/FileContainer/FileContainer';
-import {useEditor} from '../../../EditorProvider';
 
 const MAX_SIZE = 50; // meters
 
@@ -32,6 +34,16 @@ const FileDrop = () => {
 
   const [render, setRender] = useState(false);
 
+  const hide = useCallback(() => {
+    engine.ui.setProps({
+      zIndex: 100,
+    });
+
+    if (!editor.enabled) {
+      engine.ui.hide();
+    }
+  }, [engine, editor]);
+
   useEvent('onDragEnter', () => {
     if (!engine.localPlayer.hasAccess(CORE_ACTION_EDITOR)) return;
 
@@ -47,18 +59,13 @@ const FileDrop = () => {
   useEvent('onDragLeave', () => {
     setRender(false);
 
-    engine.ui.setProps({
-      zIndex: editor.editing ? 100 : 0,
-    });
-
-    if (!editor.enabled) {
-      engine.ui.hide();
-    }
+    hide();
   });
 
   const onDropFiles = useCallback(
     async (files: File[]) => {
-      engine.ui.hide();
+      hide();
+
       setRender(false);
 
       if (!files.length) return;
@@ -137,7 +144,7 @@ const FileDrop = () => {
       // hide indicator
       engine.ui.hideIndicator('uploading_model');
     },
-    [engine, assets, objects, raycaster],
+    [engine, assets, objects, raycaster, hide],
   );
 
   if (!render) return null;

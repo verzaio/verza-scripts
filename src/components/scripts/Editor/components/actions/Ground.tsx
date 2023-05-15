@@ -1,6 +1,7 @@
-import {useKey, useRaycaster, useToolbarItemPress} from '@verza/sdk/react';
-import {TOOLBAR_GROUND_ID} from '../../misc/constants';
 import {useEditor} from '../../EditorProvider';
+import {TOOLBAR_GROUND_ID} from '../../misc/constants';
+
+import {useKey, useRaycaster, useToolbarItemPress} from '@verza/sdk/react';
 
 const FLOOR_DISTANCE = 200;
 

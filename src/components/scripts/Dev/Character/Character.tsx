@@ -1,10 +1,13 @@
 import styles from './Character.module.scss';
-import Provider from '@app/components/core/Provider';
-import {useCommand, useEngine, useEvent} from '@verza/sdk/react';
+
 import {useCallback, useEffect, useState} from 'react';
+
 import FileContainer from '../../../misc/FileContainer/FileContainer';
+
+import Provider from '@app/components/core/Provider';
 import {ParsedResult, parseFbx, parseGltf, parseMask} from '@app/utils/parser';
 import {CommandParam} from '@verza/sdk';
+import {useCommand, useEngine, useEvent} from '@verza/sdk/react';
 
 const Character = () => {
   return (

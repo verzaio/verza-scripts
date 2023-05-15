@@ -1,5 +1,6 @@
-import {EngineProvider, useEngine} from '@verza/sdk/react';
 import {useEffect} from 'react';
+
+import {EngineProvider, useEngine} from '@verza/sdk/react';
 
 const ClientScript = () => {
   return (
