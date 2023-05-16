@@ -34,6 +34,7 @@ const Scene = () => {
         <Label position={[0, 1, 0]}>Box</Label>
 
         <Box
+          collision="static"
           color="#fc34a6"
           width={1.2}
           height={1.2}
@@ -49,6 +50,7 @@ const Scene = () => {
         <Label position={[0, 1, 0]}>Sphere</Label>
 
         <Sphere
+          collision="static"
           color="#7812ff"
           radius={0.7}
           widthSegments={50}
@@ -73,6 +75,7 @@ const Scene = () => {
         <Label position={[0, 1.5, 0]}>GLTF</Label>
 
         <Gltf
+          collision="static"
           url={formatUrl(
             'showcase/models/2001_crown_victoria_taxi_game_prop.glb',
           )}

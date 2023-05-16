@@ -4,6 +4,7 @@ const Boxes3 = () => {
   return (
     <>
       <Box
+        collision="static"
         width={10}
         height={10}
         depth={1}
@@ -12,6 +13,7 @@ const Boxes3 = () => {
       />
 
       <Box
+        collision="static"
         width={5}
         height={5}
         depth={1}

@@ -4,6 +4,7 @@ const Balls = () => {
   return (
     <>
       <Sphere
+        collision="static"
         drawDistance="low"
         position={[0, 1, 7]}
         radius={1}
@@ -17,6 +18,7 @@ const Balls = () => {
       />
 
       <Sphere
+        collision="static"
         drawDistance="mid"
         position={[3, 1, 7]}
         radius={1}
@@ -30,6 +32,7 @@ const Balls = () => {
       />
 
       <Sphere
+        collision="static"
         position={[-3, 1, 7]}
         radius={1}
         heightSegments={50}
@@ -42,6 +45,7 @@ const Balls = () => {
       />
 
       <Sphere
+        collision="static"
         position={[6, 1, 7]}
         radius={1}
         heightSegments={50}
@@ -57,6 +61,7 @@ const Balls = () => {
 
       <Group position={[5, 1, -3]}>
         <Sphere
+          collision="static"
           position={[0, 0, 0]}
           radius={1}
           heightSegments={50}
@@ -65,6 +70,7 @@ const Balls = () => {
         />
 
         <Sphere
+          collision="static"
           position={[0.5, 0, 0]}
           radius={1}
           heightSegments={50}
@@ -73,6 +79,7 @@ const Balls = () => {
         />
 
         <Sphere
+          collision="static"
           position={[0.5, 0.5, 0]}
           radius={1}
           heightSegments={50}
@@ -81,6 +88,7 @@ const Balls = () => {
         />
 
         <Sphere
+          collision="static"
           position={[0.5, 0.5, 0.5]}
           radius={1}
           heightSegments={50}
@@ -89,6 +97,7 @@ const Balls = () => {
         />
 
         <Sphere
+          collision="static"
           position={[0, 0.5, 0.5]}
           radius={1}
           heightSegments={50}
@@ -97,6 +106,7 @@ const Balls = () => {
         />
 
         <Sphere
+          collision="static"
           position={[0, 0.5, 0]}
           radius={1}
           heightSegments={50}
@@ -105,6 +115,7 @@ const Balls = () => {
         />
 
         <Sphere
+          collision="static"
           position={[0, 0, 0.5]}
           radius={1}
           heightSegments={50}

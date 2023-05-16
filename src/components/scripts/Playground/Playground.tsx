@@ -19,6 +19,7 @@ const PlaygroundRender = () => {
       <Plane
         id="playground_surface"
         surface
+        collision="static"
         restitution={0}
         position={[0, 0, 2]}
         rotation={[-Math.PI / 2, 0, 0]}

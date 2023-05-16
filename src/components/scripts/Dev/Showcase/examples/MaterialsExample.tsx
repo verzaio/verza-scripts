@@ -34,6 +34,7 @@ const Scene = () => {
         <Label position={[0, 1.2, 0]}>1</Label>
 
         <Sphere
+          collision="static"
           radius={0.7}
           widthSegments={100}
           heightSegments={100}
@@ -57,6 +58,7 @@ const Scene = () => {
         <Label position={[0, 1.2, 0]}>2</Label>
 
         <Sphere
+          collision="static"
           radius={0.7}
           widthSegments={100}
           heightSegments={100}
@@ -74,6 +76,7 @@ const Scene = () => {
         <Label position={[0, 1.2, 0]}>3</Label>
 
         <Sphere
+          collision="static"
           radius={0.7}
           widthSegments={100}
           heightSegments={100}
@@ -96,6 +99,7 @@ const Scene = () => {
         <Label position={[0, 1.2, 0]}>4</Label>
 
         <Sphere
+          collision="static"
           radius={0.7}
           widthSegments={100}
           heightSegments={100}
@@ -120,6 +124,7 @@ const Scene = () => {
         <Label position={[0, 1.2, 0]}>5</Label>
 
         <Sphere
+          collision="static"
           radius={0.7}
           widthSegments={100}
           heightSegments={100}

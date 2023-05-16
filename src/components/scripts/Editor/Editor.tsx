@@ -32,12 +32,6 @@ const EditorRender = () => {
   // expose editor permission
   useCommand(CORE_ACTION_EDITOR);
 
-  useMainToolbarItem({
-    id: 'editor',
-    name: 'Map Editor',
-    key: 'R',
-  });
-
   useKey('KeyR', event => {
     if (event.altKey || event.metaKey) return;
 
@@ -50,9 +44,21 @@ const EditorRender = () => {
     <>
       <FileDrop />
 
+      {player.hasAccess(CORE_ACTION_EDITOR) && <MainToolbarItem />}
+
       {enabled && <EditorHandler />}
     </>
   );
+};
+
+const MainToolbarItem = () => {
+  useMainToolbarItem({
+    id: 'editor',
+    name: 'Map Editor',
+    key: 'R',
+  });
+
+  return null;
 };
 
 export default Editor;

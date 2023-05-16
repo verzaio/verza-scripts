@@ -42,6 +42,7 @@ const Scene = () => {
         }}>
         <Label position={[0, 0, 0.15]}>New Moon</Label>
         <Box
+          collision="static"
           color="#f1f1f1"
           width={2}
           height={1}
@@ -63,6 +64,7 @@ const Scene = () => {
         }}>
         <Label position={[0, 0, 0.15]}>Waxing Crescenet</Label>
         <Box
+          collision="static"
           color="#d3d3d3"
           width={2}
           height={1}
@@ -84,6 +86,7 @@ const Scene = () => {
         }}>
         <Label position={[0, 0, 0.15]}>First Quarter</Label>
         <Box
+          collision="static"
           color="#b5b5b5"
           width={2}
           height={1}
@@ -105,6 +108,7 @@ const Scene = () => {
         }}>
         <Label position={[0, 0, 0.15]}>Waxomg Gibbous</Label>
         <Box
+          collision="static"
           color="#999999"
           width={2}
           height={1}
@@ -127,6 +131,7 @@ const Scene = () => {
         }}>
         <Label position={[0, 0, 0.15]}>Full Moon</Label>
         <Box
+          collision="static"
           color="#7b7b7b"
           width={2}
           height={1}
@@ -148,6 +153,7 @@ const Scene = () => {
         }}>
         <Label position={[0, 0, 0.15]}>Waning Crescent</Label>
         <Box
+          collision="static"
           color="#555555"
           width={2}
           height={1}
@@ -169,6 +175,7 @@ const Scene = () => {
         }}>
         <Label position={[0, 0, 0.15]}>Last Quarter</Label>
         <Box
+          collision="static"
           color="#363636"
           width={2}
           height={1}
@@ -190,6 +197,7 @@ const Scene = () => {
         }}>
         <Label position={[0, 0, 0.15]}>Waning Gibbous</Label>
         <Box
+          collision="static"
           color="#1f1f1f"
           width={2}
           height={1}

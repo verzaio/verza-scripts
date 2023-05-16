@@ -62,7 +62,7 @@ const TOOLBAR_ACTIONS: ToolbarElement = {
   ],
 };
 
-const EditorToolbar = () => {
+const EditorFloatingToolbar = () => {
   const editor = useEditor();
 
   // add toolbar
@@ -81,4 +81,4 @@ const EditorToolbar = () => {
   return null;
 };
 
-export default EditorToolbar;
+export default EditorFloatingToolbar;

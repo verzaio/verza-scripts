@@ -5,6 +5,7 @@ const Poles = () => {
   return (
     <>
       <Box
+        collision="static"
         position={[18, 1.3, 24]}
         material={{
           color: 'red',
@@ -54,6 +55,7 @@ type PoleProps = {
 const Pole = ({position}: PoleProps) => {
   return (
     <Box
+      collision="static"
       position={position}
       material={{
         color: 'blue',
@@ -77,6 +79,7 @@ const PoleH = ({position}: PoleHProps) => {
 
   return (
     <Box
+      collision="static"
       position={position}
       rotation={[0, 0, Math.PI / 2]}
       material={{

@@ -20,6 +20,10 @@ class EditorManager {
     updating: false,
   });
 
+  settingsCollapsed = true;
+
+  materialCollapsed = false;
+
   get activeObject() {
     return this._engine.objects.editingObject;
   }
@@ -55,6 +59,8 @@ class EditorManager {
   }
 
   set editing(status: boolean) {
+    if (this.editing === status) return;
+
     this._ui.setProps({
       zIndex: 100,
     });
@@ -71,6 +77,8 @@ class EditorManager {
   }
 
   set updating(status: boolean) {
+    if (this.updating === status) return;
+
     this.controller.updating = status;
   }
 
@@ -147,6 +155,10 @@ class EditorManager {
         break;
       }
       case 'unselect': {
+        if (this.activeObject && this.activeObject.id !== object.id) {
+          break;
+        }
+
         this.editing = false;
         break;
       }
@@ -172,6 +184,24 @@ class EditorManager {
 
     this.editObject(object);
   };
+
+  private _timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  save() {
+    const object = this.activeObject;
+
+    if (!object?.permanent) return;
+
+    if (this._timeoutId) {
+      clearTimeout(this._timeoutId);
+    }
+
+    this._timeoutId = setTimeout(() => {
+      this._timeoutId = null;
+
+      object.save();
+    }, 100);
+  }
 
   editObject(object: ObjectManager) {
     this.activeObject?.disableHighlight();

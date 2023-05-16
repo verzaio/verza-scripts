@@ -8,8 +8,9 @@ import FreeLook from './actions/FreeLook';
 import Ground from './actions/Ground';
 import InFront from './actions/InFront';
 import Reset from './actions/Reset';
+import EditorFloatingToolbar from './EditorFloatingToolbar';
 import EditorPanel from './EditorPanel/EditorPanel';
-import EditorToolbar from './EditorToolbar';
+import EditorToolbar from './EditorToolbar/EditorToolbar';
 
 import {useControllerProp, useEngine, useEvent} from '@verza/sdk/react';
 
@@ -23,20 +24,20 @@ const EditorHandler = () => {
   useEvent('onObjectEdit', editor.onObjectEdit);
 
   useEffect(() => {
-    if (!editing) return;
-
     engine.ui.hideComponent('toolbar_right');
 
     return () => {
       engine.ui.showComponent('toolbar_right');
     };
-  }, [engine, editing]);
+  }, [engine]);
 
   return (
     <>
       <EntitySelector />
 
       <EditorToolbar />
+
+      <EditorFloatingToolbar />
 
       <EditorPanel />
 

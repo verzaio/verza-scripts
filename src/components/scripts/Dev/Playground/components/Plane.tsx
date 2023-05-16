@@ -5,6 +5,7 @@ const Plane = () => {
   return (
     <>
       <Box
+        collision="static"
         position={[15, 0.5, -20]}
         rotation={[0, 0, MathUtils.degToRad(25)]}
         material={{
@@ -21,6 +22,7 @@ const Plane = () => {
       />
 
       <Box
+        collision="static"
         position={[15, 0.5, -10]}
         rotation={[0, 0, MathUtils.degToRad(10)]}
         material={{

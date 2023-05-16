@@ -1,4 +1,4 @@
-import {useRef} from 'react';
+import {useEffect, useRef} from 'react';
 
 import {useEditor} from '../../EditorProvider';
 import {HIGHLIGHT_INACTIVE_COLOR} from '../../misc/constants';
@@ -104,6 +104,14 @@ const EntitySelector = () => {
 
     editor.onEntitySelected(result);
   });
+
+  // clear highlight on unmount
+  useEffect(() => {
+    return () => {
+      hoverObjectRef.current?.disableHighlight();
+      hoverObjectRef.current = null;
+    };
+  }, []);
 
   return null;
 };

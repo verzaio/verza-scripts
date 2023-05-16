@@ -68,6 +68,7 @@ const Scene = () => {
         </Group>
 
         <Box
+          collision="static"
           color="#0e82ff"
           position={[0, 1.5, 0]}
           width={1.5}
@@ -133,6 +134,7 @@ const Scene = () => {
         </Group>
 
         <Box
+          collision="static"
           color="#ff24ba"
           position={[0, 1.5, 0]}
           width={1.5}
@@ -191,6 +193,7 @@ const Scene = () => {
         </Group>
 
         <Box
+          collision="static"
           color="#06ffa8"
           position={[0, 1.5, 0]}
           width={1.5}

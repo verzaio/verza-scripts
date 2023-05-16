@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 14px;
+  user-select: none;
+  margin: 0 auto;
+  margin-top: 30px;
+  width: auto;
+
+  .toolbar {
+    display: flex;
+    background-color: #373c4b;
+    height: 40px;
+    padding: 0px 10px;
+    border-radius: 5px;
+  }
+}

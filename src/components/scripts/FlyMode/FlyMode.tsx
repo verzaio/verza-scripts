@@ -11,6 +11,7 @@ import {
   useToolbar,
   useEvent,
   useMainToolbarItem,
+  useLocalPlayer,
 } from '@verza/sdk/react';
 
 const TOOLBAR_ID = 'flymode_toolbar';
@@ -28,6 +29,8 @@ const _DIR2 = new Vector3();
 
 const MODEL_ROTATION = Math.PI; // 180 degrees
 
+const FLY_CMD = 'fly';
+
 const FlyMode = () => {
   return (
     <Provider
@@ -40,7 +43,7 @@ const FlyMode = () => {
 };
 
 const FlyModeBase = () => {
-  const player = useStreamedLocalPlayer();
+  const player = useLocalPlayer();
   const [enabled, setEnabled] = useState(false);
   const enabledRef = useRef(enabled);
   enabledRef.current = enabled;
@@ -49,7 +52,7 @@ const FlyModeBase = () => {
     const newStatus = setStatus ?? !enabled;
     if (newStatus === enabled) return;
 
-    if (!player.hasAccess('fly')) return;
+    if (!player.hasAccess(FLY_CMD)) return;
 
     setEnabled(newStatus);
 
@@ -65,22 +68,30 @@ const FlyModeBase = () => {
   };
 
   // hooks
-  useCommand('fly').on(() => toggle());
+  useCommand(FLY_CMD).on(() => toggle());
 
   useKey('Tab', () => toggle());
   useKey('Tab', () => toggle(false), {
     ignoreFlags: true,
   });
 
+  return (
+    <>
+      {player.hasAccess(FLY_CMD) && <MainToolbarItem />}
+
+      {enabled && <FlyModeRender toggle={toggle} />}
+    </>
+  );
+};
+
+const MainToolbarItem = () => {
   useMainToolbarItem({
     id: 'fly-mode',
     name: 'Fly Mode',
     key: 'Tab',
   });
 
-  if (!enabled) return null;
-
-  return <FlyModeRender toggle={toggle} />;
+  return null;
 };
 
 type FlyModeRenderProps = {

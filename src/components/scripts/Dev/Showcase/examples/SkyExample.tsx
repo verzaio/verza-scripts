@@ -44,6 +44,7 @@ const Scene = () => {
         }}>
         <Label position={[0, 0, 0.15]}>Sunrise</Label>
         <Box
+          collision="static"
           color="#ffa443"
           width={1.5}
           height={2}
@@ -65,6 +66,7 @@ const Scene = () => {
         }}>
         <Label position={[0, 0, 0.15]}>Midday</Label>
         <Box
+          collision="static"
           color="#5781ff"
           width={1.5}
           height={2}
@@ -86,6 +88,7 @@ const Scene = () => {
         }}>
         <Label position={[0, 0, 0.15]}>Sunset</Label>
         <Box
+          collision="static"
           color="#fd5a36"
           width={1.5}
           height={2}
@@ -107,6 +110,7 @@ const Scene = () => {
         }}>
         <Label position={[0, 0, 0.15]}>Night</Label>
         <Box
+          collision="static"
           color="#242424"
           width={1.5}
           height={2}
@@ -136,6 +140,7 @@ const Scene = () => {
         }}>
         <Label position={[0, 0, 0.15]}>Skybox</Label>
         <Box
+          collision="static"
           color="#ff38eb"
           width={1.5}
           height={2}

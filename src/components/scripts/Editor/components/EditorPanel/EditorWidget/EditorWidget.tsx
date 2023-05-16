@@ -7,6 +7,7 @@ const EditorWidget = () => {
   return (
     <div
       className={clsx(styles.container, 'fade-in')}
+      onPointerMove={e => e.stopPropagation()}
       onPointerDown={e => e.stopPropagation()}
       onPointerUp={e => e.stopPropagation()}>
       <PanelWidget
@@ -16,6 +17,7 @@ const EditorWidget = () => {
           y: 0,
         }}
         fill
+        flat
         drag={false}
       />
     </div>

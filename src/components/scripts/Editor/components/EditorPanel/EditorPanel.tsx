@@ -1,5 +1,5 @@
 import {useEditor} from '../../EditorProvider';
-import EditorPanelObject from './EditorPanelObject';
+import EditorPanelObject from './EditorPanelObject/EditorPanelObject';
 import EditorPanelSettings from './EditorPanelSettings';
 import EditorWidget from './EditorWidget/EditorWidget';
 
@@ -14,11 +14,11 @@ const EditorPanel = () => {
     <>
       <EditorWidget />
 
+      <EditorPanelSettings />
+
       {editing && (
         <>
-          <EditorPanelSettings />
-
-          <EditorPanelObject key={editor.activeObject?.id} />
+          <EditorPanelObject />
         </>
       )}
     </>

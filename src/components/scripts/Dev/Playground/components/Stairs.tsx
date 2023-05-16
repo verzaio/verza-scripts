@@ -11,6 +11,7 @@ const Stairs = () => {
   return (
     <>
       <Gltf
+        collision="static"
         url={formatUrl('dev/playground/models/stairs/double_stairs.glb')}
         position={[-20, 0, 5]}
         scale={0.02}
@@ -20,6 +21,7 @@ const Stairs = () => {
       />
 
       <Gltf
+        collision="static"
         url={formatUrl('dev/playground/models/stairs/double_stairs.glb')}
         position={[-26, 0, 5]}
         scale={0.016}
@@ -29,6 +31,7 @@ const Stairs = () => {
       />
 
       <Gltf
+        collision="static"
         url={formatUrl('dev/playground/models/stairs/double_stairs.glb')}
         position={[-31, 0, 5]}
         scale={0.013}
@@ -76,6 +79,7 @@ type StairProps = {
 
 const Stair = ({width, height, depth, position, rotation}: StairProps) => (
   <Box
+    collision="static"
     width={width}
     height={height}
     depth={depth}

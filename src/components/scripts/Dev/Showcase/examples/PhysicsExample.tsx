@@ -51,6 +51,7 @@ const Scene = () => {
   return (
     <>
       <Box
+        collision="static"
         color="rgb(53, 110, 255)"
         position={[2, 0.5, 3]}
         radius={BOX_RADIUS}
@@ -60,6 +61,7 @@ const Scene = () => {
       />
 
       <Box
+        collision="static"
         color="#01ff73"
         position={[0, 0.5, 3]}
         radius={BOX_RADIUS}

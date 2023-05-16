@@ -13,6 +13,8 @@ type PanelWidgetProps = {
 
   fill?: boolean;
 
+  flat?: boolean;
+
   position?: {
     x?: number;
     y?: number;
@@ -26,6 +28,7 @@ const PanelWidget = ({
   position,
   filter = false,
   fill,
+  flat = true,
 }: PanelWidgetProps) => {
   return (
     <Leva
@@ -36,6 +39,7 @@ const PanelWidget = ({
         position,
       }}
       fill={fill}
+      flat={flat}
       collapsed={collapsed}
       hideCopyButton
     />

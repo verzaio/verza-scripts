@@ -1,3 +1,5 @@
+import {ObjectControlProps} from './types';
+
 import {
   PlayerManager,
   ObjectManager,
@@ -54,5 +56,26 @@ export const isObjectUneditable = async (
 };
 
 export const doesObjectSupportMaterial = (type: ObjectType) => {
-  return !(type === 'group' || type === 'gltf' || type === 'model');
+  return !(
+    type === 'group' ||
+    type === 'gltf' ||
+    type === 'model' ||
+    type === 'text'
+  );
+};
+
+export const createSliderProps = (
+  label: string,
+  min: number,
+  max: number,
+  step: number,
+  value?: number,
+): ObjectControlProps => {
+  return {
+    label,
+    min,
+    max,
+    step,
+    value,
+  };
 };

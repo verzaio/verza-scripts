@@ -35,6 +35,7 @@ const Scene = () => {
         <Label position={[0, 1, 0]}>I will deform on aim</Label>
 
         <Box
+          collision="static"
           color="#0e82ff"
           width={1.2}
           height={1.2}
@@ -94,6 +95,7 @@ const Scene = () => {
         <Label position={[0, 1, 0]}>I will disappear on click</Label>
 
         <Box
+          collision="static"
           color="#f92020"
           width={1.2}
           height={1.2}

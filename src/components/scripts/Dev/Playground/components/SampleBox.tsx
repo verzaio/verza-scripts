@@ -14,6 +14,7 @@ const SampleBox = forwardRef<ObjectManager<'box'>, SampleBoxProps>(
   ({color, position, rotation, size}: SampleBoxProps, ref) => {
     return (
       <Box
+        collision="static"
         ref={ref}
         width={size?.[0] ?? 1}
         height={size?.[1] ?? 1}
