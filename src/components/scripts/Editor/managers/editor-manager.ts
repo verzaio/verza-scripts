@@ -20,10 +20,6 @@ class EditorManager {
     updating: false,
   });
 
-  settingsCollapsed = true;
-
-  materialCollapsed = false;
-
   get activeObject() {
     return this._engine.objects.editingObject;
   }

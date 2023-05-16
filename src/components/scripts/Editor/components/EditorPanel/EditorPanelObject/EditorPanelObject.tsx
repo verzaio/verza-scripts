@@ -36,8 +36,30 @@ const EditorPanelObject = () => {
     handler(value);
   };
 
-  const [, setInfo] = useControls(
-    'Info',
+  const [, setObject] = useControls(
+    'Object',
+    () => ({
+      id: {
+        label: 'Id',
+        value: '-',
+        editable: false,
+      },
+
+      type: {
+        label: 'Type',
+        value: '-',
+        editable: false,
+      },
+    }),
+    {
+      order: 25,
+
+      collapsed: true,
+    },
+  );
+
+  const [, setTransforms] = useControls(
+    'Transforms',
     () => ({
       collision: {
         label: 'Collision',
@@ -50,26 +72,6 @@ const EditorPanelObject = () => {
         }),
 
         render: () => !!editor.activeObject?.hasCollision,
-      },
-
-      id: {
-        label: 'ID',
-        value: '-',
-        editable: false,
-      },
-    }),
-    {
-      order: 250,
-    },
-  );
-
-  const [, setObject] = useControls(
-    `Object`,
-    () => ({
-      type: {
-        label: 'Type',
-        value: '-',
-        editable: false,
       },
 
       position: {
@@ -339,7 +341,7 @@ const EditorPanelObject = () => {
     {
       order: 150,
 
-      collapsed: editor.materialCollapsed,
+      collapsed: true,
 
       render: () => {
         return doesObjectSupportMaterial(editor.activeObject?.objectType);
@@ -387,6 +389,8 @@ const EditorPanelObject = () => {
     },
     {
       order: 225,
+
+      collapsed: false,
     },
   );
 
@@ -396,9 +400,7 @@ const EditorPanelObject = () => {
 
       const location = await object.worldLocation;
 
-      setObject({
-        type: object.objectType,
-
+      setTransforms({
         position: {
           x: location.position.x,
           y: location.position.y,
@@ -416,6 +418,10 @@ const EditorPanelObject = () => {
           y: location.scale.y,
           z: location.scale.z,
         },
+
+        ...(object.hasCollision && {
+          collision: !!object.collision,
+        }),
       });
 
       if (doesObjectSupportMaterial(object.objectType)) {
@@ -443,12 +449,10 @@ const EditorPanelObject = () => {
         });
       }
 
-      setInfo({
-        id: object.id.split('-')[0],
+      setObject({
+        id: object.id,
 
-        ...(object.hasCollision && {
-          collision: !!object.collision,
-        }),
+        type: object.objectType,
       });
 
       const props = OBJECTS_INFO[object.objectType]?.props;
@@ -469,7 +473,7 @@ const EditorPanelObject = () => {
         });
       }
     },
-    [setObject, setMaterial, setInfo, setProps],
+    [setTransforms, setMaterial, setObject, setProps],
   );
 
   // initial update

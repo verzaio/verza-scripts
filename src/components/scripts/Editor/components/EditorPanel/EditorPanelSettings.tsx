@@ -1,15 +1,11 @@
 import {useRef} from 'react';
 
-import {useEditor} from '../../EditorProvider';
-
 import {useObjects, useWorld} from '@verza/sdk/react';
 import {useControls} from 'leva';
 
 const EditorPanelSettings = () => {
   const objects = useObjects();
   const world = useWorld();
-
-  const editor = useEditor();
 
   const originalTime = useRef(14 * 4600);
 
@@ -18,7 +14,7 @@ const EditorPanelSettings = () => {
   useControls(
     'Settings',
     () => ({
-      axis: {
+      axes: {
         label: 'Show All Axes',
         value: false,
 
@@ -73,8 +69,8 @@ const EditorPanelSettings = () => {
       },
     }),
     {
-      order: 500,
-      collapsed: editor.settingsCollapsed,
+      order: 0,
+      collapsed: true,
     },
   );
 

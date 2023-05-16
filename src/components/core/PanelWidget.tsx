@@ -19,6 +19,8 @@ type PanelWidgetProps = {
     x?: number;
     y?: number;
   };
+
+  hidden?: boolean;
 };
 
 const PanelWidget = ({
@@ -29,6 +31,7 @@ const PanelWidget = ({
   filter = false,
   fill,
   flat = true,
+  hidden = false,
 }: PanelWidgetProps) => {
   return (
     <Leva
@@ -42,6 +45,7 @@ const PanelWidget = ({
       flat={flat}
       collapsed={collapsed}
       hideCopyButton
+      hidden={hidden}
     />
   );
 };
