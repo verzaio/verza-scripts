@@ -1,16 +1,17 @@
-import {ObjectManager, PointerEvent} from '@verza/sdk';
-import {useEngine, useEvent} from '@verza/sdk/react';
-import {useRef} from 'react';
-import {isUneditable} from '../EditorHandler';
+import {useEffect, useRef} from 'react';
+
 import {useEditor} from '../../EditorProvider';
 import {HIGHLIGHT_INACTIVE_COLOR} from '../../misc/constants';
+import {isObjectUneditable} from '../../misc/utils';
+
+import {ObjectManager, PointerEvent} from '@verza/sdk';
+import {useEngine, useEvent} from '@verza/sdk/react';
 
 let timeoutId: ReturnType<typeof setTimeout> | null = null;
 let lastPointerEvent: PointerEvent | null = null;
 
 const EntitySelector = () => {
   const engine = useEngine();
-
   const editor = useEditor();
 
   const canUpdate = () =>
@@ -41,7 +42,7 @@ const EntitySelector = () => {
 
     const object = result.object?.entity;
 
-    if (!object || (await isUneditable(object))) {
+    if (!object || (await isObjectUneditable(object))) {
       clearHighlight();
       return;
     }
@@ -103,6 +104,14 @@ const EntitySelector = () => {
 
     editor.onEntitySelected(result);
   });
+
+  // clear highlight on unmount
+  useEffect(() => {
+    return () => {
+      hoverObjectRef.current?.disableHighlight();
+      hoverObjectRef.current = null;
+    };
+  }, []);
 
   return null;
 };

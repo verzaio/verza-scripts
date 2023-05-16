@@ -1,21 +1,18 @@
-import {
-  useKey,
-  useObjects,
-  useRaycaster,
-  useToolbarItemPress,
-} from '@verza/sdk/react';
+import {useEditor} from '../../EditorProvider';
 import {TOOLBAR_GROUND_ID} from '../../misc/constants';
+
+import {useKey, useRaycaster, useToolbarItemPress} from '@verza/sdk/react';
 
 const FLOOR_DISTANCE = 200;
 
 const Ground = () => {
-  const objects = useObjects();
+  const editor = useEditor();
   const raycaster = useRaycaster();
 
   const putToGround = async () => {
-    if (!objects.editingObject) return;
+    if (!editor.activeObject) return;
 
-    const object = objects.editingObject;
+    const object = editor.activeObject;
 
     const worldLocation = await object.worldLocation;
     const fromLocation = worldLocation.position.clone();

@@ -1,23 +1,23 @@
+import {useEditor} from '../../EditorProvider';
+import {TOOLBAR_IN_FRONT_ID} from '../../misc/constants';
+import {bringToFront} from '../../misc/utils';
+
 import {
   useEngine,
   useKey,
-  useObjects,
   useRaycaster,
   useToolbarItemPress,
 } from '@verza/sdk/react';
 
-import {bringToFront} from '../../misc/utils';
-import {TOOLBAR_IN_FRONT_ID} from '../../misc/constants';
-
 const InFront = () => {
-  const objects = useObjects();
+  const editor = useEditor();
   const engine = useEngine();
   const raycaster = useRaycaster();
 
   const _bringToFront = () => {
-    if (!objects.editingObject) return;
+    if (!editor.activeObject) return;
 
-    return bringToFront(engine.localPlayer, objects.editingObject, raycaster);
+    return bringToFront(engine.localPlayer, editor.activeObject, raycaster);
   };
 
   useToolbarItemPress(TOOLBAR_IN_FRONT_ID, _bringToFront);

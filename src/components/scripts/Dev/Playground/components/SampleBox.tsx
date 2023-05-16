@@ -1,7 +1,7 @@
+import {forwardRef} from 'react';
+
 import {ColorType, ObjectManager} from '@verza/sdk';
 import {Box} from '@verza/sdk/react';
-
-import {forwardRef} from 'react';
 
 type SampleBoxProps = {
   size?: [number, number, number];
@@ -14,6 +14,7 @@ const SampleBox = forwardRef<ObjectManager<'box'>, SampleBoxProps>(
   ({color, position, rotation, size}: SampleBoxProps, ref) => {
     return (
       <Box
+        collision="static"
         ref={ref}
         width={size?.[0] ?? 1}
         height={size?.[1] ?? 1}

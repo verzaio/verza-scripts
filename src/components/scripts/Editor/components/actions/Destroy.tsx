@@ -1,17 +1,14 @@
-import {
-  useEngine,
-  useKey,
-  useObjects,
-  useToolbarItemPress,
-} from '@verza/sdk/react';
+import {useEditor} from '../../EditorProvider';
 import {TOOLBAR_DESTROY_ID} from '../../misc/constants';
 
+import {useEngine, useKey, useToolbarItemPress} from '@verza/sdk/react';
+
 const Destroy = () => {
-  const objects = useObjects();
+  const editor = useEditor();
   const engine = useEngine();
 
   const destroy = async () => {
-    const object = objects.editingObject;
+    const object = editor.activeObject;
     if (!object) return;
 
     if (!object.remote) {

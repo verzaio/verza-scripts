@@ -1,5 +1,6 @@
-import {Leva} from 'leva';
 import {ReactNode} from 'react';
+
+import {Leva} from 'leva';
 
 type PanelWidgetProps = {
   title?: ReactNode;
@@ -8,23 +9,38 @@ type PanelWidgetProps = {
 
   drag?: boolean;
 
+  filter?: boolean;
+
+  fill?: boolean;
+
+  flat?: boolean;
+
   position?: {
     x?: number;
     y?: number;
   };
 };
 
-const PanelWidget = ({title, collapsed, drag, position}: PanelWidgetProps) => {
+const PanelWidget = ({
+  title,
+  collapsed,
+  drag,
+  position,
+  filter = false,
+  fill,
+  flat = true,
+}: PanelWidgetProps) => {
   return (
     <Leva
       titleBar={{
         title,
         drag,
-        filter: false,
+        filter,
         position,
       }}
+      fill={fill}
+      flat={flat}
       collapsed={collapsed}
-      flat
       hideCopyButton
     />
   );

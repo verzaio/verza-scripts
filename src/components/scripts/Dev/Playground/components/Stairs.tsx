@@ -1,7 +1,8 @@
+import SampleBox from './SampleBox';
+
 import {formatUrl} from '@app/utils/misc';
 import {EulerArray, Vector3, Vector3Array} from '@verza/sdk';
 import {Box, Gltf} from '@verza/sdk/react';
-import SampleBox from './SampleBox';
 
 const Stairs = () => {
   const pos = new Vector3(-5, 0, -5);
@@ -10,6 +11,7 @@ const Stairs = () => {
   return (
     <>
       <Gltf
+        collision="static"
         url={formatUrl('dev/playground/models/stairs/double_stairs.glb')}
         position={[-20, 0, 5]}
         scale={0.02}
@@ -19,6 +21,7 @@ const Stairs = () => {
       />
 
       <Gltf
+        collision="static"
         url={formatUrl('dev/playground/models/stairs/double_stairs.glb')}
         position={[-26, 0, 5]}
         scale={0.016}
@@ -28,6 +31,7 @@ const Stairs = () => {
       />
 
       <Gltf
+        collision="static"
         url={formatUrl('dev/playground/models/stairs/double_stairs.glb')}
         position={[-31, 0, 5]}
         scale={0.013}
@@ -75,6 +79,7 @@ type StairProps = {
 
 const Stair = ({width, height, depth, position, rotation}: StairProps) => (
   <Box
+    collision="static"
     width={width}
     height={height}
     depth={depth}

@@ -1,3 +1,6 @@
+import {TOOLBAR_TOGGLE_FREE_LOOK_ID} from '../misc/constants';
+import {isObjectUneditable} from '../misc/utils';
+
 import {
   EngineManager,
   IntersectsResult,
@@ -5,10 +8,6 @@ import {
   createControllerManager,
 } from '@verza/sdk';
 import {ObjectEditActionType} from '@verza/sdk/index';
-import {
-  HIGHLIGHT_ACTIVE_COLOR,
-  TOOLBAR_TOGGLE_FREE_LOOK_ID,
-} from '../misc/constants';
 
 class EditorManager {
   private _engine: EngineManager;
@@ -20,6 +19,14 @@ class EditorManager {
 
     updating: false,
   });
+
+  settingsCollapsed = true;
+
+  materialCollapsed = false;
+
+  get activeObject() {
+    return this._engine.objects.editingObject;
+  }
 
   private get _objects() {
     return this._engine.objects;
@@ -40,6 +47,8 @@ class EditorManager {
       this.setCursor(false);
 
       this.cancelEdit();
+
+      this.controller.editing = false;
     }
 
     this.controller.enabled = status;
@@ -50,15 +59,11 @@ class EditorManager {
   }
 
   set editing(status: boolean) {
-    if (status) {
-      this._ui.setProps({
-        zIndex: 100,
-      });
-    } else {
-      this._ui.setProps({
-        zIndex: 0,
-      });
-    }
+    if (this.editing === status) return;
+
+    this._ui.setProps({
+      zIndex: 100,
+    });
 
     this.controller.editing = status;
   }
@@ -72,6 +77,8 @@ class EditorManager {
   }
 
   set updating(status: boolean) {
+    if (this.updating === status) return;
+
     this.controller.updating = status;
   }
 
@@ -79,6 +86,16 @@ class EditorManager {
     this._engine = engine;
 
     this._init();
+
+    engine.ui.setProps({
+      width: '100%',
+      height: '100%',
+
+      top: '0px',
+      left: '0px',
+
+      zIndex: 100,
+    });
   }
 
   private _init() {
@@ -138,6 +155,10 @@ class EditorManager {
         break;
       }
       case 'unselect': {
+        if (this.activeObject && this.activeObject.id !== object.id) {
+          break;
+        }
+
         this.editing = false;
         break;
       }
@@ -154,9 +175,9 @@ class EditorManager {
     const object = intersects.object.entity;
 
     // edit if not selected
-    if (object.id === this._objects.editingObject?.id) return;
+    if (object.id === this.activeObject?.id) return;
 
-    if (await isUneditable(object)) {
+    if (await isObjectUneditable(object)) {
       this.cancelEdit();
       return;
     }
@@ -164,31 +185,41 @@ class EditorManager {
     this.editObject(object);
   };
 
+  private _timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  save() {
+    const object = this.activeObject;
+
+    if (!object?.permanent) return;
+
+    if (this._timeoutId) {
+      clearTimeout(this._timeoutId);
+    }
+
+    this._timeoutId = setTimeout(() => {
+      this._timeoutId = null;
+
+      object.save();
+    }, 100);
+  }
+
   editObject(object: ObjectManager) {
-    this._objects.editingObject?.disableHighlight();
+    this.activeObject?.disableHighlight();
 
     object.edit();
 
-    object.enableHighlight({
+    object.disableHighlight();
+
+    /* object.enableHighlight({
       color: HIGHLIGHT_ACTIVE_COLOR,
-    });
+    }); */
   }
 
   cancelEdit() {
-    this._objects.editingObject?.disableHighlight();
+    this.activeObject?.disableHighlight();
 
     this._objects.cancelEdit();
   }
 }
-
-export const isUneditable = async (object: ObjectManager): Promise<boolean> => {
-  if (!object) return false;
-
-  if (object.userData.uneditable) {
-    return true;
-  }
-
-  return isUneditable((await object.resolveParent())!);
-};
 
 export default EditorManager;

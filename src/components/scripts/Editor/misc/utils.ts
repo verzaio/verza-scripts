@@ -1,4 +1,11 @@
-import {PlayerManager, ObjectManager, RaycasterManager} from '@verza/sdk';
+import {ObjectControlProps} from './types';
+
+import {
+  PlayerManager,
+  ObjectManager,
+  RaycasterManager,
+  ObjectType,
+} from '@verza/sdk';
 
 const FRONT_DISTANCE = 2;
 
@@ -34,4 +41,41 @@ export const bringToFront = async (
 
   object.setPositionFromWorldSpace(frontLocation.position);
   object.setRotationFromWorldSpace(frontLocation.quaternion);
+};
+
+export const isObjectUneditable = async (
+  object: ObjectManager,
+): Promise<boolean> => {
+  if (!object) return false;
+
+  if (object.userData.uneditable) {
+    return true;
+  }
+
+  return isObjectUneditable((await object.resolveParent())!);
+};
+
+export const doesObjectSupportMaterial = (type: ObjectType) => {
+  return !(
+    type === 'group' ||
+    type === 'gltf' ||
+    type === 'model' ||
+    type === 'text'
+  );
+};
+
+export const createSliderProps = (
+  label: string,
+  min: number,
+  max: number,
+  step: number,
+  value?: number,
+): ObjectControlProps => {
+  return {
+    label,
+    min,
+    max,
+    step,
+    value,
+  };
 };

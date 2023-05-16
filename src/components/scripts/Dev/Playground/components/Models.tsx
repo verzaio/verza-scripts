@@ -16,6 +16,7 @@ const Models = () => {
         id="blue-playground"
         url={formatUrl('dev/playground/models/collision-world.glb')}
         position={[-60, 4, 0]}
+        collision="static"
         userData={{
           uneditable: true,
         }}
@@ -24,6 +25,7 @@ const Models = () => {
       {/* <Gltf
         url={formatUrl('dev/playground/models/sponza/Sponza.gltf')}
         position={[-60, 0.2, 60]}
+        collision="static"
         userData={{
           uneditable: true,
         }}

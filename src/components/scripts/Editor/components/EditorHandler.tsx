@@ -1,36 +1,47 @@
-import {useControllerProp, useEvent} from '@verza/sdk/react';
-import EditorPanel from './EditorPanel';
+import {useEffect} from 'react';
+
+import {useEditor} from '../EditorProvider';
+import Destroy from './actions/Destroy';
+import Duplicate from './actions/Duplicate';
+import EntitySelector from './actions/EntitySelector';
+import FreeLook from './actions/FreeLook';
 import Ground from './actions/Ground';
 import InFront from './actions/InFront';
 import Reset from './actions/Reset';
-import EditorToolbar from './EditorToolbar';
-import Destroy from './actions/Destroy';
-import Duplicate from './actions/Duplicate';
-import {ObjectManager} from '@verza/sdk';
-import FreeLook from './actions/FreeLook';
-import EntitySelector from './actions/EntitySelector';
-import {useEditor} from '../EditorProvider';
+import EditorFloatingToolbar from './EditorFloatingToolbar';
+import EditorPanel from './EditorPanel/EditorPanel';
+import EditorToolbar from './EditorToolbar/EditorToolbar';
 
-export const isUneditable = async (object: ObjectManager): Promise<boolean> => {
-  if (!object) return false;
-
-  if (object.userData.uneditable) {
-    return true;
-  }
-
-  return isUneditable((await object.resolveParent())!);
-};
+import {useControllerProp, useEngine, useEvent} from '@verza/sdk/react';
 
 const EditorHandler = () => {
+  const engine = useEngine();
+
   const editor = useEditor();
 
   const editing = useControllerProp(editor.controller, 'editing');
 
   useEvent('onObjectEdit', editor.onObjectEdit);
 
+  useEffect(() => {
+    engine.ui.hideComponent('toolbar_right');
+
+    return () => {
+      engine.ui.showComponent('toolbar_right');
+    };
+  }, [engine]);
+
   return (
     <>
       <EntitySelector />
+
+      <EditorToolbar />
+
+      <EditorFloatingToolbar />
+
+      <EditorPanel />
+
+      <FreeLook />
 
       {editing && (
         <>
@@ -43,14 +54,8 @@ const EditorHandler = () => {
           <Destroy />
 
           <Reset />
-
-          <EditorPanel />
         </>
       )}
-
-      <EditorToolbar />
-
-      <FreeLook />
     </>
   );
 };

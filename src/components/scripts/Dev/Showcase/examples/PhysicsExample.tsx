@@ -1,10 +1,12 @@
-import {ObjectManager} from '@verza/sdk';
-import {Box, Group, Sphere} from '@verza/sdk/react';
 import {useEffect, useRef} from 'react';
+
 import Description from '../components/Description';
 import SceneTitle from '../components/SceneTitle';
 import {BOX_RADIUS} from '../constants';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
+
+import {ObjectManager} from '@verza/sdk';
+import {Box, Group, Sphere} from '@verza/sdk/react';
 
 const PhysicsExample = () => {
   const loc = SHOWCASE_LOCATION.clone();
@@ -49,6 +51,7 @@ const Scene = () => {
   return (
     <>
       <Box
+        collision="static"
         color="rgb(53, 110, 255)"
         position={[2, 0.5, 3]}
         radius={BOX_RADIUS}
@@ -58,6 +61,7 @@ const Scene = () => {
       />
 
       <Box
+        collision="static"
         color="#01ff73"
         position={[0, 0.5, 3]}
         radius={BOX_RADIUS}

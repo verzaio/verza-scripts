@@ -1,5 +1,11 @@
 import styles from './FileDrop.module.scss';
 
+import {useCallback, useState} from 'react';
+
+import {useEditor} from '../../../EditorProvider';
+import {bringToFront} from '../../../misc/utils';
+
+import FileContainer from '@app/components/misc/FileContainer/FileContainer';
 import {
   CORE_ACTION_EDITOR,
   Vector3,
@@ -12,10 +18,6 @@ import {
   useObjects,
   useRaycaster,
 } from '@verza/sdk/react';
-import {bringToFront} from '../../../misc/utils';
-import {useCallback, useState} from 'react';
-import FileContainer from '@app/components/misc/FileContainer/FileContainer';
-import {useEditor} from '../../../EditorProvider';
 
 const MAX_SIZE = 50; // meters
 
@@ -32,6 +34,16 @@ const FileDrop = () => {
 
   const [render, setRender] = useState(false);
 
+  const hide = useCallback(() => {
+    engine.ui.setProps({
+      zIndex: 100,
+    });
+
+    if (!editor.enabled) {
+      engine.ui.hide();
+    }
+  }, [engine, editor]);
+
   useEvent('onDragEnter', () => {
     if (!engine.localPlayer.hasAccess(CORE_ACTION_EDITOR)) return;
 
@@ -47,18 +59,13 @@ const FileDrop = () => {
   useEvent('onDragLeave', () => {
     setRender(false);
 
-    engine.ui.setProps({
-      zIndex: editor.editing ? 100 : 0,
-    });
-
-    if (!editor.enabled) {
-      engine.ui.hide();
-    }
+    hide();
   });
 
   const onDropFiles = useCallback(
     async (files: File[]) => {
-      engine.ui.hide();
+      hide();
+
       setRender(false);
 
       if (!files.length) return;
@@ -68,10 +75,13 @@ const FileDrop = () => {
       let assetId: string = null!;
 
       try {
+        engine.ui.showIndicator('uploading_model', 'Uploading model...');
         const file = await createFileTransferFromFile(files[0]);
 
         assetId = await assets.upload(file);
       } catch (e) {
+        engine.ui.hideIndicator('uploading_model');
+
         console.error(e);
 
         const isExternalStorage =
@@ -91,41 +101,50 @@ const FileDrop = () => {
         return;
       }
 
-      const frontLocation = engine.localPlayer.location.clone().translateZ(2);
+      try {
+        const frontLocation = engine.localPlayer.location.clone().translateZ(2);
 
-      const object = objects.create('gltf', {
-        u: assetId,
-        position: frontLocation.position.toArray(),
-      });
+        const object = objects.create('gltf', {
+          u: assetId,
+          position: frontLocation.position.toArray(),
+        });
 
-      // wait for object to stream-in
-      await object.waitForStream();
+        // wait for object to stream-in
+        await object.waitForStream();
 
-      const box = await object.computeBoundingBox();
-      const distance = box.max.distanceTo(box.min);
+        const box = await object.computeBoundingBox();
+        const distance = box.max.distanceTo(box.min);
 
-      // scale it down
-      if (distance > MAX_SIZE) {
-        engine.localPlayer.sendSuccessNotification('Object scaled down');
+        // scale it down
+        if (distance > MAX_SIZE) {
+          engine.localPlayer.sendSuccessNotification('Object scaled down');
 
-        const scaledMeters = (distance / 100) * SCALE_SIZE;
-        const scaledSize = (scaledMeters * 100) / distance;
+          const scaledMeters = (distance / 100) * SCALE_SIZE;
+          const scaledSize = (scaledMeters * 100) / distance;
 
-        const scaledVector = new Vector3(
-          scaledSize,
-          scaledSize,
-          scaledSize,
-        ).divideScalar(100);
-        object.setScale(scaledVector);
+          const scaledVector = new Vector3(
+            scaledSize,
+            scaledSize,
+            scaledSize,
+          ).divideScalar(100);
+          object.setScale(scaledVector);
+        }
+
+        // then bring to front
+        await bringToFront(engine.localPlayer, object, raycaster);
+
+        // make permanent
+        object.save();
+      } catch (e) {
+        console.error(e);
+
+        engine.localPlayer.sendErrorNotification('Failed to process object');
       }
 
-      // then bring to front
-      await bringToFront(engine.localPlayer, object, raycaster);
-
-      // make permanent
-      object.save();
+      // hide indicator
+      engine.ui.hideIndicator('uploading_model');
     },
-    [engine, assets, objects, raycaster],
+    [engine, assets, objects, raycaster, hide],
   );
 
   if (!render) return null;

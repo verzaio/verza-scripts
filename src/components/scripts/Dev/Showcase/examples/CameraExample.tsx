@@ -1,10 +1,11 @@
-import {uuid} from '@verza/sdk/utils';
-import {Box, Group} from '@verza/sdk/react';
 import Description from '../components/Description';
 import Label from '../components/Label';
 import SceneTitle from '../components/SceneTitle';
 import {BOX_RADIUS} from '../constants';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
+
+import {Box, Group} from '@verza/sdk/react';
+import {uuid} from '@verza/sdk/utils';
 
 const CameraExample = () => {
   const loc = SHOWCASE_LOCATION.clone();
@@ -67,6 +68,7 @@ const Scene = () => {
         </Group>
 
         <Box
+          collision="static"
           color="#0e82ff"
           position={[0, 1.5, 0]}
           width={1.5}
@@ -132,6 +134,7 @@ const Scene = () => {
         </Group>
 
         <Box
+          collision="static"
           color="#ff24ba"
           position={[0, 1.5, 0]}
           width={1.5}
@@ -190,6 +193,7 @@ const Scene = () => {
         </Group>
 
         <Box
+          collision="static"
           color="#06ffa8"
           position={[0, 1.5, 0]}
           width={1.5}

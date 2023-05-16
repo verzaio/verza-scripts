@@ -1,6 +1,7 @@
+import {useRef} from 'react';
+
 import {ObjectManager} from '@verza/sdk';
 import {Box, Sphere, useOnTicks} from '@verza/sdk/react';
-import {useRef} from 'react';
 
 const Boxes = () => {
   const boxRef = useRef<ObjectManager>(null!);
@@ -28,6 +29,7 @@ const Boxes = () => {
 
       <>
         <Box
+          collision="static"
           position={[4, 0.3, -5]}
           color="yellow"
           width={3}
@@ -36,6 +38,7 @@ const Boxes = () => {
         />
 
         <Box
+          collision="static"
           position={[4, 0.3, -8]}
           color="purple"
           width={3}
@@ -44,6 +47,7 @@ const Boxes = () => {
         />
 
         <Box
+          collision="static"
           position={[4, 0.3, -10.5]}
           color="purple"
           width={3}
@@ -52,6 +56,7 @@ const Boxes = () => {
         />
 
         <Box
+          collision="static"
           position={[4, 0.3, -12.5]}
           color="purple"
           width={3}
@@ -60,6 +65,7 @@ const Boxes = () => {
         />
 
         <Box
+          collision="static"
           position={[-2, 1, -15]}
           color="red"
           width={3}
@@ -68,6 +74,7 @@ const Boxes = () => {
         />
 
         <Box
+          collision="static"
           position={[-2, 0.8, -15]}
           color="red"
           width={3}
@@ -76,6 +83,7 @@ const Boxes = () => {
         />
 
         <Box
+          collision="static"
           position={[-3, 1.6, -15]}
           color="red"
           width={3}
@@ -84,6 +92,7 @@ const Boxes = () => {
         />
 
         <Box
+          collision="static"
           position={[-1, 0.3, -15]}
           color="red"
           width={3}
@@ -92,6 +101,7 @@ const Boxes = () => {
         />
 
         <Box
+          collision="static"
           position={[-4, 2.3, -15]}
           color="red"
           width={3}
@@ -100,6 +110,7 @@ const Boxes = () => {
         />
 
         <Box
+          collision="static"
           position={[-4, 2.3, -18]}
           color="red"
           width={3}
@@ -108,6 +119,7 @@ const Boxes = () => {
         />
 
         <Box
+          collision="static"
           position={[-4, 2.3, -24]}
           color="red"
           width={4}
@@ -116,6 +128,7 @@ const Boxes = () => {
         />
 
         <Box
+          collision="static"
           position={[-4, 2.3, -29]}
           color="red"
           width={4}
@@ -124,6 +137,7 @@ const Boxes = () => {
         />
 
         <Box
+          collision="static"
           position={[-4, 2.3, -35]}
           color="red"
           width={4}
