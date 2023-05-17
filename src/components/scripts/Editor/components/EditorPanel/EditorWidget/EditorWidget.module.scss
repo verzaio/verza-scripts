@@ -31,6 +31,22 @@
     overflow: hidden;
     overflow-y: auto;
 
+    > div > div {
+      margin-top: 0px !important;
+    }
+
+    > div > div > div:last-child {
+      height: auto !important;
+    }
+
+    > div > div > div:last-child > div {
+      transition-delay: 0ms !important;
+    }
+
+    > div > div > div:last-child > div[class*='toggled-false'] {
+      height: 0px;
+    }
+
     &::-webkit-scrollbar {
       width: 2px;
       height: 2px;

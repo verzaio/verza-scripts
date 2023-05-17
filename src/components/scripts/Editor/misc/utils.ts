@@ -79,3 +79,13 @@ export const createSliderProps = (
     value,
   };
 };
+
+// yay, this is a hack
+export const isFolderToggled = (inputId: string) => {
+  const el = document.querySelector(`[for="${inputId}"]`);
+
+  return (
+    el?.parentElement?.parentElement?.parentElement
+      ?.parentNode as HTMLDivElement
+  )?.className?.includes('toggled-true');
+};
