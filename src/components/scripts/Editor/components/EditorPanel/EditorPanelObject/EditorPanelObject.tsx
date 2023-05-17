@@ -1,17 +1,10 @@
 import {useCallback, useEffect, useRef} from 'react';
 
 import {useEditor} from '../../../EditorProvider';
-import {OBJECTS_INFO} from '../../../misc/constants';
+import {OBJECTS_INFO, OBJECTS_MATERIAL_PROPS} from '../../../misc/constants';
 import {doesObjectSupportMaterial} from '../../../misc/utils';
 
-import {
-  ObjectManager,
-  Euler,
-  Vector3,
-  ColorType,
-  Side,
-  FrontSide,
-} from '@verza/sdk';
+import {ObjectManager, Euler, Vector3} from '@verza/sdk';
 import {useEvent} from '@verza/sdk/react';
 import {MathUtils} from '@verza/sdk/utils';
 import {buttonGroup, useControls} from 'leva';
@@ -170,176 +163,51 @@ const EditorPanelObject = () => {
 
   const [, setMaterial] = useControls(
     'Material',
-    () => ({
-      wireframe: {
-        label: 'Wireframe',
-        value: false,
+    () => {
+      const fields: any = {};
+      Object.entries(OBJECTS_MATERIAL_PROPS).forEach(([name, props]) => {
+        const isSlider =
+          props.step !== undefined ||
+          props.min !== undefined ||
+          props.max !== undefined;
 
-        onChange: on((value: boolean) => {
-          editor.activeObject.setProps({
-            material: {
-              wireframe: value,
-            },
-          });
+        fields[`mat_${name}`] = {
+          ...props,
 
-          editor.save();
-        }),
-      },
+          ...(isSlider && {
+            onEditStart: onEditStart,
+            onEditEnd: onEditEnd,
+          }),
 
-      color: {
-        label: 'Color',
-        value: '#ffffff',
+          render: (get: (name: string) => any) => {
+            if (!props.types) return true;
 
-        onChange: on((value: ColorType) => {
-          editor.activeObject.setProps({
-            color: value,
-          });
+            const object = editor.activeObject as ObjectManager<'box'>;
 
-          editor.save();
-        }),
-      },
+            const materialType =
+              get('Material.mat_type') ??
+              object?.props?.material?.type ??
+              'standard';
 
-      roughness: {
-        label: 'Roughness',
-        step: 0.01,
-        min: 0,
-        max: 1,
-        value: 1,
+            return props.types.includes(materialType);
+          },
 
-        onEditStart,
-        onEditEnd,
+          onChange: on((value: any) => {
+            if (isSlider && !isEditingRef.current) return;
 
-        onChange: on((value: number) => {
-          if (!isEditingRef.current) return;
+            editor.activeObject?.setProps({
+              material: {
+                [name]: value,
+              },
+            });
 
-          editor.activeObject.setProps({
-            material: {
-              roughness: value,
-            },
-          });
+            editor.save();
+          }),
+        };
+      });
 
-          editor.save();
-        }),
-      },
-
-      metalness: {
-        label: 'Metalness',
-        step: 0.01,
-        min: 0,
-        max: 1,
-        value: 0,
-
-        onEditStart,
-        onEditEnd,
-
-        onChange: on((value: number) => {
-          if (!isEditingRef.current) return;
-
-          editor.activeObject.setProps({
-            material: {
-              metalness: value,
-            },
-          });
-
-          editor.save();
-        }),
-      },
-
-      emissive: {
-        label: 'Emissive Color',
-        value: '#000000',
-
-        onChange: on((value: number) => {
-          editor.activeObject.setProps({
-            material: {
-              emissive: value,
-            },
-          });
-
-          editor.save();
-        }),
-      },
-
-      emissiveIntensity: {
-        label: 'Emissive Intensity',
-        step: 0.01,
-        min: 0,
-        max: 1,
-        value: 1,
-
-        onEditStart,
-        onEditEnd,
-
-        onChange: on((value: number) => {
-          if (!isEditingRef.current) return;
-
-          editor.activeObject.setProps({
-            material: {
-              emissiveIntensity: value,
-            },
-          });
-
-          editor.save();
-        }),
-      },
-
-      opacity: {
-        label: 'Opacity',
-        step: 0.01,
-        min: 0,
-        max: 1,
-        value: 1,
-
-        onEditStart,
-        onEditEnd,
-
-        onChange: on((value: number) => {
-          if (!isEditingRef.current) return;
-
-          editor.activeObject.setProps({
-            material: {
-              opacity: value,
-            },
-          });
-
-          editor.save();
-        }),
-      },
-
-      transparent: {
-        label: 'Transparent',
-        value: false,
-
-        onChange: on((value: boolean) => {
-          editor.activeObject.setProps({
-            material: {
-              transparent: value,
-            },
-          });
-
-          editor.save();
-        }),
-      },
-
-      side: {
-        label: 'Side',
-        options: {
-          Front: 0,
-          Back: 1,
-          Both: 2,
-        },
-
-        onChange: on((value: Side) => {
-          editor.activeObject.setProps({
-            material: {
-              side: value,
-            },
-          });
-
-          editor.save();
-        }),
-      },
-    }),
+      return fields;
+    },
     {
       order: 150,
 
@@ -377,8 +245,6 @@ const EditorPanelObject = () => {
             onChange: on((value: any) => {
               if (isSlider && !isEditingRef.current) return;
 
-              console.log('updating', name);
-
               editor.activeObject?.setProps({
                 [name]: value,
               });
@@ -403,6 +269,12 @@ const EditorPanelObject = () => {
       if (isEditingRef.current) return;
 
       const location = await object.worldLocation;
+
+      setObject({
+        id: object.id,
+
+        type: object.objectType,
+      });
 
       setTransforms({
         position: {
@@ -429,40 +301,30 @@ const EditorPanelObject = () => {
       });
 
       if (doesObjectSupportMaterial(object.objectType)) {
-        const props = object.props as ObjectManager<'box'>['props'];
+        const materialProps = OBJECTS_MATERIAL_PROPS;
 
-        setMaterial({
-          color:
-            (props.color ?? props.material?.color)?.toString() ?? '#ffffff',
+        const props =
+          (object.props as ObjectManager<'box'>['props']).material ?? {};
 
-          roughness: props.material?.roughness ?? 1,
+        Object.entries(materialProps).forEach(([name, value]) => {
+          let currentValue = (props as any)[name];
 
-          metalness: props.material?.metalness ?? 0,
+          if (currentValue === undefined) {
+            currentValue = value.value;
+          }
 
-          emissive: props.material?.emissive?.toString() ?? '#000000',
-
-          emissiveIntensity: props.material?.emissiveIntensity ?? 1,
-
-          opacity: props.material?.opacity ?? 1,
-
-          transparent: props.material?.transparent ?? false,
-
-          wireframe: props.material?.wireframe ?? false,
-
-          side: props.material?.side ?? FrontSide,
+          if (currentValue !== undefined) {
+            setMaterial({
+              [`mat_${name}`]: currentValue,
+            });
+          }
         });
       }
 
-      setObject({
-        id: object.id,
+      const objectProperties = OBJECTS_INFO[object.objectType]?.props;
 
-        type: object.objectType,
-      });
-
-      const props = OBJECTS_INFO[object.objectType]?.props;
-
-      if (props) {
-        Object.entries(props).forEach(([name, value]) => {
+      if (objectProperties) {
+        Object.entries(objectProperties).forEach(([name, value]) => {
           let currentValue = (object.props as any)[name];
 
           if (currentValue === undefined) {

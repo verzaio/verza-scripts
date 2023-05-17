@@ -11,7 +11,7 @@ import SphereIcon from './res/objects/sphere.svg';
 import TetrahedronIcon from './res/objects/tetrahedron.svg';
 import TextIcon from './res/objects/text.svg';
 import TorusIcon from './res/objects/torus.svg';
-import {ObjectsInfo} from './types';
+import {ObjectsInfo, ObjectsMaterial} from './types';
 import {createSliderProps} from './utils';
 
 import {formatUrl} from '@app/utils/misc';
@@ -34,7 +34,7 @@ export const TOOLBAR_DUPLICATE_ID = 'editor_duplicate';
 
 export const TOOLBAR_DESTROY_ID = 'editor_destroy';
 
-const SIZE_STEP = 0.1;
+const SIZE_STEP = 0.01;
 const MIN_SIZE = 0.1;
 const MAX_SIZE = 50;
 const M_SEGMENTS = 50;
@@ -47,7 +47,7 @@ export const OBJECTS_INFO: Partial<ObjectsInfo> = {
       width: createSliderProps('Width', MIN_SIZE, MAX_SIZE, SIZE_STEP, 1),
       height: createSliderProps('Height', MIN_SIZE, MAX_SIZE, SIZE_STEP, 1),
       depth: createSliderProps('Depth', MIN_SIZE, MAX_SIZE, SIZE_STEP, 1),
-      radius: createSliderProps('Radius', 0, 1, SIZE_STEP, 0),
+      radius: createSliderProps('Radius', 0, 1, 0.01, 0),
       widthSegments: createSliderProps('Width Segments', 1, M_SEGMENTS, 1, 1),
       heightSegments: createSliderProps('Height Segments', 1, M_SEGMENTS, 1, 1),
       depthSegments: createSliderProps('Depth Segments', 1, M_SEGMENTS, 1, 1),
@@ -359,5 +359,96 @@ export const OBJECTS_INFO: Partial<ObjectsInfo> = {
 
       fillOpacity: createSliderProps('Fill Opacity', 0, 1, 0.01, 1),
     },
+  },
+};
+
+export const OBJECTS_MATERIAL_PROPS: Partial<ObjectsMaterial> = {
+  wireframe: {
+    label: 'Wireframe',
+    value: false,
+  },
+
+  type: {
+    label: 'Type',
+    options: {
+      Basic: 'basic',
+      Standard: 'standard',
+      Physical: 'physical',
+      Normal: 'normal',
+      Depth: 'depth',
+    },
+    value: 'standard',
+  },
+
+  side: {
+    label: 'Side',
+    options: {
+      Front: 0,
+      Back: 1,
+      Both: 2,
+    },
+  },
+
+  color: {
+    label: 'Color',
+    value: '#ffffff',
+    types: ['basic', 'standard', 'physical'],
+  },
+
+  opacity: {
+    label: 'Opacity',
+    step: 0.01,
+    min: 0,
+    max: 1,
+    value: 1,
+  },
+
+  transparent: {
+    label: 'Transparent',
+    value: false,
+  },
+
+  roughness: {
+    label: 'Roughness',
+    step: 0.01,
+    min: 0,
+    max: 1,
+    value: 1,
+
+    types: ['standard', 'physical'],
+  },
+
+  metalness: {
+    label: 'Metalness',
+    step: 0.01,
+    min: 0,
+    max: 1,
+    value: 0,
+
+    types: ['standard', 'physical'],
+  },
+
+  emissive: {
+    label: 'Emissive Color',
+    value: '#000000',
+
+    types: ['standard', 'physical'],
+  },
+
+  emissiveIntensity: {
+    label: 'Emissive Intensity',
+    step: 0.01,
+    min: 0,
+    max: 1,
+    value: 1,
+
+    types: ['standard', 'physical'],
+  },
+
+  flatShading: {
+    label: 'Flat Shading',
+    value: false,
+
+    types: ['standard', 'physical', 'normal'],
   },
 };

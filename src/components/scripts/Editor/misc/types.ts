@@ -1,6 +1,11 @@
 import {ComponentType} from 'react';
 
-import {ObjectType, PickObject} from '@verza/sdk';
+import {
+  ObjectMaterialMix,
+  ObjectMaterialType,
+  ObjectType,
+  PickObject,
+} from '@verza/sdk';
 
 export type ObjectControlProps = {
   label?: string;
@@ -26,4 +31,11 @@ export type ObjectItem<T extends ObjectType> = {
 
 export type ObjectsInfo = {
   [name in ObjectType]: ObjectItem<name>;
+};
+
+export type ObjectsMaterial = {
+  [name in keyof ObjectMaterialMix]: ObjectControlProps & {
+    types?: ObjectMaterialType[];
+    advanced?: boolean;
+  };
 };

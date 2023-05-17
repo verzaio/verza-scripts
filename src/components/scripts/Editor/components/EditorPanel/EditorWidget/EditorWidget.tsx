@@ -38,8 +38,7 @@ const EditorWidget = () => {
       onClick={onClick}
       className={clsx(styles.container, 'fade-in')}
       onPointerMove={e => e.stopPropagation()}
-      onPointerDown={e => e.stopPropagation()}
-      onPointerUp={e => e.stopPropagation()}>
+      onPointerDown={e => e.stopPropagation()}>
       <PanelWidget
         title="Editor"
         position={{
