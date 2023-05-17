@@ -52,6 +52,7 @@ const ShowcaseRender = () => {
       <MaterialsExample />
 
       <SkyExample />
+
       <MoonPhaseExample />
     </>
   );
@@ -74,6 +75,7 @@ const Scene = () => {
 
     return (
       <Box
+        collision="static"
         width={width}
         height={WALL_HEIGHT}
         depth={0.2}
@@ -93,6 +95,7 @@ const Scene = () => {
     <Group position={SHOWCASE_LOCATION.position} userData={{uneditable: true}}>
       {/* floor */}
       <Box
+        collision="static"
         width={SHOWCASE_SIZE.x}
         height={WALL_WIDTH}
         depth={SHOWCASE_SIZE.y}
