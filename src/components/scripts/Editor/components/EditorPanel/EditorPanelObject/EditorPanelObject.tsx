@@ -25,6 +25,8 @@ const EditorPanelObject = () => {
 
   const onEditStart = () => (isEditingRef.current = true);
   const onEditEnd = () => {
+    if (isFirstRender.current) return;
+
     isEditingRef.current = false;
 
     updatePanel(editor.activeObject);
@@ -375,6 +377,8 @@ const EditorPanelObject = () => {
             onChange: on((value: any) => {
               if (isSlider && !isEditingRef.current) return;
 
+              console.log('updating', name);
+
               editor.activeObject?.setProps({
                 [name]: value,
               });
@@ -484,14 +488,25 @@ const EditorPanelObject = () => {
 
     setTimeout(() => {
       isFirstRender.current = false;
-    }, 100);
+    }, 50);
   }, [updatePanel, editor, editor.activeObject]);
 
   // keep panel updated
-  useEvent('onObjectEdit', object => {
+  useEvent('onObjectEdit', (object, type) => {
     if (isEditingRef.current) return;
+    if (type === 'unselect') return;
+
+    if (type === 'select') {
+      isFirstRender.current = true;
+    }
 
     updatePanel(object);
+
+    if (type === 'select') {
+      setTimeout(() => {
+        isFirstRender.current = false;
+      }, 50);
+    }
   });
 
   return null;
