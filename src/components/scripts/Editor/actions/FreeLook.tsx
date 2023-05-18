@@ -1,4 +1,4 @@
-import {TOOLBAR_TOGGLE_FREE_LOOK_ID} from '../../misc/constants';
+import {TOOLBAR_TOGGLE_FREE_LOOK_ID} from '../misc/constants';
 
 import {useKey, usePointer, useToolbarItemPress, useUI} from '@verza/sdk/react';
 

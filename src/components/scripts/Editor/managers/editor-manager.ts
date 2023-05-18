@@ -5,9 +5,22 @@ import {
   EngineManager,
   IntersectsResult,
   ObjectManager,
+  ObjectMaterialType,
+  Vector3,
   createControllerManager,
+  createFileTransferFromFile,
 } from '@verza/sdk';
 import {ObjectEditActionType} from '@verza/sdk/index';
+
+const MAX_SIZE = 50; // meters
+
+const SCALE_SIZE = 2; // meters
+
+const FLOOR_DISTANCE = 200; // meters
+
+const FRONT_DISTANCE = 2;
+
+const FRONT_FLOOR_DISTANCE = 2;
 
 class EditorManager {
   private _engine: EngineManager;
@@ -26,6 +39,14 @@ class EditorManager {
 
   private get _objects() {
     return this._engine.objects;
+  }
+
+  private get _player() {
+    return this._engine.localPlayer;
+  }
+
+  private get _raycaster() {
+    return this._engine.world.raycaster;
   }
 
   private get _ui() {
@@ -183,7 +204,7 @@ class EditorManager {
 
   private _timeoutId: ReturnType<typeof setTimeout> | null = null;
 
-  save() {
+  saveObject() {
     const object = this.activeObject;
 
     if (!object?.permanent) return;
@@ -214,8 +235,197 @@ class EditorManager {
   cancelEdit() {
     this.activeObject?.disableHighlight();
 
+    // delay it a bit in case any input is focused
     this._objects.cancelEdit();
   }
+
+  async placeOnGround(object: ObjectManager) {
+    const worldLocation = await object.worldLocation;
+    const fromLocation = worldLocation.position.clone();
+    const toLocation = worldLocation.position.clone();
+
+    // first ray | origin -> down
+    toLocation.y -= FLOOR_DISTANCE;
+
+    let result = await this._raycaster.raycastPoints(fromLocation, toLocation, {
+      filterEntityTypes: ['object'],
+      excludeObjectIds: [object.id],
+    });
+
+    if (!result.hit) {
+      // second ray | top -> origin -> down
+      toLocation.y -= -FLOOR_DISTANCE;
+      fromLocation.y += FLOOR_DISTANCE;
+
+      result = await this._raycaster.raycastPoints(fromLocation, toLocation, {
+        filterEntityTypes: ['object'],
+        excludeObjectIds: [object.id],
+      });
+    }
+
+    // abort if hit not found
+    if (!result.hit) return;
+
+    // set hit position
+    toLocation.set(...result.hit.point);
+
+    // get bounding box and set it from its base
+    const box = await object.computeBoundingBox();
+    toLocation.y += worldLocation.position.y - box.min.y;
+
+    // set from world space, hits are always in world-space
+    object.setPositionFromWorldSpace(toLocation);
+  }
+
+  async placeInFront(object: ObjectManager) {
+    const frontLocation = this._player.location
+      .clone()
+      .translateZ(FRONT_DISTANCE);
+
+    const fromLocation = frontLocation.position.clone();
+    const toLocation = frontLocation.position.clone();
+
+    fromLocation.y += FRONT_FLOOR_DISTANCE;
+    toLocation.y -= -FRONT_FLOOR_DISTANCE;
+
+    const result = await this._raycaster.raycastPoints(
+      fromLocation,
+      toLocation,
+      {
+        filterEntityTypes: ['object'],
+        excludeObjectIds: [object.id],
+      },
+    );
+
+    if (result.hit) {
+      frontLocation.position.set(...result.hit.point);
+    }
+
+    // put to floor level
+    const worldPosition = await object.worldLocation;
+
+    const box = await object.computeBoundingBox();
+    frontLocation.position.y += worldPosition.position.y - box.min.y;
+
+    object.setPositionFromWorldSpace(frontLocation.position);
+    object.setRotationFromWorldSpace(frontLocation.quaternion);
+  }
+
+  formatUrl(url: string) {
+    return this._engine.assets.formatUrl(url);
+  }
+
+  async uploadTexture(rawFile: File) {
+    let assetId: string = null!;
+
+    const indicatorId = `${Math.random()}`;
+
+    try {
+      this._engine.ui.showIndicator(indicatorId, 'Uploading texture...');
+      const file = await createFileTransferFromFile(rawFile);
+
+      assetId = await this._engine.assets.upload(file);
+    } catch (e) {
+      console.error(e);
+
+      this._engine.localPlayer.sendErrorNotification(
+        'Invalid Texture. Make sure you uploaded the correct texture file.',
+      );
+    } finally {
+      this._engine.ui.hideIndicator(indicatorId);
+    }
+
+    return assetId;
+  }
+
+  async uploadGltf(rawFile: File) {
+    let assetId: string = null!;
+
+    const indicatorId = `${Math.random()}`;
+
+    try {
+      this._engine.ui.showIndicator(indicatorId, 'Uploading model...');
+      const file = await createFileTransferFromFile(rawFile);
+
+      assetId = await this._engine.assets.upload(file);
+    } catch (e) {
+      this._engine.ui.hideIndicator(indicatorId);
+
+      console.error(e);
+
+      const isExternalStorage =
+        (e as any)?.message === 'asset/external-storage-not-allowed';
+
+      if (isExternalStorage) {
+        this._engine.localPlayer.sendErrorNotification(
+          'Invalid GLTF Model. Make sure your GLTF model is not using any external resource.',
+          6000,
+        );
+        return;
+      }
+
+      this._engine.localPlayer.sendErrorNotification(
+        'Invalid GLTF Model. Make sure you uploaded the correct model file.',
+      );
+      return;
+    }
+
+    try {
+      const frontLocation = this._engine.localPlayer.location
+        .clone()
+        .translateZ(2);
+
+      const object = this._objects.create('gltf', {
+        u: assetId,
+        position: frontLocation.position.toArray(),
+      });
+
+      // wait for object to stream-in
+      await object.waitForStream();
+
+      const box = await object.computeBoundingBox();
+      const distance = box.max.distanceTo(box.min);
+
+      // scale it down
+      if (distance > MAX_SIZE) {
+        this._player.sendSuccessNotification('Object scaled down');
+
+        const scaledMeters = (distance / 100) * SCALE_SIZE;
+        const scaledSize = (scaledMeters * 100) / distance;
+
+        const scaledVector = new Vector3(
+          scaledSize,
+          scaledSize,
+          scaledSize,
+        ).divideScalar(100);
+        object.setScale(scaledVector);
+      }
+
+      // then bring to front
+      await this.placeInFront(object);
+
+      // make permanent
+      object.save();
+    } catch (e) {
+      console.error(e);
+
+      this._player.sendErrorNotification('Failed to process object');
+    }
+
+    // hide indicator
+    this._engine.ui.hideIndicator(indicatorId);
+  }
 }
+
+export const getObjectMaterialType = (
+  object: ObjectManager | null,
+  currentValue?: ObjectMaterialType,
+) => {
+  return (
+    currentValue ??
+    (object as ObjectManager<'box'>)?.props?.material?.type ??
+    'standard'
+  );
+};
 
 export default EditorManager;

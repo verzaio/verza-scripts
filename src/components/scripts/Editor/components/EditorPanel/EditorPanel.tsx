@@ -1,5 +1,5 @@
 import {useEditor} from '../../EditorProvider';
-import EditorPanelObject from './EditorPanelObject/EditorPanelObject';
+import EditorPanelObject from './EditorPanelObject';
 import EditorPanelSettings from './EditorPanelSettings';
 import EditorWidget from './EditorWidget/EditorWidget';
 

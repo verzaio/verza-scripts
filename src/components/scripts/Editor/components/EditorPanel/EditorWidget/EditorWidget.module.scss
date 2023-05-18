@@ -43,7 +43,7 @@
       transition-delay: 0ms !important;
     }
 
-    > div > div > div:last-child > div[class*='toggled-false'] {
+    > div div[class*='toggled-false'] {
       height: 0px;
     }
 

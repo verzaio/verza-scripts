@@ -1,5 +1,5 @@
-import {useEditor} from '../../EditorProvider';
-import {TOOLBAR_DESTROY_ID} from '../../misc/constants';
+import {useEditor} from '../EditorProvider';
+import {TOOLBAR_DESTROY_ID} from '../misc/constants';
 
 import {useEngine, useKey, useToolbarItemPress} from '@verza/sdk/react';
 

@@ -1,8 +1,8 @@
 import {useEffect, useRef} from 'react';
 
-import {useEditor} from '../../EditorProvider';
-import {HIGHLIGHT_INACTIVE_COLOR} from '../../misc/constants';
-import {isObjectUneditable} from '../../misc/utils';
+import {useEditor} from '../EditorProvider';
+import {HIGHLIGHT_INACTIVE_COLOR} from '../misc/constants';
+import {isObjectUneditable} from '../misc/utils';
 
 import {ObjectManager, PointerEvent} from '@verza/sdk';
 import {useEngine, useEvent} from '@verza/sdk/react';

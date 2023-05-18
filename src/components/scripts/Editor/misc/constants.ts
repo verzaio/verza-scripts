@@ -11,10 +11,29 @@ import SphereIcon from './res/objects/sphere.svg';
 import TetrahedronIcon from './res/objects/tetrahedron.svg';
 import TextIcon from './res/objects/text.svg';
 import TorusIcon from './res/objects/torus.svg';
-import {ObjectsInfo, ObjectsMaterial} from './types';
+import {ObjectsInfo, ObjectMaterial, ObjectMaterialOption} from './types';
 import {createSliderProps} from './utils';
 
 import {formatUrl} from '@app/utils/misc';
+import {
+  ClampToEdgeWrapping,
+  EquirectangularReflectionMapping,
+  EquirectangularRefractionMapping,
+  LinearFilter,
+  LinearMipmapLinearFilter,
+  LinearMipmapNearestFilter,
+  LinearSRGBColorSpace,
+  MirroredRepeatWrapping,
+  NearestFilter,
+  NearestMipmapLinearFilter,
+  NearestMipmapNearestFilter,
+  NoColorSpace,
+  ObjectTexture,
+  PickObjectProps,
+  RepeatWrapping,
+  SRGBColorSpace,
+  UVMapping,
+} from '@verza/sdk';
 
 export const PANEL_GROUP_OBJECT = 'object';
 
@@ -38,6 +57,60 @@ const SIZE_STEP = 0.01;
 const MIN_SIZE = 0.1;
 const MAX_SIZE = 50;
 const M_SEGMENTS = 50;
+
+export const EDITOR_FOLDERS_REL: Record<string, string> = {
+  Settings: 'Settings',
+  Object: 'Object',
+  Transforms: 'Transforms',
+  Material: 'Material',
+  Properties: 'Properties',
+  Texture: 'Material.Texture',
+  'Environment Map': 'Material.Environment Map',
+};
+
+const FONTS: Record<string, string | null> = {
+  Default: null,
+  Allura: formatUrl('editor/fonts/Allura.ttf'),
+  AmaticSC: formatUrl('editor/fonts/AmaticSC.ttf'),
+  Bangers: formatUrl('editor/fonts/Bangers.ttf'),
+  Cinzel: formatUrl('editor/fonts/Cinzel.ttf'),
+  Cookie: formatUrl('editor/fonts/Cookie.ttf'),
+  GloriaHallelujah: formatUrl('editor/fonts/GloriaHallelujah.ttf'),
+  GreatVibes: formatUrl('editor/fonts/GreatVibes.ttf'),
+  HomemadeApple: formatUrl('editor/fonts/HomemadeApple.ttf'),
+  KaushanScript: formatUrl('editor/fonts/KaushanScript.ttf'),
+  LibreBaskerville: formatUrl('editor/fonts/LibreBaskerville.ttf'),
+  LobsterTwo: formatUrl('editor/fonts/LobsterTwo.ttf'),
+  Macondo: formatUrl('editor/fonts/Macondo.ttf'),
+  PressStart2P: formatUrl('editor/fonts/PressStart2P.ttf'),
+  PTSerif: formatUrl('editor/fonts/PTSerif.ttf'),
+  Roboto: formatUrl('editor/fonts/Roboto.ttf'),
+  RobotoCondensed: formatUrl('editor/fonts/RobotoCondensed.ttf'),
+  Sacramento: formatUrl('editor/fonts/Sacramento.ttf'),
+  ShadowsInto: formatUrl('editor/fonts/ShadowsInto.ttf'),
+  SpecialElite: formatUrl('editor/fonts/SpecialElite.ttf'),
+  Tangerine: formatUrl('editor/fonts/Tangerine.ttf'),
+  Yellowtail: formatUrl('editor/fonts/Yellowtail.ttf'),
+  MontserratThin: formatUrl('editor/fonts/MontserratThin.ttf'),
+  LatoBlack: formatUrl('editor/fonts/LatoBlack.ttf'),
+  LatoBlackItalic: formatUrl('editor/fonts/LatoBlackItalic.ttf'),
+  LatoRegular: formatUrl('editor/fonts/LatoRegular.ttf'),
+  LatoThin: formatUrl('editor/fonts/LatoThin.ttf'),
+  MontserratAlternatesBlack: formatUrl(
+    'editor/fonts/MontserratAlternatesBlack.ttf',
+  ),
+  MontserratAlternatesRegular: formatUrl(
+    'editor/fonts/MontserratAlternatesRegular.ttf',
+  ),
+  MontserratAlternatesThin: formatUrl(
+    'editor/fonts/MontserratAlternatesThin.ttf',
+  ),
+  MontserratBlack: formatUrl('editor/fonts/MontserratBlack.ttf'),
+  MontserratRegular: formatUrl('editor/fonts/MontserratRegular.ttf'),
+  MontserratSubrayadaBold: formatUrl(
+    'editor/fonts/MontserratSubrayadaBold.ttf',
+  ),
+};
 
 export const OBJECTS_INFO: Partial<ObjectsInfo> = {
   box: {
@@ -244,51 +317,20 @@ export const OBJECTS_INFO: Partial<ObjectsInfo> = {
 
       font: {
         label: 'Font Family',
-        options: {
-          Default: null,
-          Allura: formatUrl('editor/fonts/Allura.ttf'),
-          AmaticSC: formatUrl('editor/fonts/AmaticSC.ttf'),
-          Bangers: formatUrl('editor/fonts/Bangers.ttf'),
-          Cinzel: formatUrl('editor/fonts/Cinzel.ttf'),
-          Cookie: formatUrl('editor/fonts/Cookie.ttf'),
-          GloriaHallelujah: formatUrl('editor/fonts/GloriaHallelujah.ttf'),
-          GreatVibes: formatUrl('editor/fonts/GreatVibes.ttf'),
-          HomemadeApple: formatUrl('editor/fonts/HomemadeApple.ttf'),
-          KaushanScript: formatUrl('editor/fonts/KaushanScript.ttf'),
-          LibreBaskerville: formatUrl('editor/fonts/LibreBaskerville.ttf'),
-          LobsterTwo: formatUrl('editor/fonts/LobsterTwo.ttf'),
-          Macondo: formatUrl('editor/fonts/Macondo.ttf'),
-          PressStart2P: formatUrl('editor/fonts/PressStart2P.ttf'),
-          PTSerif: formatUrl('editor/fonts/PTSerif.ttf'),
-          Roboto: formatUrl('editor/fonts/Roboto.ttf'),
-          RobotoCondensed: formatUrl('editor/fonts/RobotoCondensed.ttf'),
-          Sacramento: formatUrl('editor/fonts/Sacramento.ttf'),
-          ShadowsInto: formatUrl('editor/fonts/ShadowsInto.ttf'),
-          SpecialElite: formatUrl('editor/fonts/SpecialElite.ttf'),
-          Tangerine: formatUrl('editor/fonts/Tangerine.ttf'),
-          Yellowtail: formatUrl('editor/fonts/Yellowtail.ttf'),
-          MontserratThin: formatUrl('editor/fonts/MontserratThin.ttf'),
-          LatoBlack: formatUrl('editor/fonts/LatoBlack.ttf'),
-          LatoBlackItalic: formatUrl('editor/fonts/LatoBlackItalic.ttf'),
-          LatoRegular: formatUrl('editor/fonts/LatoRegular.ttf'),
-          LatoThin: formatUrl('editor/fonts/LatoThin.ttf'),
-          MontserratAlternatesBlack: formatUrl(
-            'editor/fonts/MontserratAlternatesBlack.ttf',
-          ),
-          MontserratAlternatesRegular: formatUrl(
-            'editor/fonts/MontserratAlternatesRegular.ttf',
-          ),
-          MontserratAlternatesThin: formatUrl(
-            'editor/fonts/MontserratAlternatesThin.ttf',
-          ),
-          MontserratBlack: formatUrl('editor/fonts/MontserratBlack.ttf'),
-          MontserratRegular: formatUrl('editor/fonts/MontserratRegular.ttf'),
-          MontserratSubrayadaBold: formatUrl(
-            'editor/fonts/MontserratSubrayadaBold.ttf',
-          ),
-        },
+        options: FONTS,
 
         value: null,
+      },
+
+      textAlign: {
+        label: 'Text Align',
+        options: [
+          'center',
+          'left',
+          'right',
+          'justify',
+        ] satisfies PickObjectProps<'text'>['textAlign'][],
+        value: 'left',
       },
 
       maxWidth: createSliderProps('Max Width', 0.1, 10, 0.1, 1),
@@ -297,39 +339,54 @@ export const OBJECTS_INFO: Partial<ObjectsInfo> = {
 
       letterSpacing: createSliderProps('Letter Spacing', 0.1, 10, 0.1, 1),
 
-      textAlign: {
-        label: 'Text Align',
-        options: ['center', 'left', 'right', 'justify'],
-        value: 'left',
-      },
-
       anchorX: {
         label: 'Anchor X',
-        options: ['center', 'left', 'right'],
+        options: [
+          'center',
+          'left',
+          'right',
+        ] satisfies PickObjectProps<'text'>['anchorX'][],
         value: 'center',
       },
 
       anchorY: {
         label: 'Anchor Y',
-        options: ['bottom', 'top', 'middle', 'top-baseline', 'bottom-baseline'],
+        options: [
+          'bottom',
+          'top',
+          'middle',
+          'top-baseline',
+          'bottom-baseline',
+        ] satisfies PickObjectProps<'text'>['anchorY'][],
         value: 'middle',
       },
 
       direction: {
         label: 'Direction',
-        options: ['auto', 'ltr', 'rtl'],
+        options: [
+          'auto',
+          'ltr',
+          'rtl',
+        ] satisfies PickObjectProps<'text'>['direction'][],
         value: 'auto',
       },
 
       overflowWrap: {
         label: 'Overflow Wrap',
-        options: ['normal', 'break-word'],
+        options: [
+          'normal',
+          'break-word',
+        ] satisfies PickObjectProps<'text'>['overflowWrap'][],
         value: 'normal',
       },
 
       whiteSpace: {
         label: 'White Space',
-        options: ['normal', 'nowrap', 'overflowWrap'],
+        options: [
+          'normal',
+          'nowrap',
+          'overflowWrap',
+        ] satisfies PickObjectProps<'text'>['whiteSpace'][],
         value: 'normal',
       },
 
@@ -362,7 +419,122 @@ export const OBJECTS_INFO: Partial<ObjectsInfo> = {
   },
 };
 
-export const OBJECTS_MATERIAL_PROPS: Partial<ObjectsMaterial> = {
+export const TEXTURE_OPTION: Partial<
+  Record<keyof ObjectTexture, ObjectMaterialOption>
+> = {
+  source: {
+    label: 'Source',
+    file: null,
+    isAsset: true,
+  },
+
+  offset: {
+    label: 'Offset',
+    step: 0.01,
+    value: [0, 0],
+    joystick: false,
+  },
+
+  repeat: {
+    label: 'Repeat',
+    step: 0.01,
+    value: [1, 1],
+    joystick: false,
+  },
+
+  center: {
+    label: 'Center',
+    step: 0.01,
+    value: [0, 0],
+    joystick: false,
+  },
+
+  rotation: {
+    label: 'Rotation',
+    min: 0,
+    max: Math.PI * 2,
+    step: 0.1,
+    value: Math.PI * 2,
+  },
+
+  mapping: {
+    label: 'Mapping',
+    options: {
+      UV: UVMapping,
+      'Equirectangular Reflection': EquirectangularReflectionMapping,
+      'Equirectangular Refraction': EquirectangularRefractionMapping,
+    },
+    value: UVMapping,
+  },
+
+  wrapS: {
+    label: 'Wrap S',
+    options: {
+      Repeat: RepeatWrapping,
+      'Clamp To Edge': ClampToEdgeWrapping,
+      'Mirrored Repeat': MirroredRepeatWrapping,
+    },
+    value: ClampToEdgeWrapping,
+  },
+
+  wrapT: {
+    label: 'Wrap T',
+    options: {
+      Repeat: RepeatWrapping,
+      'Clamp To Edge': ClampToEdgeWrapping,
+      'Mirrored Repeat': MirroredRepeatWrapping,
+    },
+    value: ClampToEdgeWrapping,
+  },
+
+  magFilter: {
+    label: 'Mag Filter',
+    options: {
+      Linear: LinearFilter,
+      Nearest: NearestFilter,
+    },
+    value: LinearFilter,
+  },
+
+  minFilter: {
+    label: 'Min Filter',
+    options: {
+      Linear: LinearFilter,
+      Nearest: NearestFilter,
+      'Nearest Mipmap Nearest': NearestMipmapNearestFilter,
+      'Nearest Mipmap Linear': NearestMipmapLinearFilter,
+      'Linear Mipmap Nearest': LinearMipmapNearestFilter,
+      'Linear Mipmap Linear': LinearMipmapLinearFilter,
+    },
+    value: LinearMipmapLinearFilter,
+  },
+
+  colorSpace: {
+    label: 'Color Space',
+    options: {
+      NoColorSpace: NoColorSpace,
+      SRGBColorSpace: SRGBColorSpace,
+      LinearSRGBColorSpace: LinearSRGBColorSpace,
+      //DisplayP3ColorSpace: DisplayP3ColorSpace,
+    },
+    value: SRGBColorSpace,
+  },
+
+  anisotropy: {
+    label: 'Anisotropy',
+    min: 0,
+    max: 1,
+    step: 0.01,
+    value: 1,
+  },
+
+  flipY: {
+    label: 'Flip Y',
+    value: true,
+  },
+};
+
+export const OBJECTS_MATERIAL_PROPS: Partial<ObjectMaterial> = {
   wireframe: {
     label: 'Wireframe',
     value: false,
@@ -450,5 +622,27 @@ export const OBJECTS_MATERIAL_PROPS: Partial<ObjectsMaterial> = {
     value: false,
 
     types: ['standard', 'physical', 'normal'],
+  },
+
+  map: {
+    label: 'Texture',
+
+    folder: {
+      ...TEXTURE_OPTION,
+    },
+
+    types: ['standard', 'physical', 'basic'],
+  },
+
+  envMap: {
+    label: 'Environment Map',
+
+    folder: {
+      ...TEXTURE_OPTION,
+    },
+
+    collapsed: true,
+
+    types: ['standard', 'physical', 'basic'],
   },
 };

@@ -1,5 +1,5 @@
-import {useEditor} from '../../EditorProvider';
-import {TOOLBAR_RESET_ID} from '../../misc/constants';
+import {useEditor} from '../EditorProvider';
+import {TOOLBAR_RESET_ID} from '../misc/constants';
 
 import {Quaternion, Vector3} from '@verza/sdk';
 import {useKey, useToolbarItemPress} from '@verza/sdk/react';

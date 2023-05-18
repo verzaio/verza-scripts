@@ -4,6 +4,7 @@ import {ComponentType, useCallback, useRef} from 'react';
 
 import PlusIcon from './res/plus-icon.svg';
 
+import {useEditor} from '@app/components/scripts/Editor/EditorProvider';
 import {OBJECTS_INFO} from '@app/components/scripts/Editor/misc/constants';
 import useOnClickOutside from '@app/hooks/useOnClickOutside';
 import {ObjectType} from '@verza/sdk';
@@ -69,6 +70,8 @@ const DropdownItem = ({type, label, Icon}: DropdownItemProps) => {
   const engine = useEngine();
   const objects = useObjects();
 
+  const editor = useEditor();
+
   const onClick = useCallback(async () => {
     const location = engine.localPlayer.location.clone();
 
@@ -83,13 +86,14 @@ const DropdownItem = ({type, label, Icon}: DropdownItemProps) => {
       rotation: location.quaternion,
     });
 
+    // save it
+    object.save();
+
+    // wait for object to stream-in
     await object.waitForStream();
 
-    object.edit();
-
-    // make it permanent
-    object.save();
-  }, [engine, objects, type]);
+    editor.editObject(object);
+  }, [editor, engine, objects, type]);
 
   return (
     <button className={styles.item} onClick={onClick}>

@@ -7,8 +7,17 @@ import {
   PickObject,
 } from '@verza/sdk';
 
+export type ObjectControlFields = {
+  [name: string]: ObjectControlProps;
+};
+
+export type ObjectControlValues = {
+  [name: string]: any;
+};
+
 export type ObjectControlProps = {
   label?: string;
+  file?: string | null;
   step?: number;
   min?: number;
   max?: number;
@@ -18,7 +27,11 @@ export type ObjectControlProps = {
         [key: string]: unknown;
       };
   value?: unknown;
+  joystick?: boolean;
   rows?: number;
+  collapsed?: boolean;
+  folder?: ObjectControlFields;
+  isAsset?: boolean;
 };
 
 export type ObjectItem<T extends ObjectType> = {
@@ -33,9 +46,10 @@ export type ObjectsInfo = {
   [name in ObjectType]: ObjectItem<name>;
 };
 
-export type ObjectsMaterial = {
-  [name in keyof ObjectMaterialMix]: ObjectControlProps & {
-    types?: ObjectMaterialType[];
-    advanced?: boolean;
-  };
+export type ObjectMaterialOption = ObjectControlProps & {
+  types?: ObjectMaterialType[];
+};
+
+export type ObjectMaterial = {
+  [name in keyof ObjectMaterialMix]: ObjectMaterialOption;
 };
