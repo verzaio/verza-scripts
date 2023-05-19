@@ -173,8 +173,6 @@ export const setControlsValue = (
 
     const currentValue = values?.[name] ?? value.value;
 
-    if (!currentValue) return;
-
     const path = `${parentNames.join('.')}.${prefix}_${name}`;
 
     set(

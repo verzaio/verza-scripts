@@ -16,9 +16,12 @@ import {createSliderProps} from './utils';
 
 import {formatUrl} from '@app/utils/misc';
 import {
+  BackSide,
   ClampToEdgeWrapping,
+  DoubleSide,
   EquirectangularReflectionMapping,
   EquirectangularRefractionMapping,
+  FrontSide,
   LinearFilter,
   LinearMipmapLinearFilter,
   LinearMipmapNearestFilter,
@@ -153,8 +156,8 @@ export const OBJECTS_INFO: Partial<ObjectsInfo> = {
     label: 'Capsule',
     Icon: CapsuleIcon,
     props: {
-      radius: createSliderProps('Radius', MIN_SIZE, MAX_SIZE, SIZE_STEP, 1),
-      length: createSliderProps('Length', MIN_SIZE, MAX_SIZE, SIZE_STEP, 1),
+      radius: createSliderProps('Radius', MIN_SIZE, MAX_SIZE, SIZE_STEP, 0.6),
+      length: createSliderProps('Length', MIN_SIZE, MAX_SIZE, SIZE_STEP, 1.5),
       capSegments: createSliderProps('Cap Segments', 1, M_SEGMENTS, 1, 4),
       radialSegments: createSliderProps('Radial Segments', 2, M_SEGMENTS, 1, 8),
     },
@@ -168,16 +171,16 @@ export const OBJECTS_INFO: Partial<ObjectsInfo> = {
         MIN_SIZE,
         MAX_SIZE,
         SIZE_STEP,
-        1,
+        0.5,
       ),
       radiusBottom: createSliderProps(
         'Radius Bottom',
         MIN_SIZE,
         MAX_SIZE,
         SIZE_STEP,
-        1,
+        0.5,
       ),
-      height: createSliderProps('Height', MIN_SIZE, MAX_SIZE, SIZE_STEP, 1),
+      height: createSliderProps('Height', MIN_SIZE, MAX_SIZE, SIZE_STEP, 2),
       radialSegments: createSliderProps(
         'Radial Segments',
         2,
@@ -220,7 +223,7 @@ export const OBJECTS_INFO: Partial<ObjectsInfo> = {
     label: 'Cone',
     Icon: ConeIcon,
     props: {
-      radius: createSliderProps('Radius', MIN_SIZE, MAX_SIZE, SIZE_STEP, 1),
+      radius: createSliderProps('Radius', MIN_SIZE, MAX_SIZE, SIZE_STEP, 0.5),
       height: createSliderProps('Height', MIN_SIZE, MAX_SIZE, SIZE_STEP, 1),
       radialSegments: createSliderProps(
         'Radial Segments',
@@ -249,7 +252,7 @@ export const OBJECTS_INFO: Partial<ObjectsInfo> = {
     Icon: TorusIcon,
     props: {
       radius: createSliderProps('Radius', MIN_SIZE, MAX_SIZE, SIZE_STEP, 1),
-      tube: createSliderProps('Tube', MIN_SIZE, MAX_SIZE, SIZE_STEP, 1),
+      tube: createSliderProps('Tube', 0.01, MAX_SIZE, 0.01, 1),
       radialSegments: createSliderProps(
         'Radial Segments',
         2,
@@ -555,10 +558,11 @@ export const OBJECTS_MATERIAL_PROPS: Partial<ObjectMaterial> = {
   side: {
     label: 'Side',
     options: {
-      Front: 0,
-      Back: 1,
-      Both: 2,
+      Front: FrontSide,
+      Back: BackSide,
+      Both: DoubleSide,
     },
+    value: FrontSide,
   },
 
   color: {
