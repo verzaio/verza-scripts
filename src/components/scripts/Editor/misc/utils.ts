@@ -151,36 +151,41 @@ export const parseControls = <
 };
 
 export const setControlsValue = (
+  filter: (props: ObjectControlProps) => boolean,
   fields: ObjectControlFields,
   values: ObjectControlValues,
-  set: (values: ObjectControlValues, fromPanel: boolean) => void,
+  resultValues: any = {},
   parentNames: string[] = [],
   prefix?: string,
+  parentValues?: ObjectControlValues,
 ) => {
   Object.entries(fields).forEach(([name, value]) => {
     if (value.folder) {
       const folderParentNames = [...parentNames, value.label!];
 
       setControlsValue(
+        filter,
         value.folder,
         values[name],
-        set,
+        resultValues,
         folderParentNames,
         `${prefix}_${name}`,
+        values,
       );
       return;
     }
 
-    const currentValue = values?.[name] ?? value.value;
+    if (!filter(value)) return;
 
     const path = `${parentNames.join('.')}.${prefix}_${name}`;
 
-    set(
-      {
-        [path]: currentValue,
-      },
-      false,
-    );
+    let currentValue = values?.[name] ?? value.value;
+
+    if (value.setterFromParent) {
+      currentValue = parentValues?.[name] ?? value.value;
+    }
+
+    resultValues[path] = currentValue;
   });
 };
 

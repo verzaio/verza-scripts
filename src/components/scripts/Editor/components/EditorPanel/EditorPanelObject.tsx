@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef} from 'react';
+import {useCallback, useMemo, useRef} from 'react';
 
 import {useEditor} from '../../EditorProvider';
 import {getObjectMaterialType} from '../../managers/editor-manager';
@@ -14,7 +14,8 @@ import {
 import {ObjectManager, Euler, Vector3} from '@verza/sdk';
 import {useEvent} from '@verza/sdk/react';
 import {MathUtils} from '@verza/sdk/utils';
-import {buttonGroup, levaStore, useControls} from 'leva';
+import equal from 'fast-deep-equal';
+import {useControls, buttonGroup, levaStore} from 'leva';
 
 const EditorPanelObject = () => {
   const editor = useEditor();
@@ -23,24 +24,112 @@ const EditorPanelObject = () => {
 
   const isEditingRef = useRef(false);
 
-  const onEditStart = () => (isEditingRef.current = true);
-  const onEditEnd = () => {
+  const updateControls = useCallback(
+    (object: ObjectManager) => {
+      if (!editor.activeObject || isEditingRef.current) return;
+
+      const location = object.worldLocation;
+
+      const values: any = {
+        'Object.id': object.id,
+        'Object.type': object.objectType,
+
+        'Transforms.position': {
+          x: location.position.x,
+          y: location.position.y,
+          z: location.position.z,
+        },
+
+        'Transforms.rotation': {
+          x: MathUtils.radToDeg(location.rotation.x),
+          y: MathUtils.radToDeg(location.rotation.y),
+          z: MathUtils.radToDeg(location.rotation.z),
+        },
+
+        'Transforms.scale': {
+          x: location.scale.x,
+          y: location.scale.y,
+          z: location.scale.z,
+        },
+
+        ...(object.supportsCollision && {
+          'Transforms.collision': !!object.collision,
+        }),
+      };
+
+      // materials
+      if (doesObjectSupportMaterial(object.objectType)) {
+        const materialProps = OBJECTS_MATERIAL_PROPS;
+
+        const props =
+          (object.props as ObjectManager<'box'>['props']).material ?? {};
+
+        const materialType = getObjectMaterialType(editor.activeObject);
+
+        setControlsValue(
+          props => {
+            if (!props.types) return true;
+
+            return props.types.includes(materialType);
+          },
+          materialProps,
+          props,
+          values,
+          ['Material'],
+          'mat',
+        );
+      }
+
+      // props
+      const objectProperties = OBJECTS_INFO[object.objectType]?.props;
+      if (objectProperties) {
+        Object.entries(objectProperties).forEach(([name, value]) => {
+          let currentValue = (object.props as any)[name];
+
+          if (currentValue === undefined) {
+            currentValue = value.value;
+          }
+
+          if (currentValue !== undefined) {
+            values[`Properties.${object.objectType}_${name}`] = currentValue;
+          }
+        });
+      }
+
+      // remove unchanged values
+      Object.keys(values).forEach(key => {
+        if (equal(levaStore.get(key), values[key])) {
+          delete values[key];
+        }
+      });
+
+      if (Object.keys(values).length) {
+        levaStore.set(values, true);
+      }
+    },
+    [editor],
+  );
+
+  const onEditStart = useCallback(() => (isEditingRef.current = true), []);
+  const onEditEnd = useCallback(() => {
     if (isFirstRender.current) return;
 
     isEditingRef.current = false;
 
     updateControls(editor.activeObject);
-  };
+  }, [editor, updateControls]);
 
-  const on =
+  const on = useCallback(
     (handler: (...args: any[]) => void) =>
-    (...args: any[]) => {
-      if (!editor.activeObject || isFirstRender.current) return;
+      (...args: any[]) => {
+        if (!editor.activeObject || isFirstRender.current) return;
 
-      handler(...args);
-    };
+        handler(...args);
+      },
+    [editor],
+  );
 
-  const [, setObject] = useControls(
+  useControls(
     'Object',
     () => ({
       id: {
@@ -59,10 +148,12 @@ const EditorPanelObject = () => {
       order: 25,
 
       collapsed: true,
+
+      render: () => !!editor.activeObject,
     },
   );
 
-  const [, setTransforms] = useControls(
+  useControls(
     'Transforms',
     () => ({
       collision: {
@@ -91,6 +182,8 @@ const EditorPanelObject = () => {
         onEditEnd,
         onChange: on((value: Vector3) => {
           if (!isEditingRef.current) return;
+
+          console.log('position:onChange');
 
           editor.activeObject.setPositionFromWorldSpace([
             value.x,
@@ -167,80 +260,122 @@ const EditorPanelObject = () => {
     }),
     {
       order: 100,
+
+      render: () => !!editor.activeObject,
     },
   );
 
-  useControls(
-    'Material',
-    () => {
-      const fields: any = {};
+  const materialFields = useMemo(() => {
+    const fields: any = {};
 
-      const canRender = (
-        props: ObjectMaterialOption,
-        get: (name: string) => any,
-      ) => {
-        if (!props.types) return true;
+    const canRender = (
+      prop: ObjectMaterialOption,
+      get: (name: string) => any,
+    ) => {
+      if (!prop.types) return true;
 
-        const materialType = getObjectMaterialType(
-          editor.activeObject,
-          get('Material.mat_type'),
-        );
+      const materialType = getObjectMaterialType(
+        editor.activeObject,
+        get('Material.mat_type'),
+      );
 
-        return props.types.includes(materialType);
-      };
+      return prop.types.includes(materialType);
+    };
+
+    parseControls(
+      'mat',
+      OBJECTS_MATERIAL_PROPS,
+      {
+        onEditStart: onEditStart,
+        onEditEnd: onEditEnd,
+
+        folderRender: canRender,
+        itemRender: canRender,
+
+        onChange: on(
+          async (props: ObjectMaterialOption, name: string, value: any) => {
+            if (isSliderControl(props) && !isEditingRef.current) return;
+
+            let newValue = value;
+
+            if (props.isAsset) {
+              if (!value) {
+                newValue = null;
+              } else if (value instanceof File) {
+                const assetId = await editor.uploadTexture(value);
+
+                if (!assetId) return;
+
+                newValue = assetId;
+              }
+            }
+
+            const parts = name.split('_');
+
+            //console.log('new value', newValue);
+
+            switch (parts.length) {
+              case 1: {
+                editor.activeObject?.setProps({
+                  material: {
+                    [name]: newValue,
+                  },
+                });
+                break;
+              }
+              case 2: {
+                if (props.setterFromParent) {
+                  editor.activeObject?.setProps({
+                    material: {
+                      [parts[1]]: newValue,
+                    },
+                  });
+                  break;
+                }
+
+                editor.activeObject?.setProps({
+                  material: {
+                    [parts[0]]: {
+                      [parts[1]]: newValue,
+                    },
+                  },
+                });
+                break;
+              }
+            }
+
+            editor.saveObject();
+          },
+        ),
+      },
+      fields,
+    );
+
+    return fields;
+  }, [editor, onEditStart, onEditEnd, on]);
+
+  const propertyFields = useMemo(() => {
+    const fields: any = {};
+
+    Object.entries(OBJECTS_INFO).forEach(([objectType, entry]) => {
+      if (!entry.props) return;
 
       parseControls(
-        'mat',
-        OBJECTS_MATERIAL_PROPS,
+        objectType,
+        entry.props,
         {
           onEditStart: onEditStart,
           onEditEnd: onEditEnd,
 
-          folderRender: canRender,
-          itemRender: canRender,
+          itemRender: () => editor.activeObject?.objectType === objectType,
 
           onChange: on(
-            async (props: ObjectMaterialOption, name: string, value: any) => {
+            (props: ObjectMaterialOption, name: string, value: any) => {
               if (isSliderControl(props) && !isEditingRef.current) return;
 
-              let newValue = value;
-
-              if (props.isAsset) {
-                if (!value) {
-                  newValue = null;
-                } else if (value instanceof File) {
-                  const assetId = await editor.uploadTexture(value);
-
-                  if (!assetId) return;
-
-                  newValue = assetId;
-                }
-              }
-
-              const parts = name.split('_');
-
-              console.log('new value', newValue);
-
-              switch (parts.length) {
-                case 1: {
-                  editor.activeObject?.setProps({
-                    material: {
-                      [name]: newValue,
-                    },
-                  });
-                  break;
-                }
-                case 2: {
-                  editor.activeObject?.setProps({
-                    material: {
-                      [parts[0]]: {
-                        [parts[1]]: newValue,
-                      },
-                    },
-                  });
-                  break;
-                }
-              }
+              editor.activeObject?.setProps({
+                [name]: value,
+              });
 
               editor.saveObject();
             },
@@ -248,174 +383,64 @@ const EditorPanelObject = () => {
         },
         fields,
       );
+    });
 
-      return fields;
+    return fields;
+  }, [editor, on, onEditStart, onEditEnd]);
+
+  useControls('Material', () => materialFields, {
+    order: 150,
+
+    collapsed: true,
+
+    render: () => {
+      return (
+        editor.activeObject &&
+        doesObjectSupportMaterial(editor.activeObject?.objectType)
+      );
     },
-    {
-      order: 150,
+  });
 
-      collapsed: true,
+  useControls('Properties', () => propertyFields, {
+    order: 225,
 
-      render: () => {
-        return doesObjectSupportMaterial(editor.activeObject?.objectType);
-      },
-    },
-  );
+    collapsed: false,
+  });
 
-  const [, setProps] = useControls(
-    'Properties',
-    () => {
-      const fields: any = {};
-
-      Object.entries(OBJECTS_INFO).forEach(([objectType, entry]) => {
-        if (!entry.props) return;
-
-        parseControls(
-          objectType,
-          entry.props,
-          {
-            onEditStart: onEditStart,
-            onEditEnd: onEditEnd,
-
-            itemRender: () => editor.activeObject?.objectType === objectType,
-
-            onChange: on(
-              (props: ObjectMaterialOption, name: string, value: any) => {
-                if (isSliderControl(props) && !isEditingRef.current) return;
-
-                editor.activeObject?.setProps({
-                  [name]: value,
-                });
-
-                editor.saveObject();
-              },
-            ),
-          },
-          fields,
-        );
-      });
-
-      return fields;
-    },
-    {
-      order: 225,
-
-      collapsed: false,
-    },
-  );
-
-  const updateControls = useCallback(
-    async (object: ObjectManager) => {
-      if (isEditingRef.current) return;
-
-      const location = await object.worldLocation;
-
-      setObject({
-        id: object.id,
-
-        type: object.objectType,
-      });
-
-      setTransforms({
-        position: {
-          x: location.position.x,
-          y: location.position.y,
-          z: location.position.z,
-        },
-
-        rotation: {
-          x: MathUtils.radToDeg(location.rotation.x),
-          y: MathUtils.radToDeg(location.rotation.y),
-          z: MathUtils.radToDeg(location.rotation.z),
-        },
-
-        scale: {
-          x: location.scale.x,
-          y: location.scale.y,
-          z: location.scale.z,
-        },
-
-        ...(object.supportsCollision && {
-          collision: !!object.collision,
-        }),
-      });
-
-      // materials
-      if (doesObjectSupportMaterial(object.objectType)) {
-        const materialProps = OBJECTS_MATERIAL_PROPS;
-
-        const props =
-          (object.props as ObjectManager<'box'>['props']).material ?? {};
-
-        setControlsValue(
-          materialProps,
-          props,
-          levaStore.set,
-          ['Material'],
-          'mat',
-        );
-      }
-
-      // props
-      const objectProperties = OBJECTS_INFO[object.objectType]?.props;
-      if (objectProperties) {
-        Object.entries(objectProperties).forEach(([name, value]) => {
-          let currentValue = (object.props as any)[name];
-
-          if (currentValue === undefined) {
-            currentValue = value.value;
-          }
-
-          if (currentValue !== undefined) {
-            setProps({
-              [`${object.objectType}_${name}`]: currentValue,
-            });
-          }
-        });
-      }
-    },
-    [setTransforms, setObject, setProps],
-  );
-
-  // initial update
-  useEffect(() => {
-    if (!editor.activeObject || !isFirstRender.current) return;
-
-    updateControls(editor.activeObject);
-
-    setTimeout(() => {
-      isFirstRender.current = false;
-    }, 50);
-  }, [updateControls, editor, editor.activeObject]);
-
-  const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const isUpdatePending = useRef(false);
+  const lastUpdate = useRef(0);
+  const updateTimeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // keep controls in sync
   useEvent('onObjectEdit', (object, type) => {
-    if (isEditingRef.current) return;
-    if (type === 'unselect') return;
-
-    if (timeoutIdRef.current) {
-      isUpdatePending.current = true;
-
+    if (isEditingRef.current || editor.updating) return;
+    if (type === 'unselect') {
+      levaStore.set(
+        {
+          'Object.id': editor.activeObject?.id ?? '-',
+        },
+        true,
+      );
       return;
     }
 
-    isFirstRender.current = true;
+    if (updateTimeoutId.current) return;
 
-    updateControls(object);
-
-    timeoutIdRef.current = setTimeout(() => {
-      timeoutIdRef.current = null;
-      isFirstRender.current = false;
-
-      if (isUpdatePending.current) {
-        isUpdatePending.current = false;
+    if (Date.now() - lastUpdate.current < 200) {
+      updateTimeoutId.current = setTimeout(() => {
+        isFirstRender.current = true;
         updateControls(object);
-      }
-    }, 100);
+        isFirstRender.current = false;
+
+        updateTimeoutId.current = null;
+      }, 200);
+      return;
+    }
+
+    lastUpdate.current = Date.now();
+
+    isFirstRender.current = true;
+    updateControls(object);
+    isFirstRender.current = false;
   });
 
   return null;

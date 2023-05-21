@@ -77,7 +77,7 @@ export function FileComponent() {
         )}
         <DropZone {...(getRootProps({isDragAccept}) as any)}>
           <input {...getInputProps()} />
-          <Instructions>choose image</Instructions>
+          <Instructions>select</Instructions>
         </DropZone>
         <Remove onClick={clear} disabled={!value} />
       </FileContainer>

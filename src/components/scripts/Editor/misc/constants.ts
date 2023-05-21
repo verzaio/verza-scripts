@@ -16,6 +16,7 @@ import {createSliderProps} from './utils';
 
 import {formatUrl} from '@app/utils/misc';
 import {
+  AddOperation,
   BackSide,
   ClampToEdgeWrapping,
   DoubleSide,
@@ -27,14 +28,18 @@ import {
   LinearMipmapNearestFilter,
   LinearSRGBColorSpace,
   MirroredRepeatWrapping,
+  MixOperation,
+  MultiplyOperation,
   NearestFilter,
   NearestMipmapLinearFilter,
   NearestMipmapNearestFilter,
   NoColorSpace,
+  ObjectSpaceNormalMap,
   ObjectTexture,
   PickObjectProps,
   RepeatWrapping,
   SRGBColorSpace,
+  TangentSpaceNormalMap,
   UVMapping,
 } from '@verza/sdk';
 
@@ -68,7 +73,26 @@ export const EDITOR_FOLDERS_REL: Record<string, string> = {
   Material: 'Material',
   Properties: 'Properties',
   Texture: 'Material.Texture',
+  'Normal Map': 'Material.Normal Map',
   'Environment Map': 'Material.Environment Map',
+  'Light Map': 'Material.Light Map',
+  'Rougness Map': 'Material.Rougness Map',
+  'Displacement Map': 'Material.Displacement Map',
+  'Bump Map': 'Material.Bump Map',
+  'Specular Map': 'Material.Specular Map',
+  'Specular Intensity Map': 'Material.Specular Intensity Map',
+  'Specular Color Map': 'Material.Specular Color Map',
+  'Metalness Map': 'Material.Metalness Map',
+  'Ambient Occlusion Map': 'Material.Ambient Occlusion Map',
+  'Alpha Map': 'Material.Alpha Map',
+  'Clearcoat Map': 'Material.Clearcoat Map',
+  'Clearcoat Roughness Map': 'Material.Clearcoat Roughness Map',
+  'Clearcoat Normal Map': 'Material.Clearcoat Normal Map',
+  'Transmission Map': 'Material.Transmission Map',
+  'Thickness Map': 'Material.Thickness Map',
+  'Sheen Color Map': 'Material.Sheen Color Map',
+  'Sheen Roughness Map': 'Material.Sheen Roughness Map',
+  'Emissive Map': 'Material.Emissive Map',
 };
 
 const FONTS: Record<string, string | null> = {
@@ -422,74 +446,16 @@ export const OBJECTS_INFO: Partial<ObjectsInfo> = {
   },
 };
 
-export const TEXTURE_OPTION: Partial<
+const COLOR_OPTIONS = {
+  'No Color': NoColorSpace,
+  sRGB: SRGBColorSpace,
+  'Linear sRGB': LinearSRGBColorSpace,
+  //'Display P3': DisplayP3ColorSpace,
+};
+
+const TEXTURE_SHARED_OPTIONS: Partial<
   Record<keyof ObjectTexture, ObjectMaterialOption>
 > = {
-  source: {
-    label: 'Source',
-    file: null,
-    isAsset: true,
-  },
-
-  offset: {
-    label: 'Offset',
-    step: 0.01,
-    value: [0, 0],
-    joystick: false,
-  },
-
-  repeat: {
-    label: 'Repeat',
-    step: 0.01,
-    value: [1, 1],
-    joystick: false,
-  },
-
-  center: {
-    label: 'Center',
-    step: 0.01,
-    value: [0, 0],
-    joystick: false,
-  },
-
-  rotation: {
-    label: 'Rotation',
-    min: 0,
-    max: Math.PI * 2,
-    step: 0.1,
-    value: Math.PI * 2,
-  },
-
-  mapping: {
-    label: 'Mapping',
-    options: {
-      UV: UVMapping,
-      'Equirectangular Reflection': EquirectangularReflectionMapping,
-      'Equirectangular Refraction': EquirectangularRefractionMapping,
-    },
-    value: UVMapping,
-  },
-
-  wrapS: {
-    label: 'Wrap S',
-    options: {
-      Repeat: RepeatWrapping,
-      'Clamp To Edge': ClampToEdgeWrapping,
-      'Mirrored Repeat': MirroredRepeatWrapping,
-    },
-    value: ClampToEdgeWrapping,
-  },
-
-  wrapT: {
-    label: 'Wrap T',
-    options: {
-      Repeat: RepeatWrapping,
-      'Clamp To Edge': ClampToEdgeWrapping,
-      'Mirrored Repeat': MirroredRepeatWrapping,
-    },
-    value: ClampToEdgeWrapping,
-  },
-
   magFilter: {
     label: 'Mag Filter',
     options: {
@@ -512,29 +478,129 @@ export const TEXTURE_OPTION: Partial<
     value: LinearMipmapLinearFilter,
   },
 
-  colorSpace: {
-    label: 'Color Space',
-    options: {
-      NoColorSpace: NoColorSpace,
-      SRGBColorSpace: SRGBColorSpace,
-      LinearSRGBColorSpace: LinearSRGBColorSpace,
-      //DisplayP3ColorSpace: DisplayP3ColorSpace,
-    },
-    value: SRGBColorSpace,
-  },
-
-  anisotropy: {
+  /* anisotropy: {
     label: 'Anisotropy',
     min: 0,
     max: 1,
     step: 0.01,
     value: 1,
+  }, */
+};
+
+export const TEXTURE_NO_COLOR_OPTION: Partial<
+  Record<keyof ObjectTexture, ObjectMaterialOption>
+> = {
+  source: {
+    label: 'Source',
+    file: null,
+    isAsset: true,
   },
 
-  flipY: {
-    label: 'Flip Y',
-    value: true,
+  colorSpace: {
+    label: 'Color Space',
+    options: COLOR_OPTIONS,
+    value: NoColorSpace,
   },
+};
+
+export const TEXTURE_SRGB_OPTION: Partial<
+  Record<keyof ObjectTexture, ObjectMaterialOption>
+> = {
+  source: {
+    label: 'Source',
+    file: null,
+    isAsset: true,
+  },
+
+  colorSpace: {
+    label: 'Color Space',
+    options: COLOR_OPTIONS,
+    value: SRGBColorSpace,
+  },
+};
+
+export const TEXTURE_OPTION = () => {
+  const options: Partial<Record<keyof ObjectTexture, ObjectMaterialOption>> = {
+    source: {
+      label: 'Source',
+      file: null,
+      isAsset: true,
+    },
+
+    offset: {
+      label: 'Offset',
+      step: 0.1,
+      value: [0, 0],
+      joystick: false,
+    },
+
+    repeat: {
+      label: 'Repeat',
+      step: 0.1,
+      value: [1, 1],
+      joystick: false,
+    },
+
+    center: {
+      label: 'Center',
+      step: 0.1,
+      value: [0, 0],
+      joystick: false,
+    },
+
+    rotation: {
+      label: 'Rotation',
+      min: 0,
+      max: Math.PI * 2,
+      step: 0.1,
+      value: Math.PI * 2,
+    },
+
+    wrapS: {
+      label: 'Wrap S',
+      options: {
+        Repeat: RepeatWrapping,
+        'Clamp To Edge': ClampToEdgeWrapping,
+        'Mirrored Repeat': MirroredRepeatWrapping,
+      },
+      value: ClampToEdgeWrapping,
+    },
+
+    wrapT: {
+      label: 'Wrap T',
+      options: {
+        Repeat: RepeatWrapping,
+        'Clamp To Edge': ClampToEdgeWrapping,
+        'Mirrored Repeat': MirroredRepeatWrapping,
+      },
+      value: ClampToEdgeWrapping,
+    },
+
+    ...TEXTURE_SHARED_OPTIONS,
+
+    colorSpace: {
+      label: 'Color Space',
+      options: COLOR_OPTIONS,
+      value: SRGBColorSpace,
+    },
+
+    mapping: {
+      label: 'Mapping',
+      options: {
+        UV: UVMapping,
+        'Equirectangular Reflection': EquirectangularReflectionMapping,
+        'Equirectangular Refraction': EquirectangularRefractionMapping,
+      },
+      value: UVMapping,
+    },
+
+    flipY: {
+      label: 'Flip Y',
+      value: true,
+    },
+  };
+
+  return options;
 };
 
 export const OBJECTS_MATERIAL_PROPS: Partial<ObjectMaterial> = {
@@ -571,6 +637,11 @@ export const OBJECTS_MATERIAL_PROPS: Partial<ObjectMaterial> = {
     types: ['basic', 'standard', 'physical'],
   },
 
+  transparent: {
+    label: 'Transparent',
+    value: false,
+  },
+
   opacity: {
     label: 'Opacity',
     step: 0.01,
@@ -579,10 +650,13 @@ export const OBJECTS_MATERIAL_PROPS: Partial<ObjectMaterial> = {
     value: 1,
   },
 
-  transparent: {
-    label: 'Transparent',
-    value: false,
-  },
+  /* alphaTest: {
+    label: 'Alpha Test',
+    step: 0.01,
+    min: 0,
+    max: 1,
+    value: 0,
+  }, */
 
   roughness: {
     label: 'Roughness',
@@ -600,6 +674,510 @@ export const OBJECTS_MATERIAL_PROPS: Partial<ObjectMaterial> = {
     min: 0,
     max: 1,
     value: 0,
+
+    types: ['standard', 'physical'],
+  },
+
+  reflectivity: {
+    label: 'Reflectivity ',
+    step: 0.01,
+    min: 0,
+    max: 1,
+    value: 1,
+
+    types: ['basic', 'physical'],
+  },
+
+  refractionRatio: {
+    label: 'Refraction Ratio',
+    step: 0.01,
+    min: 0,
+    max: 0.98,
+    value: 1,
+
+    types: ['basic'],
+  },
+
+  combine: {
+    label: 'Combine',
+    options: {
+      Multiply: MultiplyOperation,
+      Mix: MixOperation,
+      Add: AddOperation,
+    },
+    value: MultiplyOperation,
+
+    types: ['basic'],
+  },
+
+  ior: {
+    label: 'Clearcoat',
+    step: 0.01,
+    min: 0,
+    max: 2.333,
+    value: 1.5,
+
+    types: ['physical'],
+  },
+
+  sheen: {
+    label: 'Sheen',
+    step: 0.01,
+    min: 0,
+    max: 1,
+    value: 0,
+
+    types: ['physical'],
+  },
+
+  sheenRoughness: {
+    label: 'Sheen Roughness',
+    step: 0.01,
+    min: 0,
+    max: 1,
+    value: 0,
+
+    types: ['physical'],
+  },
+
+  sheenColor: {
+    label: 'Sheen Color',
+    value: '#ffffff',
+
+    types: ['physical'],
+  },
+
+  clearcoat: {
+    label: 'Clearcoat',
+    step: 0.01,
+    min: 0,
+    max: 1,
+    value: 0,
+
+    types: ['physical'],
+  },
+
+  clearcoatRoughness: {
+    label: 'Clearcoat Roughness',
+    step: 0.01,
+    min: 0,
+    max: 1,
+    value: 0,
+
+    types: ['physical'],
+  },
+
+  thickness: {
+    label: 'Thickness',
+    step: 0.01,
+    min: 0,
+    max: 1,
+    value: 0,
+
+    types: ['physical'],
+  },
+
+  transmission: {
+    label: 'Transmission',
+    step: 0.01,
+    min: 0,
+    max: 1,
+    value: 0,
+
+    types: ['physical'],
+  },
+
+  specularColor: {
+    label: 'Specular Color',
+    value: '#ffffff',
+
+    types: ['physical'],
+  },
+
+  map: {
+    label: 'Texture',
+
+    folder: {
+      ...TEXTURE_OPTION(),
+    },
+
+    types: ['standard', 'physical', 'basic'],
+  },
+
+  normalMap: {
+    label: 'Normal Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      normalScale: {
+        label: 'Scale',
+        step: 0.01,
+        value: [1, 1],
+        joystick: false,
+
+        setterFromParent: true,
+      },
+
+      normalMapType: {
+        label: 'Type',
+        options: {
+          'Tangent Space': TangentSpaceNormalMap,
+          'Object Space': ObjectSpaceNormalMap,
+        },
+        value: TangentSpaceNormalMap,
+
+        setterFromParent: true,
+      },
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['standard', 'physical'],
+  },
+
+  envMap: {
+    label: 'Environment Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      envMapIntensity: {
+        label: 'Intensity',
+        step: 0.01,
+        min: 0,
+        max: 1,
+        value: 1,
+
+        setterFromParent: true,
+      },
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['standard', 'physical', 'basic'],
+  },
+
+  lightMap: {
+    label: 'Light Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      lightMapIntensity: {
+        label: 'Intensity',
+        step: 0.01,
+        min: 0,
+        max: 1,
+        value: 1,
+
+        setterFromParent: true,
+      },
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['standard', 'physical', 'basic'],
+  },
+
+  roughnessMap: {
+    label: 'Rougness Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['standard', 'physical'],
+  },
+
+  displacementMap: {
+    label: 'Displacement Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      displacementScale: {
+        label: 'Scale',
+        step: 0.1,
+        min: -5,
+        max: 5,
+        value: 1,
+
+        setterFromParent: true,
+      },
+
+      displacementBias: {
+        label: 'Bias',
+        step: 0.1,
+        min: -5,
+        max: 5,
+        value: 0,
+
+        setterFromParent: true,
+      },
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['standard', 'physical'],
+  },
+
+  bumpMap: {
+    label: 'Bump Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      bumpMapScale: {
+        label: 'Scale',
+        step: 0.01,
+        value: [1, 1],
+        joystick: false,
+
+        setterFromParent: true,
+      },
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['standard', 'physical'],
+  },
+
+  specularMap: {
+    label: 'Specular Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['basic'],
+  },
+
+  specularIntensityMap: {
+    label: 'Specular Intensity Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      specularIntensity: {
+        label: 'Intensity',
+        step: 0.01,
+        min: 0,
+        max: 1,
+        value: 1,
+
+        setterFromParent: true,
+      },
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['physical'],
+  },
+
+  specularColorMap: {
+    label: 'Specular Color Map',
+
+    folder: {
+      ...TEXTURE_SRGB_OPTION,
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['physical'],
+  },
+
+  metalnessMap: {
+    label: 'Metalness Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['standard', 'physical'],
+  },
+
+  aoMap: {
+    label: 'Ambient Occlusion Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      aoMapIntensity: {
+        label: 'Intensity',
+        step: 0.01,
+        min: 0,
+        max: 1,
+        value: 1,
+
+        setterFromParent: true,
+      },
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['standard', 'physical', 'basic'],
+  },
+
+  alphaMap: {
+    label: 'Alpha Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['standard', 'physical', 'basic'],
+  },
+
+  clearcoatMap: {
+    label: 'Clearcoat Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['physical'],
+  },
+
+  clearcoatRoughnessMap: {
+    label: 'Clearcoat Roughness Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['physical'],
+  },
+
+  clearcoatNormalMap: {
+    label: 'Clearcoat Normal Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      clearcoatNormalScale: {
+        label: 'Scale',
+        step: 0.01,
+        value: [1, 1],
+        joystick: false,
+
+        setterFromParent: true,
+      },
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['physical'],
+  },
+
+  transmissionMap: {
+    label: 'Transmission Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['physical'],
+  },
+
+  thicknessMap: {
+    label: 'Thickness Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['physical'],
+  },
+
+  sheenColorMap: {
+    label: 'Sheen Color Map',
+
+    folder: {
+      ...TEXTURE_SRGB_OPTION,
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['physical'],
+  },
+
+  sheenRoughnessMap: {
+    label: 'Sheen Roughness Map',
+
+    folder: {
+      ...TEXTURE_NO_COLOR_OPTION,
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
+
+    types: ['physical'],
+  },
+
+  emissiveMap: {
+    label: 'Emissive Map',
+
+    folder: {
+      ...TEXTURE_SRGB_OPTION,
+
+      ...TEXTURE_SHARED_OPTIONS,
+    },
+
+    collapsed: true,
 
     types: ['standard', 'physical'],
   },
@@ -628,25 +1206,36 @@ export const OBJECTS_MATERIAL_PROPS: Partial<ObjectMaterial> = {
     types: ['standard', 'physical', 'normal'],
   },
 
-  map: {
-    label: 'Texture',
+  colorWrite: {
+    label: 'Other',
 
     folder: {
-      ...TEXTURE_OPTION,
-    },
+      depthTest: {
+        label: 'Depth Test',
+        value: true,
 
-    types: ['standard', 'physical', 'basic'],
-  },
+        setterFromParent: true,
+      },
+      depthWrite: {
+        label: 'Depth Write',
+        value: true,
 
-  envMap: {
-    label: 'Environment Map',
+        setterFromParent: true,
+      },
+      colorWrite: {
+        label: 'Color Write',
+        value: true,
 
-    folder: {
-      ...TEXTURE_OPTION,
+        setterFromParent: true,
+      },
+      vertexColors: {
+        label: 'Vertex Colors',
+        value: false,
+
+        setterFromParent: true,
+      },
     },
 
     collapsed: true,
-
-    types: ['standard', 'physical', 'basic'],
   },
 };

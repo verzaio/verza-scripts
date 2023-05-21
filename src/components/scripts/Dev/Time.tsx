@@ -2,7 +2,7 @@ import {useEffect, useRef} from 'react';
 
 import PanelWidget from '@app/components/core/PanelWidget';
 import Provider from '@app/components/core/Provider';
-import {useFrame, useUI, useWorld} from '@verza/sdk/react';
+import {useUI, useWorld} from '@verza/sdk/react';
 import {useControls} from 'leva';
 
 const Time = () => {
@@ -32,19 +32,15 @@ const TimeRender = () => {
     autoTime: false,
   });
 
-  useFrame(delta => {
-    if (!autoTime) return;
-
-    const newTime = 1000 * delta + originalTime.current;
-
-    if (newTime > 24 * 3600) {
-      originalTime.current = 0;
-    } else {
-      originalTime.current = newTime;
+  useEffect(() => {
+    if (!autoTime) {
+      world.setTimeMode('fixed');
+      return;
     }
 
-    world.setTime(originalTime.current);
-  });
+    world.setTimeMode('cycle');
+    world.setTimeCycleDuration(10);
+  }, [world, autoTime]);
 
   useEffect(() => {
     world.setTimeMode('fixed');

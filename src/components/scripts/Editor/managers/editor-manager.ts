@@ -54,6 +54,8 @@ class EditorManager {
   }
 
   set enabled(status: boolean) {
+    if (this.enabled === status) return;
+
     if (status) {
       this._ui.show();
 
@@ -65,7 +67,7 @@ class EditorManager {
 
       this.cancelEdit();
 
-      this.controller.editing = false;
+      this.editing = false;
     }
 
     this.controller.enabled = status;
@@ -177,6 +179,7 @@ class EditorManager {
         }
 
         this.editing = false;
+        this.updating = false;
         break;
       }
     }
@@ -240,7 +243,7 @@ class EditorManager {
   }
 
   async placeOnGround(object: ObjectManager) {
-    const worldLocation = await object.worldLocation;
+    const worldLocation = await object.worldLocationAsync;
     const fromLocation = worldLocation.position.clone();
     const toLocation = worldLocation.position.clone();
 
@@ -282,6 +285,8 @@ class EditorManager {
       .clone()
       .translateZ(FRONT_DISTANCE);
 
+    frontLocation.lookAt(this._player.location.position);
+
     const fromLocation = frontLocation.position.clone();
     const toLocation = frontLocation.position.clone();
 
@@ -302,7 +307,7 @@ class EditorManager {
     }
 
     // put to floor level
-    const worldPosition = await object.worldLocation;
+    const worldPosition = await object.worldLocationAsync;
 
     const box = await object.computeBoundingBox();
     frontLocation.position.y += worldPosition.position.y - box.min.y;

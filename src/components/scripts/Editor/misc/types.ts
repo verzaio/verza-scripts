@@ -32,6 +32,8 @@ export type ObjectControlProps = {
   collapsed?: boolean;
   folder?: ObjectControlFields;
   isAsset?: boolean;
+  setterFromParent?: boolean;
+  types?: ObjectMaterialType[];
 };
 
 export type ObjectItem<T extends ObjectType> = {
@@ -46,9 +48,7 @@ export type ObjectsInfo = {
   [name in ObjectType]: ObjectItem<name>;
 };
 
-export type ObjectMaterialOption = ObjectControlProps & {
-  types?: ObjectMaterialType[];
-};
+export type ObjectMaterialOption = ObjectControlProps;
 
 export type ObjectMaterial = {
   [name in keyof ObjectMaterialMix]: ObjectMaterialOption;

@@ -8,7 +8,11 @@ import PanelWidget from '@app/components/core/PanelWidget';
 import clsx from 'clsx';
 import {levaStore} from 'leva';
 
-const EditorWidget = () => {
+type EditorWidgetProps = {
+  editing: boolean;
+};
+
+const EditorWidget = ({editing}: EditorWidgetProps) => {
   // yay, it's a hack to keep track of opened folders
   const onClick = useCallback((event: MouseEvent) => {
     let el = (
@@ -34,11 +38,11 @@ const EditorWidget = () => {
     folder.collapsed = !folder.collapsed;
   }, []);
 
-  // yay, it's another hack to trigger input events on `keyup`
+  // yay, it's another hack to trigger input events on `keyup` for 'textarea'
   const onKeyUp = useCallback((event: KeyboardEvent) => {
     const el = event.target as HTMLInputElement;
 
-    if (el.nodeName !== 'INPUT' && el.nodeName !== 'TEXTAREA') return;
+    if (el.nodeName !== 'TEXTAREA') return;
 
     const input = levaStore.getInput(el.id);
 
@@ -56,7 +60,7 @@ const EditorWidget = () => {
     <div
       onClick={onClick}
       onKeyUp={onKeyUp}
-      className={clsx(styles.container, 'fade-in')}
+      className={clsx(styles.container, 'fade-in', editing && styles.editing)}
       onPointerMove={e => e.stopPropagation()}
       onPointerDown={e => e.stopPropagation()}>
       <PanelWidget

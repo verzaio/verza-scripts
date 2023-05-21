@@ -1,3 +1,5 @@
+import {useEffect, useState} from 'react';
+
 import {useEditor} from '../../EditorProvider';
 import EditorPanelObject from './EditorPanelObject';
 import EditorPanelSettings from './EditorPanelSettings';
@@ -10,17 +12,27 @@ const EditorPanel = () => {
 
   const editing = useControllerProp(editor.controller, 'editing');
 
+  const [render, setRender] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setRender(true);
+    }, 100);
+  }, []);
+
   return (
     <>
-      <EditorWidget />
+      <EditorWidget editing={editing} />
 
       <EditorPanelSettings />
 
-      {editing && (
+      {render && <EditorPanelObject />}
+
+      {/* {editing && (
         <>
           <EditorPanelObject />
         </>
-      )}
+      )} */}
     </>
   );
 };
