@@ -15,6 +15,8 @@ import {
 } from '@verza/sdk';
 import {ObjectEditActionType} from '@verza/sdk/index';
 
+const _VECTOR = new Vector3();
+
 const MAX_SIZE = 50; // meters
 
 const SCALE_SIZE = 2; // meters
@@ -37,7 +39,7 @@ class EditorManager {
   });
 
   get activeObject() {
-    return this._engine.objects.editingObject;
+    return this.editing ? this._engine.objects.editingObject : null!;
   }
 
   private get _objects() {
@@ -277,16 +279,25 @@ class EditorManager {
 
     // get bounding box and set it from its base
     const box = await object.computeBoundingBox();
-    toLocation.y += worldLocation.position.y - box.min.y;
+
+    box.getSize(_VECTOR);
+
+    toLocation.y += _VECTOR.y / 2;
 
     // set from world space, hits are always in world-space
     object.setPositionFromWorldSpace(toLocation);
   }
 
   async placeInFront(object: ObjectManager) {
-    const frontLocation = this._player.location
-      .clone()
-      .translateZ(FRONT_DISTANCE);
+    const box = await object.computeBoundingBox();
+
+    box.getSize(_VECTOR);
+
+    const distance = _VECTOR.z
+      ? _VECTOR.z / 2 + FRONT_DISTANCE
+      : FRONT_DISTANCE;
+
+    const frontLocation = this._player.location.clone().translateZ(distance);
 
     frontLocation.lookAt(this._player.location.position);
 
@@ -310,10 +321,7 @@ class EditorManager {
     }
 
     // put to floor level
-    const worldPosition = await object.worldLocationAsync;
-
-    const box = await object.computeBoundingBox();
-    frontLocation.position.y += worldPosition.position.y - box.min.y;
+    frontLocation.position.y += _VECTOR.y / 2;
 
     object.setPositionFromWorldSpace(frontLocation.position);
     object.setRotationFromWorldSpace(frontLocation.quaternion);
@@ -392,7 +400,7 @@ class EditorManager {
     try {
       const frontLocation = this._engine.localPlayer.location
         .clone()
-        .translateZ(2);
+        .translateZ(6);
 
       const object = this._objects.create('gltf', {
         u: assetId,
