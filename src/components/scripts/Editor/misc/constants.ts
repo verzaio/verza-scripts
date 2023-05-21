@@ -43,6 +43,8 @@ import {
   UVMapping,
 } from '@verza/sdk';
 
+export const MODELS_EXTENSIONS = ['glb', 'gltf'];
+
 export const PANEL_GROUP_OBJECT = 'object';
 
 export const HIGHLIGHT_ACTIVE_COLOR = '#068bff';

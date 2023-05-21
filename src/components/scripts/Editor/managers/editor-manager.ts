@@ -1,4 +1,7 @@
-import {TOOLBAR_TOGGLE_FREE_LOOK_ID} from '../misc/constants';
+import {
+  MODELS_EXTENSIONS,
+  TOOLBAR_TOGGLE_FREE_LOOK_ID,
+} from '../misc/constants';
 import {isObjectUneditable} from '../misc/utils';
 
 import {
@@ -320,6 +323,10 @@ class EditorManager {
     return this._engine.assets.formatUrl(url);
   }
 
+  isAcceptedFile(file: File) {
+    return MODELS_EXTENSIONS.some(ext => file.name.endsWith(`.${ext}`));
+  }
+
   async uploadTexture(rawFile: File) {
     let assetId: string = null!;
 
@@ -344,6 +351,13 @@ class EditorManager {
   }
 
   async uploadGltf(rawFile: File) {
+    if (!this.isAcceptedFile(rawFile)) {
+      this._engine.localPlayer.sendErrorNotification(
+        'Only GLTF/GLB files are supported.',
+      );
+      return;
+    }
+
     let assetId: string = null!;
 
     const indicatorId = `${Math.random()}`;

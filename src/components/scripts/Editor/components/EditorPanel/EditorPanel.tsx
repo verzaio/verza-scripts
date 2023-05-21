@@ -20,6 +20,8 @@ const EditorPanel = () => {
     }, 100);
   }, []);
 
+  return null;
+
   return (
     <>
       <EditorWidget editing={editing} />
