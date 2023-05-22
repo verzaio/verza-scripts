@@ -3,32 +3,43 @@ import {
   TOOLBAR_TOGGLE_FREE_LOOK_ID,
 } from '../misc/constants';
 import {isObjectUneditable} from '../misc/utils';
+import CommandHistoryManager from './command-history.manager';
 
 import {
   EngineManager,
+  EntityCollisionType,
   IntersectsResult,
+  ObjectEditTransform,
   ObjectManager,
   ObjectMaterialType,
+  PickObjectProps,
+  QuaternionArray,
   Vector3,
+  Vector3Array,
   createControllerManager,
   createFileTransferFromFile,
 } from '@verza/sdk';
 import {ObjectEditActionType} from '@verza/sdk/index';
+import equal from 'fast-deep-equal';
 
 const _VECTOR = new Vector3();
 
-const MAX_SIZE = 50; // meters
+const MAX_SIZE = 50;
 
-const SCALE_SIZE = 2; // meters
+const SCALE_SIZE = 2;
 
-const FLOOR_DISTANCE = 200; // meters
+const FLOOR_DISTANCE = 200;
 
 const FRONT_DISTANCE = 2;
 
 const FRONT_FLOOR_DISTANCE = 2;
 
+const EQUALS_PRECISION = 6;
+
 class EditorManager {
   private _engine: EngineManager;
+
+  history = new CommandHistoryManager();
 
   controller = createControllerManager({
     enabled: false,
@@ -149,13 +160,45 @@ class EditorManager {
     }
   }
 
-  onObjectEdit = (object: ObjectManager, type: ObjectEditActionType) => {
+  private _startTransform: {
+    object: ObjectManager | null;
+    transform: ObjectEditTransform;
+  } | null = null;
+
+  onObjectEdit = (
+    object: ObjectManager,
+    type: ObjectEditActionType,
+    oldTransform: ObjectEditTransform,
+  ) => {
     switch (type) {
       case 'start': {
         this.updating = true;
+
+        console.log(
+          'start',
+          oldTransform.position.map(e => e.toFixed(2)),
+        );
+
+        this._startTransform = {
+          object: object,
+          transform: oldTransform,
+        };
         break;
       }
       case 'end': {
+        // update transform
+        if (this.updating) {
+          if (this._startTransform?.object?.id === object.id) {
+            console.log(
+              'end',
+              this._startTransform.transform.position.map(e => e.toFixed(2)),
+            );
+            this.saveTransformHistory(object, this._startTransform.transform);
+          }
+
+          this._startTransform = null;
+        }
+
         this.updating = false;
 
         //console.log('END', object.permanent);
@@ -210,22 +253,12 @@ class EditorManager {
     this.editObject(object);
   };
 
-  private _timeoutId: ReturnType<typeof setTimeout> | null = null;
-
   saveObject() {
     const object = this.activeObject;
 
     if (!object?.permanent) return;
 
-    if (this._timeoutId) {
-      clearTimeout(this._timeoutId);
-    }
-
-    this._timeoutId = setTimeout(() => {
-      this._timeoutId = null;
-
-      object.save();
-    }, 100);
+    object.saveVolatile();
   }
 
   editObject(object: ObjectManager) {
@@ -247,7 +280,7 @@ class EditorManager {
     this._objects.cancelEdit();
   }
 
-  async placeOnGround(object: ObjectManager) {
+  async placeOnGround(object: ObjectManager, addToHistory = true) {
     const worldLocation = await object.worldLocationAsync;
     const fromLocation = worldLocation.position.clone();
     const toLocation = worldLocation.position.clone();
@@ -285,10 +318,14 @@ class EditorManager {
     toLocation.y += _VECTOR.y / 2;
 
     // set from world space, hits are always in world-space
-    object.setPositionFromWorldSpace(toLocation);
+    if (addToHistory) {
+      this.setPosition(toLocation.toArray(), object);
+    } else {
+      object.setPositionFromWorldSpace(toLocation);
+    }
   }
 
-  async placeInFront(object: ObjectManager) {
+  async placeInFront(object: ObjectManager, addToHistory = true) {
     const box = await object.computeBoundingBox();
 
     box.getSize(_VECTOR);
@@ -323,8 +360,16 @@ class EditorManager {
     // put to floor level
     frontLocation.position.y += _VECTOR.y / 2;
 
-    object.setPositionFromWorldSpace(frontLocation.position);
-    object.setRotationFromWorldSpace(frontLocation.quaternion);
+    if (addToHistory) {
+      this.setPosition(frontLocation.position.toArray(), object);
+      this.setRotation(
+        frontLocation.quaternion.toArray() as QuaternionArray,
+        object,
+      );
+    } else {
+      object.setPositionFromWorldSpace(frontLocation.position);
+      object.setRotationFromWorldSpace(frontLocation.quaternion);
+    }
   }
 
   formatUrl(url: string) {
@@ -441,6 +486,158 @@ class EditorManager {
 
     // hide indicator
     this._engine.ui.hideIndicator(indicatorId);
+  }
+
+  /* actions */
+  setPosition(position: Vector3Array, object?: ObjectManager) {
+    object = object! ?? this.activeObject;
+
+    const currentPos = object.worldLocation.position.toArray();
+
+    object.setPositionFromWorldSpace(position);
+
+    if (
+      equal(
+        position.map(e => e.toFixed(EQUALS_PRECISION)),
+        currentPos.map((e: number) => e.toFixed(EQUALS_PRECISION)),
+      )
+    ) {
+      return;
+    }
+
+    this.history.push({
+      type: 'position',
+      object: object,
+      undo: () => object!.setPositionFromWorldSpace(currentPos),
+      redo: () => object!.setPositionFromWorldSpace(position),
+    });
+  }
+
+  setRotation(rotation: QuaternionArray, object?: ObjectManager) {
+    object = object! ?? this.activeObject;
+
+    const currentRot =
+      object.worldLocation.quaternion.toArray() as QuaternionArray;
+
+    object.setRotationFromWorldSpace(rotation);
+
+    if (
+      equal(
+        rotation.map(e => e.toFixed(EQUALS_PRECISION)),
+        currentRot.map(e => e.toFixed(EQUALS_PRECISION)),
+      )
+    ) {
+      return;
+    }
+
+    this.history.push({
+      type: 'rotation',
+      object: object,
+      undo: () => object!.setRotationFromWorldSpace(currentRot),
+      redo: () => object!.setRotationFromWorldSpace(rotation),
+    });
+  }
+
+  setScale(scale: Vector3Array, object?: ObjectManager) {
+    object = object ?? this.activeObject;
+
+    const currentScale = object.scale.toArray();
+
+    object.setScale(scale);
+
+    if (
+      equal(
+        scale.map(e => e.toFixed(EQUALS_PRECISION)),
+        currentScale.map((e: number) => e.toFixed(EQUALS_PRECISION)),
+      )
+    ) {
+      return;
+    }
+
+    this.history.push({
+      type: 'scale',
+      object: object,
+      undo: () => object!.setScale(currentScale),
+      redo: () => object!.setScale(scale),
+    });
+  }
+
+  setProps(
+    props: PickObjectProps<'box'>,
+    currentProps: PickObjectProps<'box'>,
+    object?: ObjectManager,
+  ) {
+    object = object ?? this.activeObject;
+
+    object.setProps(props);
+
+    this.saveObject();
+
+    if (equal(props, currentProps)) return;
+
+    this.history.push({
+      type: 'property',
+      object: object,
+      undo: () => object!.setProps(currentProps),
+      redo: () => object!.setProps(props),
+    });
+  }
+
+  setCollision(collision: EntityCollisionType | null, object?: ObjectManager) {
+    object = object ?? this.activeObject;
+
+    const currentProps = object.collision;
+
+    object.setCollision(collision);
+
+    this.history.push({
+      type: 'collision',
+      object: object,
+      undo: () => object!.setCollision(currentProps),
+      redo: () => object!.setCollision(collision),
+    });
+
+    this.saveObject();
+  }
+
+  saveTransformHistory(object: ObjectManager, transform: ObjectEditTransform) {
+    const currentPos = object.worldLocation.position.toArray();
+    const currentRot =
+      object.worldLocation.quaternion.toArray() as QuaternionArray;
+    const currentScale = object.scale.toArray();
+
+    // check if transform has changed
+    if (
+      equal(
+        [
+          currentPos.map((e: number) => e.toFixed(EQUALS_PRECISION)),
+          currentRot.map((e: number) => e.toFixed(EQUALS_PRECISION)),
+          currentScale.map((e: number) => e.toFixed(EQUALS_PRECISION)),
+        ],
+        [
+          transform.position.map(e => e.toFixed(EQUALS_PRECISION)),
+          transform.rotation.map(e => e.toFixed(EQUALS_PRECISION)),
+          transform.scale.map(e => e.toFixed(EQUALS_PRECISION)),
+        ],
+      )
+    ) {
+      return;
+    }
+
+    this.history.push({
+      type: 'collision',
+      object: object,
+      undo: () => {
+        object!.setPositionFromWorldSpace(transform.position);
+        object!.setRotationFromWorldSpace(transform.rotation);
+        object!.setScale(transform.scale);
+      },
+      redo: () => {
+        object!.setPositionFromWorldSpace(currentPos);
+        object!.setRotationFromWorldSpace(currentRot);
+        object!.setScale(currentScale);
+      },
+    });
   }
 }
 

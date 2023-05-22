@@ -46,7 +46,7 @@ export const createSliderProps = (
 };
 
 type ParseControlsFieldsOptions = {
-  onEditStart?: () => void;
+  onEditStart?: (isSlider: boolean, value: unknown, path: any) => void;
   onEditEnd?: () => void;
   onChange?: (props: ObjectControlProps, name: string, ...args: any[]) => void;
   itemRender?: (
@@ -104,8 +104,10 @@ export const parseControls = <
     const isSlider = isSliderControl(props);
 
     const baseProps = {
+      onEditStart: (value: unknown, path: string) =>
+        options.onEditStart?.(isSlider, value, path),
+
       ...(isSlider && {
-        onEditStart: options.onEditStart,
         onEditEnd: options.onEditEnd,
       }),
 

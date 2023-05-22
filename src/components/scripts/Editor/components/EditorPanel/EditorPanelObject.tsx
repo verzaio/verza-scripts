@@ -1,7 +1,7 @@
 import {useCallback, useMemo, useRef} from 'react';
 
 import {useEditor} from '../../EditorProvider';
-import {getObjectMaterialType} from '../../managers/editor-manager';
+import {getObjectMaterialType} from '../../managers/editor.manager';
 import {OBJECTS_INFO, OBJECTS_MATERIAL_PROPS} from '../../misc/constants';
 import {ObjectMaterialOption} from '../../misc/types';
 import {
@@ -11,7 +11,13 @@ import {
   setControlsValue,
 } from '../../misc/utils';
 
-import {ObjectManager, Euler, Vector3} from '@verza/sdk';
+import {
+  ObjectManager,
+  Euler,
+  Vector3,
+  Quaternion,
+  QuaternionArray,
+} from '@verza/sdk';
 import {useEvent} from '@verza/sdk/react';
 import {MathUtils} from '@verza/sdk/utils';
 import equal from 'fast-deep-equal';
@@ -23,6 +29,8 @@ const EditorPanelObject = () => {
   const isFirstRender = useRef(true);
 
   const isEditingRef = useRef(false);
+
+  const fieldValues = useRef<{[name: string]: any}>({});
 
   const updateControls = useCallback(
     (object: ObjectManager) => {
@@ -110,7 +118,16 @@ const EditorPanelObject = () => {
     [editor],
   );
 
-  const onEditStart = useCallback(() => (isEditingRef.current = true), []);
+  const onEditStart = useCallback(
+    (isSlider: boolean, value: unknown, path: string) => {
+      fieldValues.current[path] = value;
+
+      if (isSlider) {
+        isEditingRef.current = true;
+      }
+    },
+    [],
+  );
   const onEditEnd = useCallback(() => {
     if (isFirstRender.current) return;
 
@@ -161,9 +178,7 @@ const EditorPanelObject = () => {
         value: true,
 
         onChange: on((value: boolean) => {
-          editor.activeObject.setCollision(value ? 'static' : null);
-
-          editor.saveObject();
+          editor.setCollision(value ? 'static' : null);
         }),
 
         render: () => !!editor.activeObject?.supportsCollision,
@@ -178,18 +193,12 @@ const EditorPanelObject = () => {
           z: 0,
         },
 
-        onEditStart,
+        onEditStart: (value, path) => onEditStart(false, value, path),
         onEditEnd,
         onChange: on((value: Vector3) => {
           if (!isEditingRef.current) return;
 
-          console.log('position:onChange');
-
-          editor.activeObject.setPositionFromWorldSpace([
-            value.x,
-            value.y,
-            value.z,
-          ]);
+          editor.setPosition([value.x, value.y, value.z]);
         }),
       },
 
@@ -204,16 +213,19 @@ const EditorPanelObject = () => {
           z: 0,
         },
 
-        onEditStart,
+        onEditStart: (value, path) => onEditStart(false, value, path),
         onEditEnd,
         onChange: on((value: Euler) => {
           if (!isEditingRef.current) return;
 
-          editor.activeObject.setRotationFromWorldSpace([
-            MathUtils.degToRad(value.x),
-            MathUtils.degToRad(value.y),
-            MathUtils.degToRad(value.z),
-          ]);
+          const quaternion = new Quaternion().setFromEuler(
+            new Euler(
+              MathUtils.degToRad(value.x),
+              MathUtils.degToRad(value.y),
+              MathUtils.degToRad(value.z),
+            ),
+          );
+          editor.setRotation(quaternion.toArray() as QuaternionArray);
         }),
       },
 
@@ -228,12 +240,12 @@ const EditorPanelObject = () => {
           z: 1,
         },
 
-        onEditStart,
+        onEditStart: (value, path) => onEditStart(false, value, path),
         onEditEnd,
         onChange: on((value: Vector3) => {
           if (!isEditingRef.current) return;
 
-          editor.activeObject.setScale([value.x, value.y, value.z]);
+          editor.setScale([value.x, value.y, value.z]);
         }),
       },
 
@@ -241,19 +253,19 @@ const EditorPanelObject = () => {
         label: ' ',
         opts: {
           '0.1': () => {
-            editor.activeObject.setScale([0.1, 0.1, 0.1]);
+            editor.setScale([0.1, 0.1, 0.1]);
           },
           '0.25': () => {
-            editor.activeObject.setScale([0.25, 0.25, 0.25]);
+            editor.setScale([0.25, 0.25, 0.25]);
           },
           '0.5': () => {
-            editor.activeObject.setScale([0.5, 0.5, 0.5]);
+            editor.setScale([0.5, 0.5, 0.5]);
           },
           '0.75': () => {
-            editor.activeObject.setScale([0.75, 0.75, 0.75]);
+            editor.setScale([0.75, 0.75, 0.75]);
           },
           reset: () => {
-            editor.activeObject.setScale([1, 1, 1]);
+            editor.setScale([1, 1, 1]);
           },
         },
       }),
@@ -293,7 +305,12 @@ const EditorPanelObject = () => {
         itemRender: canRender,
 
         onChange: on(
-          async (props: ObjectMaterialOption, name: string, value: any) => {
+          async (
+            props: ObjectMaterialOption,
+            name: string,
+            value: any,
+            path: string,
+          ) => {
             if (isSliderControl(props) && !isEditingRef.current) return;
 
             let newValue = value;
@@ -316,35 +333,56 @@ const EditorPanelObject = () => {
 
             switch (parts.length) {
               case 1: {
-                editor.activeObject?.setProps({
-                  material: {
-                    [name]: newValue,
+                editor.setProps(
+                  {
+                    material: {
+                      [name]: newValue,
+                    },
                   },
-                });
+                  {
+                    material: {
+                      [name]: fieldValues.current[path],
+                    },
+                  },
+                );
                 break;
               }
               case 2: {
                 if (props.setterFromParent) {
-                  editor.activeObject?.setProps({
-                    material: {
-                      [parts[1]]: newValue,
+                  editor.setProps(
+                    {
+                      material: {
+                        [parts[1]]: newValue,
+                      },
                     },
-                  });
+                    {
+                      material: {
+                        [parts[1]]: fieldValues.current[path],
+                      },
+                    },
+                  );
                   break;
                 }
 
-                editor.activeObject?.setProps({
-                  material: {
-                    [parts[0]]: {
-                      [parts[1]]: newValue,
+                editor.setProps(
+                  {
+                    material: {
+                      [parts[0]]: {
+                        [parts[1]]: newValue,
+                      },
                     },
                   },
-                });
+                  {
+                    material: {
+                      [parts[0]]: {
+                        [parts[1]]: fieldValues.current[path],
+                      },
+                    },
+                  },
+                );
                 break;
               }
             }
-
-            editor.saveObject();
           },
         ),
       },
@@ -370,14 +408,22 @@ const EditorPanelObject = () => {
           itemRender: () => editor.activeObject?.objectType === objectType,
 
           onChange: on(
-            (props: ObjectMaterialOption, name: string, value: any) => {
+            (
+              props: ObjectMaterialOption,
+              name: string,
+              value: any,
+              path: string,
+            ) => {
               if (isSliderControl(props) && !isEditingRef.current) return;
 
-              editor.activeObject?.setProps({
-                [name]: value,
-              });
-
-              editor.saveObject();
+              editor.setProps(
+                {
+                  [name]: value,
+                },
+                {
+                  [name]: fieldValues.current[path],
+                },
+              );
             },
           ),
         },
