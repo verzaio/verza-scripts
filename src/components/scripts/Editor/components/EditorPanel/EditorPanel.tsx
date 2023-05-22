@@ -10,9 +10,9 @@ import {useControllerProp} from '@verza/sdk/react';
 const EditorPanel = () => {
   const editor = useEditor();
 
-  const editing = useControllerProp(editor.controller, 'editing');
-
   const [render, setRender] = useState(false);
+
+  useControllerProp(editor.controller, 'editing');
 
   useEffect(() => {
     setTimeout(() => {
@@ -22,7 +22,7 @@ const EditorPanel = () => {
 
   return (
     <>
-      <EditorWidget editing={editing} />
+      <EditorWidget />
 
       <EditorPanelSettings />
 

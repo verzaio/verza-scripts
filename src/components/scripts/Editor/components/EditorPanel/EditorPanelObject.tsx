@@ -33,35 +33,39 @@ const EditorPanelObject = () => {
   const fieldValues = useRef<{[name: string]: any}>({});
 
   const updateControls = useCallback(
-    (object: ObjectManager) => {
+    (object: ObjectManager, forceUpdate?: boolean) => {
       if (!editor.activeObject || isEditingRef.current) return;
 
       const location = object.worldLocation;
 
-      const values: any = {
+      const objectUpdate = {
         'Object.id': object.id,
         'Object.type': object.objectType,
+      };
 
-        'Transforms.position': {
+      const values: any = {
+        ...objectUpdate,
+
+        'Transform.position': {
           x: location.position.x,
           y: location.position.y,
           z: location.position.z,
         },
 
-        'Transforms.rotation': {
+        'Transform.rotation': {
           x: MathUtils.radToDeg(location.rotation.x),
           y: MathUtils.radToDeg(location.rotation.y),
           z: MathUtils.radToDeg(location.rotation.z),
         },
 
-        'Transforms.scale': {
+        'Transform.scale': {
           x: location.scale.x,
           y: location.scale.y,
           z: location.scale.z,
         },
 
         ...(object.supportsCollision && {
-          'Transforms.collision': !!object.collision,
+          'Transform.collision': !!object.collision,
         }),
       };
 
@@ -104,6 +108,9 @@ const EditorPanelObject = () => {
         });
       }
 
+      // update field values
+      Object.assign(fieldValues, values);
+
       // remove unchanged values
       Object.keys(values).forEach(key => {
         if (equal(levaStore.get(key), values[key])) {
@@ -112,7 +119,9 @@ const EditorPanelObject = () => {
       });
 
       if (Object.keys(values).length) {
-        levaStore.set(values, true);
+        levaStore.set(values, false);
+      } else if (forceUpdate) {
+        levaStore.set(objectUpdate, false);
       }
     },
     [editor],
@@ -139,6 +148,9 @@ const EditorPanelObject = () => {
   const on = useCallback(
     (handler: (...args: any[]) => void) =>
       (...args: any[]) => {
+        // ignore initial render
+        if (args[args.length - 1]?.initial) return;
+
         if (!editor.activeObject || isFirstRender.current) return;
 
         handler(...args);
@@ -171,7 +183,7 @@ const EditorPanelObject = () => {
   );
 
   useControls(
-    'Transforms',
+    'Transform',
     () => ({
       collision: {
         label: 'Collision',
@@ -472,17 +484,19 @@ const EditorPanelObject = () => {
         {
           'Object.id': editor.activeObject?.id ?? '-',
         },
-        true,
+        false,
       );
       return;
     }
 
     if (updateTimeoutId.current) return;
 
+    const forceUpdate = type === 'select';
+
     if (Date.now() - lastUpdate.current < 200) {
       updateTimeoutId.current = setTimeout(() => {
         isFirstRender.current = true;
-        updateControls(object);
+        updateControls(object, forceUpdate);
         isFirstRender.current = false;
 
         updateTimeoutId.current = null;
@@ -493,7 +507,7 @@ const EditorPanelObject = () => {
     lastUpdate.current = Date.now();
 
     isFirstRender.current = true;
-    updateControls(object);
+    updateControls(object, forceUpdate);
     isFirstRender.current = false;
   });
 
