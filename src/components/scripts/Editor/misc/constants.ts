@@ -493,7 +493,7 @@ export const TEXTURE_NO_COLOR_OPTION: Partial<
   Record<keyof ObjectTexture, ObjectMaterialOption>
 > = {
   source: {
-    label: 'Source',
+    label: 'Image',
     file: null,
     isAsset: true,
   },
@@ -509,7 +509,7 @@ export const TEXTURE_SRGB_OPTION: Partial<
   Record<keyof ObjectTexture, ObjectMaterialOption>
 > = {
   source: {
-    label: 'Source',
+    label: 'Image',
     file: null,
     isAsset: true,
   },
@@ -524,7 +524,7 @@ export const TEXTURE_SRGB_OPTION: Partial<
 export const TEXTURE_OPTION = () => {
   const options: Partial<Record<keyof ObjectTexture, ObjectMaterialOption>> = {
     source: {
-      label: 'Source',
+      label: 'Image',
       file: null,
       isAsset: true,
     },
@@ -804,6 +804,8 @@ export const OBJECTS_MATERIAL_PROPS: Partial<ObjectMaterial> = {
     },
 
     types: ['standard', 'physical', 'basic'],
+
+    collapsed: true,
   },
 
   normalMap: {
