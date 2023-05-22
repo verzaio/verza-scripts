@@ -45,11 +45,11 @@ const HistoryButton = () => {
         <RedoIcon />
       </ToolbarButton>
 
-      <ToolbarButton
+      {/* <ToolbarButton
         onClick={() => editor.history.clear()}
         disabled={!editor.history.stack.length}>
         Clear
-      </ToolbarButton>
+      </ToolbarButton> */}
     </>
   );
 };
