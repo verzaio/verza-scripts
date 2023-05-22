@@ -71,7 +71,7 @@ const M_SEGMENTS = 50;
 export const EDITOR_FOLDERS_REL: Record<string, string> = {
   Settings: 'Settings',
   Object: 'Object',
-  Transforms: 'Transforms',
+  Transform: 'Transform',
   Material: 'Material',
   Properties: 'Properties',
   Texture: 'Material.Texture',
@@ -904,7 +904,7 @@ export const OBJECTS_MATERIAL_PROPS: Partial<ObjectMaterial> = {
     types: ['standard', 'physical'],
   },
 
-  displacementMap: {
+  /* displacementMap: {
     label: 'Displacement Map',
 
     folder: {
@@ -936,7 +936,7 @@ export const OBJECTS_MATERIAL_PROPS: Partial<ObjectMaterial> = {
     collapsed: true,
 
     types: ['standard', 'physical'],
-  },
+  }, */
 
   bumpMap: {
     label: 'Bump Map',

@@ -146,9 +146,9 @@ class EditorManager {
       showY: true,
       showZ: true,
 
-      showRX: false,
+      showRX: true,
       showRY: true,
-      showRZ: false,
+      showRZ: true,
 
       showSX: false,
       showSY: false,

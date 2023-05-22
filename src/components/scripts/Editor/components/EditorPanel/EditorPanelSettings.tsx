@@ -15,18 +15,20 @@ const EditorPanelSettings = () => {
     'Settings',
     () => ({
       axes: {
-        label: 'Show All Axes',
+        label: 'Show Scale Axes',
         value: false,
 
-        onChange: value => {
+        onChange: (value, _, context) => {
+          if (context.initial) return;
+
           objects.setEditAxes({
             showX: true,
             showY: true,
             showZ: true,
 
-            showRX: value,
+            showRX: true,
             showRY: true,
-            showRZ: value,
+            showRZ: true,
 
             showSX: value,
             showSY: value,
@@ -34,14 +36,20 @@ const EditorPanelSettings = () => {
           });
         },
       },
-      snap: {
+      /* snap: {
         label: 'Snaps',
         step: 0.01,
         min: 0,
         max: 2,
         value: 0,
 
+        onEditStart: () => {
+          isFirstRender.current = false;
+        },
+
         onChange: value => {
+          if (isFirstRender.current) return;
+
           if (!value) {
             objects.setEditSnaps(null, null, null);
             return;
@@ -49,7 +57,7 @@ const EditorPanelSettings = () => {
 
           objects.setEditSnaps(value, value, value);
         },
-      },
+      }, */
       time: {
         label: 'Time',
         value: originalTime.current / 60,
@@ -60,7 +68,9 @@ const EditorPanelSettings = () => {
         onEditStart: () => {
           isFirstRender.current = false;
         },
-        onChange: (time: number) => {
+
+        onChange: (time, _, context) => {
+          if (context.initial) return;
           if (isFirstRender.current) return;
 
           world.setTimeMode('fixed');

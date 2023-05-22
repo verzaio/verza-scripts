@@ -1,18 +1,17 @@
 import styles from './EditorWidget.module.scss';
 
-import {KeyboardEvent, MouseEvent, useCallback} from 'react';
+import {KeyboardEvent, MouseEvent, useCallback, useEffect} from 'react';
 
 import {EDITOR_FOLDERS_REL} from '../../../misc/constants';
 
 import PanelWidget from '@app/components/core/PanelWidget';
+import {useEngine} from '@verza/sdk/react';
 import clsx from 'clsx';
 import {levaStore} from 'leva';
 
-type EditorWidgetProps = {
-  editing: boolean;
-};
+const EditorWidget = () => {
+  const engine = useEngine();
 
-const EditorWidget = ({editing}: EditorWidgetProps) => {
   // yay, it's a hack to keep track of opened folders
   const onClick = useCallback((event: MouseEvent) => {
     let el = (
@@ -56,11 +55,26 @@ const EditorWidget = ({editing}: EditorWidgetProps) => {
     }
   }, []);
 
+  // blur inputs if clicks outside
+  useEffect(() => {
+    const onClick = () => {
+      if (engine.ui.isActiveInput) {
+        engine.ui.activeInput?.blur();
+      }
+    };
+
+    document.addEventListener('pointerdown', onClick);
+
+    return () => {
+      document.removeEventListener('pointerdown', onClick);
+    };
+  }, [engine]);
+
   return (
     <div
       onClick={onClick}
       onKeyUp={onKeyUp}
-      className={clsx(styles.container, 'fade-in', editing && styles.editing)}
+      className={clsx(styles.container, 'fade-in')}
       onPointerMove={e => e.stopPropagation()}
       onPointerDown={e => e.stopPropagation()}>
       <PanelWidget
