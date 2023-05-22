@@ -193,7 +193,7 @@ const EditorPanelObject = () => {
           z: 0,
         },
 
-        onEditStart: (value, path) => onEditStart(false, value, path),
+        onEditStart: (value, path) => onEditStart(true, value, path),
         onEditEnd,
         onChange: on((value: Vector3) => {
           if (!isEditingRef.current) return;
@@ -213,7 +213,7 @@ const EditorPanelObject = () => {
           z: 0,
         },
 
-        onEditStart: (value, path) => onEditStart(false, value, path),
+        onEditStart: (value, path) => onEditStart(true, value, path),
         onEditEnd,
         onChange: on((value: Euler) => {
           if (!isEditingRef.current) return;
@@ -240,7 +240,7 @@ const EditorPanelObject = () => {
           z: 1,
         },
 
-        onEditStart: (value, path) => onEditStart(false, value, path),
+        onEditStart: (value, path) => onEditStart(true, value, path),
         onEditEnd,
         onChange: on((value: Vector3) => {
           if (!isEditingRef.current) return;
@@ -345,6 +345,8 @@ const EditorPanelObject = () => {
                     },
                   },
                 );
+
+                fieldValues.current[path] = newValue;
                 break;
               }
               case 2: {
@@ -361,6 +363,8 @@ const EditorPanelObject = () => {
                       },
                     },
                   );
+
+                  fieldValues.current[path] = newValue;
                   break;
                 }
 
@@ -380,6 +384,8 @@ const EditorPanelObject = () => {
                     },
                   },
                 );
+
+                fieldValues.current[path] = newValue;
                 break;
               }
             }
@@ -424,6 +430,8 @@ const EditorPanelObject = () => {
                   [name]: fieldValues.current[path],
                 },
               );
+
+              fieldValues.current[path] = value;
             },
           ),
         },

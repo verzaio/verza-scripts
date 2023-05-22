@@ -9,7 +9,7 @@ import {useEditor} from '@app/components/scripts/Editor/EditorProvider';
 import {OBJECTS_INFO} from '@app/components/scripts/Editor/misc/constants';
 import useOnClickOutside from '@app/hooks/useOnClickOutside';
 import {ObjectType} from '@verza/sdk';
-import {useEngine, useEvent, useObjects} from '@verza/sdk/react';
+import {useEvent} from '@verza/sdk/react';
 import {useDropzone} from 'react-dropzone';
 
 const CreateButton = () => {
@@ -71,33 +71,11 @@ type DropdownItemProps = {
 };
 
 const DropdownItem = ({type, label, Icon}: DropdownItemProps) => {
-  const engine = useEngine();
-  const objects = useObjects();
-
   const editor = useEditor();
 
   const onClick = useCallback(async () => {
-    const location = engine.localPlayer.location.clone();
-
-    location.translateZ(3);
-
-    location.lookAt(engine.localPlayer.position);
-
-    location.translateY(1);
-
-    const object = objects.create(type, {
-      position: location.position,
-      rotation: location.quaternion,
-    });
-
-    // save it
-    object.save();
-
-    // wait for object to stream-in
-    await object.waitForStream();
-
-    editor.editObject(object);
-  }, [editor, engine, objects, type]);
+    editor.createObject(type);
+  }, [editor, type]);
 
   return (
     <button className={styles.item} onClick={onClick}>

@@ -11,23 +11,7 @@ const Destroy = () => {
     const object = editor.activeObject;
     if (!object) return;
 
-    if (!object.remote) {
-      object.destroy();
-    } else {
-      const parent = object.parent;
-
-      // hide object
-      object.setVisible(false);
-
-      // if parent, then destroy child and keep parent
-      if (parent) {
-        object.destroy();
-        parent.save();
-      } else {
-        // if not, then just delete it
-        object.delete();
-      }
-    }
+    editor.destroyObject(object);
 
     engine.localPlayer.sendErrorNotification('Object destroyed', 1000);
   };

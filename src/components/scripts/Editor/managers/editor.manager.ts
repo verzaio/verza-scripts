@@ -12,6 +12,7 @@ import {
   ObjectEditTransform,
   ObjectManager,
   ObjectMaterialType,
+  ObjectType,
   PickObjectProps,
   QuaternionArray,
   Vector3,
@@ -20,6 +21,7 @@ import {
   createFileTransferFromFile,
 } from '@verza/sdk';
 import {ObjectEditActionType} from '@verza/sdk/index';
+import {uuid} from '@verza/sdk/utils';
 import equal from 'fast-deep-equal';
 
 const _VECTOR = new Vector3();
@@ -39,7 +41,7 @@ const EQUALS_PRECISION = 6;
 class EditorManager {
   private _engine: EngineManager;
 
-  history = new CommandHistoryManager();
+  history: CommandHistoryManager;
 
   controller = createControllerManager({
     enabled: false,
@@ -120,6 +122,8 @@ class EditorManager {
   constructor(engine: EngineManager) {
     this._engine = engine;
 
+    this.history = new CommandHistoryManager(engine, this);
+
     this._init();
 
     engine.ui.setProps({
@@ -174,10 +178,10 @@ class EditorManager {
       case 'start': {
         this.updating = true;
 
-        console.log(
+        /* console.log(
           'start',
           oldTransform.position.map(e => e.toFixed(2)),
-        );
+        ); */
 
         this._startTransform = {
           object: object,
@@ -189,10 +193,10 @@ class EditorManager {
         // update transform
         if (this.updating) {
           if (this._startTransform?.object?.id === object.id) {
-            console.log(
+            /* console.log(
               'end',
               this._startTransform.transform.position.map(e => e.toFixed(2)),
-            );
+            ); */
             this.saveTransformHistory(object, this._startTransform.transform);
           }
 
@@ -253,12 +257,128 @@ class EditorManager {
     this.editObject(object);
   };
 
-  saveObject() {
-    const object = this.activeObject;
+  saveObject(object?: ObjectManager) {
+    object = object ?? this.activeObject;
 
     if (!object?.permanent) return;
 
     object.saveVolatile();
+  }
+
+  async createObject(type: ObjectType) {
+    const objectId = uuid();
+
+    const location = this._engine.localPlayer.location.clone();
+
+    location.translateZ(3);
+
+    location.lookAt(this._engine.localPlayer.position);
+
+    location.translateY(1);
+
+    const creationProps = {
+      id: objectId,
+      position: location.position,
+      rotation: location.quaternion,
+    };
+
+    const object = this._objects.create(type, creationProps);
+    object.save();
+
+    // wait for object to stream-in
+    await object.waitForStream();
+
+    this.editObject(object);
+
+    this.history.push({
+      type: 'create',
+      object: object,
+      undo: object => this._objects.destroy(object),
+      redo: () => {
+        const object = this._objects.create(type, creationProps);
+        object.save();
+      },
+      save: false,
+      checkDestroyed: false,
+    });
+  }
+
+  destroyObject(object?: ObjectManager) {
+    object = object ?? this.activeObject;
+
+    const creationProps = object.toData();
+
+    const isPermanent = object.permanent;
+
+    this._destroyObject(object);
+
+    this.history.push({
+      type: 'create',
+      object: object,
+      undo: () => {
+        const object = this._objects.createFromData(creationProps);
+
+        if (isPermanent) {
+          object.save();
+        }
+      },
+      redo: object => this._destroyObject(object),
+      save: false,
+      checkDestroyed: false,
+    });
+  }
+
+  async _destroyObject(object: ObjectManager) {
+    if (!object.permanent) {
+      object.destroy();
+    } else {
+      const parent = object.parent;
+
+      // hide object
+      object.setVisible(false);
+
+      // if parent, then destroy child and keep parent
+      if (parent) {
+        object.destroy();
+        parent.save();
+      } else {
+        // if not, then just delete it
+        object.delete();
+      }
+    }
+  }
+
+  async cloneObject(fromObject?: ObjectManager) {
+    fromObject = fromObject ?? this.activeObject;
+
+    const object = await fromObject.clone();
+
+    const objectData = object.toData();
+
+    // select to edit
+    this.editObject(object);
+
+    const isPermanent = fromObject.permanent;
+
+    if (isPermanent) {
+      object.save();
+    }
+
+    this.history.push({
+      type: 'create',
+      object: object,
+      undo: object => this._destroyObject(object),
+
+      redo: () => {
+        const object = this._objects.createFromData(objectData);
+
+        if (isPermanent) {
+          object.save();
+        }
+      },
+      save: false,
+      checkDestroyed: false,
+    });
   }
 
   editObject(object: ObjectManager) {
@@ -508,8 +628,8 @@ class EditorManager {
     this.history.push({
       type: 'position',
       object: object,
-      undo: () => object!.setPositionFromWorldSpace(currentPos),
-      redo: () => object!.setPositionFromWorldSpace(position),
+      undo: object => object!.setPositionFromWorldSpace(currentPos),
+      redo: object => object!.setPositionFromWorldSpace(position),
     });
   }
 
@@ -533,8 +653,8 @@ class EditorManager {
     this.history.push({
       type: 'rotation',
       object: object,
-      undo: () => object!.setRotationFromWorldSpace(currentRot),
-      redo: () => object!.setRotationFromWorldSpace(rotation),
+      undo: object => object!.setRotationFromWorldSpace(currentRot),
+      redo: object => object!.setRotationFromWorldSpace(rotation),
     });
   }
 
@@ -557,8 +677,8 @@ class EditorManager {
     this.history.push({
       type: 'scale',
       object: object,
-      undo: () => object!.setScale(currentScale),
-      redo: () => object!.setScale(scale),
+      undo: object => object!.setScale(currentScale),
+      redo: object => object!.setScale(scale),
     });
   }
 
@@ -578,8 +698,8 @@ class EditorManager {
     this.history.push({
       type: 'property',
       object: object,
-      undo: () => object!.setProps(currentProps),
-      redo: () => object!.setProps(props),
+      undo: object => object!.setProps(currentProps),
+      redo: object => object!.setProps(props),
     });
   }
 
@@ -593,8 +713,8 @@ class EditorManager {
     this.history.push({
       type: 'collision',
       object: object,
-      undo: () => object!.setCollision(currentProps),
-      redo: () => object!.setCollision(collision),
+      undo: object => object!.setCollision(currentProps),
+      redo: object => object!.setCollision(collision),
     });
 
     this.saveObject();
@@ -627,12 +747,12 @@ class EditorManager {
     this.history.push({
       type: 'collision',
       object: object,
-      undo: () => {
+      undo: object => {
         object!.setPositionFromWorldSpace(transform.position);
         object!.setRotationFromWorldSpace(transform.rotation);
         object!.setScale(transform.scale);
       },
-      redo: () => {
+      redo: object => {
         object!.setPositionFromWorldSpace(currentPos);
         object!.setRotationFromWorldSpace(currentRot);
         object!.setScale(currentScale);

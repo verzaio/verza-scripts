@@ -1,4 +1,10 @@
-import {ObjectManager, createControllerManager} from '@verza/sdk';
+import EditorManager from './editor.manager';
+
+import {
+  EngineManager,
+  ObjectManager,
+  createControllerManager,
+} from '@verza/sdk';
 
 //const MAX_COMMAND_HISTORY = 256;
 
@@ -7,16 +13,23 @@ type CommandHistoryType =
   | 'rotation'
   | 'scale'
   | 'property'
-  | 'collision';
+  | 'collision'
+  | 'create';
 
 type CommandHistory = {
   type: CommandHistoryType;
   object: ObjectManager;
-  undo: () => void;
-  redo: () => void;
+  undo: (object: ObjectManager) => void;
+  redo: (object: ObjectManager) => void;
+  save?: boolean;
+  checkDestroyed?: boolean;
 };
 
 class CommandHistoryManager {
+  private _engine: EngineManager;
+
+  private _editor: EditorManager;
+
   stack: CommandHistory[] = [];
 
   private timeoutIds: Map<string, ReturnType<typeof setTimeout>> = new Map();
@@ -41,6 +54,11 @@ class CommandHistoryManager {
     return !!this.stack[this.currentIndex + 1];
   }
 
+  constructor(engine: EngineManager, editor: EditorManager) {
+    this._engine = engine;
+    this._editor = editor;
+  }
+
   push(command: CommandHistory, groupId?: string) {
     const _groupId = groupId ?? command.object.id;
 
@@ -54,7 +72,7 @@ class CommandHistoryManager {
       this.timeoutIds.delete(_groupId);
 
       this._push(command);
-    }, 150);
+    }, 200);
 
     this.timeoutIds.set(_groupId, newTimeoutId);
   }
@@ -66,9 +84,7 @@ class CommandHistoryManager {
 
     this.currentIndex++;
 
-    //console.log('newCommands', newCommands.length, currentCommands);
-
-    console.log('push', this.currentIndex, this.stack.length);
+    //console.log('push', this.currentIndex, this.stack.length);
   }
 
   undo() {
@@ -76,15 +92,22 @@ class CommandHistoryManager {
 
     if (!command) return;
 
-    if (command.object.destroyed) {
+    command.object =
+      this._engine.objects.get(command.object.id) ?? command.object;
+
+    if (command.checkDestroyed !== false && command.object.destroyed) {
       console.debug(`[editor] object destroyed (undo): ${command.object.id}`);
     } else {
-      command.undo();
+      command.undo(command.object);
+
+      if (command.save !== false) {
+        this._editor.saveObject(command.object);
+      }
     }
 
     this.currentIndex--;
 
-    console.log('undo', this.currentIndex, this.stack.length);
+    //console.log('undo', this.currentIndex, this.stack.length);
   }
 
   redo() {
@@ -92,15 +115,22 @@ class CommandHistoryManager {
 
     if (!command) return;
 
-    if (command.object.destroyed) {
+    command.object =
+      this._engine.objects.get(command.object.id) ?? command.object;
+
+    if (command.checkDestroyed !== false && command.object.destroyed) {
       console.debug(`[editor] object destroyed (redo): ${command.object.id}`);
     } else {
-      command.redo();
+      command.redo(command.object);
+
+      if (command.save !== false) {
+        this._editor.saveObject(command.object);
+      }
     }
 
     this.currentIndex++;
 
-    console.log('redo', this.currentIndex, this.stack.length);
+    //console.log('redo', this.currentIndex, this.stack.length);
   }
 
   clear() {

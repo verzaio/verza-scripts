@@ -10,18 +10,7 @@ const Duplicate = () => {
   const duplicate = async () => {
     if (!editor.activeObject) return;
 
-    const editingObject = editor.activeObject;
-
-    const object = await editingObject.clone();
-
-    // select to edit
-    editor.editObject(object);
-
-    // make object permanent only if
-    // the editing object is permanent
-    if (editingObject.permanent) {
-      object.save();
-    }
+    await editor.cloneObject(editor.activeObject);
 
     engine.localPlayer.sendSuccessNotification('Object duplicated', 1000);
   };
