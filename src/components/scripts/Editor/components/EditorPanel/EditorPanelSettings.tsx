@@ -77,6 +77,25 @@ const EditorPanelSettings = () => {
           world.setTime(time * 60);
         },
       },
+
+      viewport: {
+        label: 'Viewport Render',
+        value: 'render',
+
+        options: {
+          Render: 'render',
+          Solid: 'solid',
+          Normal: 'normal',
+          Wireframe: 'wireframe',
+          'Wireframe Normal': 'wireframe-normal',
+        },
+
+        onChange: (type, _, context) => {
+          if (context.initial) return;
+
+          world.setViewportRender(type);
+        },
+      },
     }),
     {
       order: 0,

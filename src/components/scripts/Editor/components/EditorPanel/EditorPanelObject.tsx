@@ -8,7 +8,7 @@ import {
   doesObjectSupportMaterial,
   isSliderControl,
   parseControls,
-  setControlsValue,
+  setControlValues,
 } from '../../misc/utils';
 
 import {
@@ -41,6 +41,14 @@ const EditorPanelObject = () => {
       const objectUpdate = {
         'Object.id': object.id,
         'Object.type': object.objectType,
+
+        ...(object.supportsCollision && {
+          'Object.collision': !!object.collision,
+        }),
+
+        ...(object.supportsShadows && {
+          'Object.shadows': object.shadows,
+        }),
       };
 
       const values: any = {
@@ -63,10 +71,6 @@ const EditorPanelObject = () => {
           y: location.scale.y,
           z: location.scale.z,
         },
-
-        ...(object.supportsCollision && {
-          'Transform.collision': !!object.collision,
-        }),
       };
 
       // materials
@@ -78,7 +82,7 @@ const EditorPanelObject = () => {
 
         const materialType = getObjectMaterialType(editor.activeObject);
 
-        setControlsValue(
+        setControlValues(
           props => {
             if (!props.types) return true;
 
@@ -172,6 +176,28 @@ const EditorPanelObject = () => {
         value: '-',
         editable: false,
       },
+
+      collision: {
+        label: 'Collision',
+        value: true,
+
+        onChange: on((value: boolean) => {
+          editor.setCollision(value ? 'static' : null);
+        }),
+
+        render: () => !!editor.activeObject?.supportsCollision,
+      },
+
+      shadows: {
+        label: 'Shadows',
+        value: true,
+
+        onChange: on((value: boolean) => {
+          editor.setShadows(value);
+        }),
+
+        render: () => !!editor.activeObject?.supportsShadows,
+      },
     }),
     {
       order: 25,
@@ -185,17 +211,6 @@ const EditorPanelObject = () => {
   useControls(
     'Transform',
     () => ({
-      collision: {
-        label: 'Collision',
-        value: true,
-
-        onChange: on((value: boolean) => {
-          editor.setCollision(value ? 'static' : null);
-        }),
-
-        render: () => !!editor.activeObject?.supportsCollision,
-      },
-
       position: {
         label: 'Position',
         step: 0.01,
