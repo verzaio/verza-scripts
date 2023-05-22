@@ -346,6 +346,10 @@ class EditorManager {
         object.delete();
       }
     }
+
+    if (object.id === this.activeObject?.id) {
+      this.cancelEdit();
+    }
   }
 
   async cloneObject(fromObject?: ObjectManager) {
@@ -701,6 +705,23 @@ class EditorManager {
       undo: object => object!.setProps(currentProps),
       redo: object => object!.setProps(props),
     });
+  }
+
+  setShadows(status: boolean, object?: ObjectManager) {
+    object = object ?? this.activeObject;
+
+    const currentShadows = object.shadows;
+
+    object.setShadows(status);
+
+    this.history.push({
+      type: 'shadows',
+      object: object,
+      undo: object => object!.setShadows(currentShadows),
+      redo: object => object!.setShadows(status),
+    });
+
+    this.saveObject();
   }
 
   setCollision(collision: EntityCollisionType | null, object?: ObjectManager) {
