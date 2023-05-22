@@ -72,7 +72,7 @@ class CommandHistoryManager {
       this.timeoutIds.delete(_groupId);
 
       this._push(command);
-    }, 200);
+    }, 150);
 
     this.timeoutIds.set(_groupId, newTimeoutId);
   }
