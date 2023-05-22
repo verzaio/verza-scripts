@@ -14,6 +14,7 @@ type CommandHistoryType =
   | 'scale'
   | 'property'
   | 'collision'
+  | 'shadows'
   | 'create';
 
 type CommandHistory = {

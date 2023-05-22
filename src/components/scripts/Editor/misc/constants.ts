@@ -1241,5 +1241,7 @@ export const OBJECTS_MATERIAL_PROPS: Partial<ObjectMaterial> = {
     },
 
     collapsed: true,
+
+    types: ['standard', 'physical', 'normal', 'depth', 'basic'],
   },
 };

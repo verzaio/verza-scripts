@@ -152,7 +152,7 @@ export const parseControls = <
   return fields;
 };
 
-export const setControlsValue = (
+export const setControlValues = (
   filter: (props: ObjectControlProps) => boolean,
   fields: ObjectControlFields,
   values: ObjectControlValues,
@@ -165,7 +165,7 @@ export const setControlsValue = (
     if (value.folder) {
       const folderParentNames = [...parentNames, value.label!];
 
-      setControlsValue(
+      setControlValues(
         filter,
         value.folder,
         values[name],
