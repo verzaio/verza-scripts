@@ -7,21 +7,32 @@
     cursor: pointer;
     gap: 5px;
     align-items: center;
-    padding: 0px 5px;
+    padding: 0px 7px;
+    font-size: 400;
+
+    transition: all 0.15s;
 
     .icon {
-      zoom: 0.6;
+      zoom: 0.5;
     }
 
     .label {
       display: flex;
-      font-size: 13px;
+      font-size: 14px;
+    }
+
+    &:active {
+      opacity: 0.8;
     }
   }
 
   &.active .create,
   .create:hover {
     background-color: #181c20;
+  }
+
+  &:active:enabled {
+    opacity: 0.8;
   }
 
   &.active {
@@ -47,17 +58,18 @@
     flex-direction: column;
     border: 1px solid #8c92a4;
 
+    min-width: 160px;
+
     .item {
       display: flex;
       background-color: transparent;
       color: #ffffff;
-      padding: 0px;
-      margin: 0px;
       gap: 10px;
       align-items: center;
       border: 0px;
       cursor: pointer;
-      padding: 10px;
+      padding: 0px;
+      padding: 8px 10px;
 
       &:hover {
         background-color: #181c20;
@@ -70,7 +82,8 @@
 
       .label {
         display: flex;
-        font-size: 15px;
+        font-size: 14px;
+        font-weight: 500;
       }
     }
   }

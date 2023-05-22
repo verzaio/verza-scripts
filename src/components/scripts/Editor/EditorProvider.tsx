@@ -1,6 +1,6 @@
-import React, {ReactNode, createContext, useContext, useState} from 'react';
+import React, {ReactNode, createContext, useContext, useMemo} from 'react';
 
-import EditorManager from './managers/editor-manager';
+import EditorManager from './managers/editor.manager';
 
 import {useEngine} from '@verza/sdk/react';
 
@@ -13,7 +13,13 @@ type EditorProviderProps = {
 const EditorProvider = ({children}: EditorProviderProps) => {
   const engine = useEngine();
 
-  const [editor] = useState(() => new EditorManager(engine));
+  const editor = useMemo(
+    () => new EditorManager(engine),
+
+    // force hot reload to re-create editor
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [EditorManager.prototype],
+  );
 
   return (
     <EditorContext.Provider value={editor}>{children}</EditorContext.Provider>

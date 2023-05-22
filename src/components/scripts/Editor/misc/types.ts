@@ -1,9 +1,23 @@
 import {ComponentType} from 'react';
 
-import {ObjectType, PickObject} from '@verza/sdk';
+import {
+  ObjectMaterialMix,
+  ObjectMaterialType,
+  ObjectType,
+  PickObject,
+} from '@verza/sdk';
+
+export type ObjectControlFields = {
+  [name: string]: ObjectControlProps;
+};
+
+export type ObjectControlValues = {
+  [name: string]: any;
+};
 
 export type ObjectControlProps = {
   label?: string;
+  file?: string | null;
   step?: number;
   min?: number;
   max?: number;
@@ -13,7 +27,13 @@ export type ObjectControlProps = {
         [key: string]: unknown;
       };
   value?: unknown;
+  joystick?: boolean;
   rows?: number;
+  collapsed?: boolean;
+  folder?: ObjectControlFields;
+  isAsset?: boolean;
+  setterFromParent?: boolean;
+  types?: ObjectMaterialType[];
 };
 
 export type ObjectItem<T extends ObjectType> = {
@@ -26,4 +46,10 @@ export type ObjectItem<T extends ObjectType> = {
 
 export type ObjectsInfo = {
   [name in ObjectType]: ObjectItem<name>;
+};
+
+export type ObjectMaterialOption = ObjectControlProps;
+
+export type ObjectMaterial = {
+  [name in keyof ObjectMaterialMix]: ObjectMaterialOption;
 };

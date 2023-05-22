@@ -1,4 +1,4 @@
-import FileDrop from './components/actions/FileDrop/FileDrop';
+import FileDrop from './actions/FileDrop/FileDrop';
 import EditorHandler from './components/EditorHandler';
 import EditorProvider, {useEditor} from './EditorProvider';
 
