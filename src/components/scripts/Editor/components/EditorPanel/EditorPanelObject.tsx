@@ -358,6 +358,10 @@ const EditorPanelObject = () => {
                   },
                 );
 
+                /* console.log({
+                  name: fieldValues.current[path],
+                }); */
+
                 fieldValues.current[path] = newValue;
                 break;
               }
