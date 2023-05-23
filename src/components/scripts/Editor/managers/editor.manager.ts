@@ -6,6 +6,7 @@ import {isObjectUneditable} from '../misc/utils';
 import CommandHistoryManager from './command-history.manager';
 
 import {
+  CreateObjectProps,
   EngineManager,
   EntityCollisionType,
   IntersectsResult,
@@ -565,10 +566,15 @@ class EditorManager {
         .clone()
         .translateZ(6);
 
-      const object = this._objects.create('gltf', {
+      const objectId = uuid();
+
+      const creationProps: CreateObjectProps = {
+        id: objectId,
         u: assetId,
         position: frontLocation.position.toArray(),
-      });
+      };
+
+      const object = this._objects.create('gltf', creationProps);
 
       // wait for object to stream-in
       await object.waitForStream();
@@ -592,10 +598,27 @@ class EditorManager {
       }
 
       // then bring to front
-      await this.placeInFront(object);
+      await this.placeInFront(object, false);
 
       // make permanent
       object.save();
+
+      creationProps.position = object.worldLocation.position.toArray();
+      creationProps.rotation =
+        object.worldLocation.quaternion.toArray() as QuaternionArray;
+      creationProps.scale = object.worldLocation.scale.toArray();
+
+      this.history.push({
+        type: 'create',
+        object: object,
+        undo: object => this._objects.destroy(object),
+        redo: () => {
+          const object = this._objects.create('gltf', creationProps);
+          object.save();
+        },
+        save: false,
+        checkDestroyed: false,
+      });
     } catch (e) {
       console.error(e);
 
