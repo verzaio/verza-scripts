@@ -257,12 +257,14 @@ class EditorManager {
     this.editObject(object);
   };
 
-  saveObject(object?: ObjectManager) {
+  saveObjectAndSync(object: ObjectManager) {
     object = object ?? this.activeObject;
 
-    if (!object?.permanent) return;
+    object?.sync();
 
-    object.saveVolatile();
+    if (object?.permanent) {
+      object.saveVolatile();
+    }
   }
 
   async createObject(type: ObjectType) {
@@ -442,11 +444,7 @@ class EditorManager {
     toLocation.y += _VECTOR.y / 2;
 
     // set from world space, hits are always in world-space
-    if (addToHistory) {
-      this.setPosition(toLocation.toArray(), object);
-    } else {
-      object.setPositionFromWorldSpace(toLocation);
-    }
+    this.setPosition(toLocation.toArray(), object, addToHistory);
   }
 
   async placeInFront(object: ObjectManager, addToHistory = true) {
@@ -484,16 +482,12 @@ class EditorManager {
     // put to floor level
     frontLocation.position.y += _VECTOR.y / 2;
 
-    if (addToHistory) {
-      this.setPosition(frontLocation.position.toArray(), object);
-      this.setRotation(
-        frontLocation.quaternion.toArray() as QuaternionArray,
-        object,
-      );
-    } else {
-      object.setPositionFromWorldSpace(frontLocation.position);
-      object.setRotationFromWorldSpace(frontLocation.quaternion);
-    }
+    this.setPosition(frontLocation.position.toArray(), object, addToHistory);
+    this.setRotation(
+      frontLocation.quaternion.toArray() as QuaternionArray,
+      object,
+      addToHistory,
+    );
   }
 
   formatUrl(url: string) {
@@ -613,12 +607,19 @@ class EditorManager {
   }
 
   /* actions */
-  setPosition(position: Vector3Array, object?: ObjectManager) {
+  setPosition(
+    position: Vector3Array,
+    object?: ObjectManager,
+    addToHistory = true,
+  ) {
     object = object! ?? this.activeObject;
 
     const currentPos = object.worldLocation.position.toArray();
 
     object.setPositionFromWorldSpace(position);
+    this.saveObjectAndSync(object);
+
+    if (!addToHistory) return;
 
     if (
       equal(
@@ -632,18 +633,25 @@ class EditorManager {
     this.history.push({
       type: 'position',
       object: object,
-      undo: object => object!.setPositionFromWorldSpace(currentPos),
-      redo: object => object!.setPositionFromWorldSpace(position),
+      undo: object => object.setPositionFromWorldSpace(currentPos),
+      redo: object => object.setPositionFromWorldSpace(position),
     });
   }
 
-  setRotation(rotation: QuaternionArray, object?: ObjectManager) {
+  setRotation(
+    rotation: QuaternionArray,
+    object?: ObjectManager,
+    addToHistory = true,
+  ) {
     object = object! ?? this.activeObject;
 
     const currentRot =
       object.worldLocation.quaternion.toArray() as QuaternionArray;
 
     object.setRotationFromWorldSpace(rotation);
+    this.saveObjectAndSync(object);
+
+    if (!addToHistory) return;
 
     if (
       equal(
@@ -657,17 +665,20 @@ class EditorManager {
     this.history.push({
       type: 'rotation',
       object: object,
-      undo: object => object!.setRotationFromWorldSpace(currentRot),
-      redo: object => object!.setRotationFromWorldSpace(rotation),
+      undo: object => object.setRotationFromWorldSpace(currentRot),
+      redo: object => object.setRotationFromWorldSpace(rotation),
     });
   }
 
-  setScale(scale: Vector3Array, object?: ObjectManager) {
+  setScale(scale: Vector3Array, object?: ObjectManager, addToHistory = true) {
     object = object ?? this.activeObject;
 
     const currentScale = object.scale.toArray();
 
     object.setScale(scale);
+    this.saveObjectAndSync(object);
+
+    if (!addToHistory) return;
 
     if (
       equal(
@@ -681,8 +692,12 @@ class EditorManager {
     this.history.push({
       type: 'scale',
       object: object,
-      undo: object => object!.setScale(currentScale),
-      redo: object => object!.setScale(scale),
+      undo: object => {
+        object.setScale(currentScale);
+      },
+      redo: object => {
+        object.setScale(scale);
+      },
     });
   }
 
@@ -694,16 +709,15 @@ class EditorManager {
     object = object ?? this.activeObject;
 
     object.setProps(props);
-
-    this.saveObject();
+    this.saveObjectAndSync(object);
 
     if (equal(props, currentProps)) return;
 
     this.history.push({
       type: 'property',
       object: object,
-      undo: object => object!.setProps(currentProps),
-      redo: object => object!.setProps(props),
+      undo: object => object.setProps(currentProps),
+      redo: object => object.setProps(props),
     });
   }
 
@@ -713,15 +727,14 @@ class EditorManager {
     const currentShadows = object.shadows;
 
     object.setShadows(status);
+    this.saveObjectAndSync(object);
 
     this.history.push({
       type: 'shadows',
       object: object,
-      undo: object => object!.setShadows(currentShadows),
-      redo: object => object!.setShadows(status),
+      undo: object => object.setShadows(currentShadows),
+      redo: object => object.setShadows(status),
     });
-
-    this.saveObject();
   }
 
   setCollision(collision: EntityCollisionType | null, object?: ObjectManager) {
@@ -730,15 +743,14 @@ class EditorManager {
     const currentProps = object.collision;
 
     object.setCollision(collision);
+    this.saveObjectAndSync(object);
 
     this.history.push({
       type: 'collision',
       object: object,
-      undo: object => object!.setCollision(currentProps),
-      redo: object => object!.setCollision(collision),
+      undo: object => object.setCollision(currentProps),
+      redo: object => object.setCollision(collision),
     });
-
-    this.saveObject();
   }
 
   saveTransformHistory(object: ObjectManager, transform: ObjectEditTransform) {
@@ -769,14 +781,14 @@ class EditorManager {
       type: 'collision',
       object: object,
       undo: object => {
-        object!.setPositionFromWorldSpace(transform.position);
-        object!.setRotationFromWorldSpace(transform.rotation);
-        object!.setScale(transform.scale);
+        object.setPositionFromWorldSpace(transform.position);
+        object.setRotationFromWorldSpace(transform.rotation);
+        object.setScale(transform.scale);
       },
       redo: object => {
-        object!.setPositionFromWorldSpace(currentPos);
-        object!.setRotationFromWorldSpace(currentRot);
-        object!.setScale(currentScale);
+        object.setPositionFromWorldSpace(currentPos);
+        object.setRotationFromWorldSpace(currentRot);
+        object.setScale(currentScale);
       },
     });
   }

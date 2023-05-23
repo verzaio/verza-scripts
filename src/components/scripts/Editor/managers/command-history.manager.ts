@@ -102,7 +102,7 @@ class CommandHistoryManager {
       command.undo(command.object);
 
       if (command.save !== false) {
-        this._editor.saveObject(command.object);
+        this._editor.saveObjectAndSync(command.object);
       }
     }
 
@@ -125,7 +125,7 @@ class CommandHistoryManager {
       command.redo(command.object);
 
       if (command.save !== false) {
-        this._editor.saveObject(command.object);
+        this._editor.saveObjectAndSync(command.object);
       }
     }
 
