@@ -173,7 +173,7 @@ class EditorManager {
   onObjectEdit = (
     object: ObjectManager,
     type: ObjectEditActionType,
-    oldTransform: ObjectEditTransform,
+    prevTransform: ObjectEditTransform,
   ) => {
     switch (type) {
       case 'start': {
@@ -186,7 +186,7 @@ class EditorManager {
 
         this._startTransform = {
           object: object,
-          transform: oldTransform,
+          transform: prevTransform,
         };
         break;
       }
