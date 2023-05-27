@@ -1,35 +1,24 @@
-import {useRef, useState} from 'react';
+import {useMemo} from 'react';
+
+import FlyModeManager from './managers/fly-mode.manager';
+import {FLY_ACTION} from './utils/constants';
 
 import Provider from '@app/components/core/Provider';
-import {PlayerControls, Object3D, Vector3} from '@verza/sdk';
+import {CommandParam} from '@verza/sdk';
 import {
-  useStreamedLocalPlayer,
-  useCamera,
   useCommand,
   useFrame,
   useKey,
   useToolbar,
   useEvent,
   useMainToolbarItem,
-  useLocalPlayer,
+  useEngine,
+  useControllerProp,
 } from '@verza/sdk/react';
 
 const TOOLBAR_ID = 'flymode_toolbar';
 
-const TOOLBAR_CANCEL_ID = 'fly_mode_cancel';
-
-const _LOCATION = new Object3D();
-
-const _LAST_POS = new Vector3();
-
-const _ROTATE_Y = new Vector3(0, 1, 0);
-
-const _DIR1 = new Vector3();
-const _DIR2 = new Vector3();
-
-const MODEL_ROTATION = Math.PI; // 180 degrees
-
-const FLY_CMD = 'fly';
+const TOOLBAR_CANCEL_ID = 'flymode_cancel';
 
 const FlyMode = () => {
   return (
@@ -43,50 +32,45 @@ const FlyMode = () => {
 };
 
 const FlyModeBase = () => {
-  const player = useLocalPlayer();
-  const [enabled, setEnabled] = useState(false);
-  const enabledRef = useRef(enabled);
-  enabledRef.current = enabled;
+  const engine = useEngine();
 
-  const toggle = (setStatus?: boolean) => {
-    const newStatus = setStatus ?? !enabled;
-    if (newStatus === enabled) return;
+  const flyMode = useMemo(
+    () => new FlyModeManager(engine),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [FlyModeManager.constructor],
+  );
 
-    if (!player.hasAccess(FLY_CMD)) return;
+  const enabled = useControllerProp(flyMode.controller, 'enabled');
 
-    setEnabled(newStatus);
+  useCommand(FLY_ACTION).on(() => flyMode.toggle());
 
-    const toggleStatus = !newStatus;
+  useCommand('flyspeed', [new CommandParam('speed', 'float')]).on(
+    (player, {speed}) => {
+      if (speed < 0 || speed > 100) {
+        player.sendMessage('{red}Speed must be between 0 and 100');
+        return;
+      }
 
-    player.setMovements(toggleStatus);
-    player.setVisible(toggleStatus);
-    player.setTranslations(toggleStatus, toggleStatus, toggleStatus);
-    player.setLinearVelocity([0, 0, 0]);
+      flyMode.customSpeed = speed;
 
-    _LOCATION.position.copy(player.position);
-    _LOCATION.quaternion.copy(player.rotation);
-  };
+      player.sendMessage(`{green}Fly speed set to ${speed}`);
+    },
+  );
 
-  // hooks
-  useCommand(FLY_CMD).on(() => toggle());
-
-  useKey('Tab', () => toggle());
-  useKey('Tab', () => toggle(false), {
-    ignoreFlags: true,
-  });
+  useKey('Tab', () => flyMode.toggle());
 
   return (
     <>
-      {player.hasAccess(FLY_CMD) && <MainToolbarItem />}
+      {engine.localPlayer.hasAccess(FLY_ACTION) && <MainToolbarItem />}
 
-      {enabled && <FlyModeRender toggle={toggle} />}
+      {enabled && <FlyModeRender flyMode={flyMode} />}
     </>
   );
 };
 
 const MainToolbarItem = () => {
   useMainToolbarItem({
-    id: 'fly-mode',
+    id: 'flymode',
     name: 'Fly Mode',
     key: 'Tab',
   });
@@ -95,38 +79,38 @@ const MainToolbarItem = () => {
 };
 
 type FlyModeRenderProps = {
-  toggle: () => void;
+  flyMode: FlyModeManager;
 };
 
-const FlyModeRender = ({toggle}: FlyModeRenderProps) => {
-  const player = useStreamedLocalPlayer();
-  const camera = useCamera();
+const FlyModeRender = ({flyMode}: FlyModeRenderProps) => {
+  const engine = useEngine();
 
-  useEvent('onToolbarItemPress', id => {
-    if (id === TOOLBAR_CANCEL_ID) {
-      toggle();
-    }
-  });
+  const speed = useControllerProp(flyMode.controller, 'speed');
+  const customSpeed = useControllerProp(flyMode.controller, 'customSpeed');
 
   useToolbar({
     id: TOOLBAR_ID,
     position: 'right',
     items: [
       {
+        id: 'flymode_movement',
         name: 'Movement',
         key: ['W', 'A', 'S', 'D'],
       },
       {
+        id: 'flymode_up_down',
         name: 'Up / Down',
         key: ['Space', 'Shift'],
       },
       {
-        name: 'Normal Speed',
-        key: 'Cap Lock',
+        id: 'flymode_speed',
+        name: `Speed (${customSpeed ? `${customSpeed}` : speed + 1}x)`,
+        key: 'Caps Lock',
       },
       {
-        name: 'Speed of Light',
-        key: 'Control',
+        id: 'flymode_auto_move',
+        name: 'Auto Move',
+        key: '2',
       },
       {
         id: TOOLBAR_CANCEL_ID,
@@ -136,82 +120,43 @@ const FlyModeRender = ({toggle}: FlyModeRenderProps) => {
     ],
   });
 
-  useFrame(delta => {
-    if (!player) return;
+  useEvent('onToolbarItemPress', id => {
+    if (id === TOOLBAR_CANCEL_ID) {
+      flyMode.toggle();
+    }
+  });
 
-    _LOCATION.quaternion.copy(camera.quaternion);
+  useFrame(delta => flyMode.updateFrame(delta));
 
-    const velocity = player.controls.control
-      ? 40
-      : !player.controls.caps
-      ? 3
-      : 10;
+  // CapsLock only fires on keydown or keyup once per keystroke
+  useKey('CapsLock', () => flyMode.speed++, {
+    event: 'keyup',
+  });
+  useKey('CapsLock', () => flyMode.speed++, {
+    event: 'keydown',
+  });
 
-    // calculate X/Y
-    if (player.isMovingControl) {
-      const directionOffset = calcDirectionOffset(player.controls);
+  /* useKey('Digit1', () => {
+    flyMode.setMode('world');
 
-      if (directionOffset === null) return;
+    if (flyMode.mode === 'player') {
+      engine.localPlayer.sendMessage('{yellow}Camera mode: player');
+    } else {
+      engine.localPlayer.sendMessage('{yellow}Camera mode: world');
+    }
+  }); */
 
-      // get normalized direction
-      camera.camera.getWorldDirection(_DIR1);
-      _LOCATION.getWorldDirection(_DIR2);
-
-      const angleYCameraDirection = Math.atan2(
-        _DIR2.x - _DIR1.x,
-        _DIR2.z - _DIR1.z,
-      );
-
-      const finalRotation =
-        angleYCameraDirection + directionOffset + MODEL_ROTATION;
-
-      _LOCATION.quaternion.setFromAxisAngle(_ROTATE_Y, finalRotation);
-
-      _LOCATION.translateZ(velocity * delta);
+  useKey('Digit2', () => {
+    if (flyMode.autoMove) {
+      engine.localPlayer.sendMessage('{red}Auto move disabled');
+    } else {
+      engine.localPlayer.sendMessage('{green}Auto move enabled');
     }
 
-    // set up/down
-    if (player.controls.jump || player.controls.sprint) {
-      _LOCATION.translateY(velocity * delta * (player.controls.jump ? 1 : -1));
-    }
-
-    // ignore if same position
-    if (_LAST_POS.equals(_LOCATION.position)) return;
-
-    // set
-    player.setPosition(_LOCATION.position);
+    flyMode.autoMove = !flyMode.autoMove;
   });
 
   return null;
-};
-
-// Thanks to https://github.com/tamani-coding/threejs-character-controls-example/blob/main/src/characterControls.ts
-export const calcDirectionOffset = (controls: PlayerControls) => {
-  let directionOffset = null; // w
-
-  if (controls.forward) {
-    if (controls.left) {
-      directionOffset = Math.PI / 4; // w+a
-    } else if (controls.right) {
-      directionOffset = -Math.PI / 4; // w+d
-    } else {
-      directionOffset = 0;
-    }
-  } else if (controls.backward) {
-    if (controls.left) {
-      directionOffset = Math.PI / 4 + Math.PI / 2; // s+a
-    } else if (controls.right) {
-      directionOffset = -Math.PI / 4 - Math.PI / 2; // s+d
-    } else {
-      directionOffset = Math.PI; // s
-    }
-  } else if (controls.left) {
-    directionOffset = Math.PI / 2; // a
-  } else if (controls.right) {
-    directionOffset = -Math.PI / 2; // d
-  }
-
-  return directionOffset;
 };
 
 export default FlyMode;
