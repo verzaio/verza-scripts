@@ -1,11 +1,14 @@
 import {useRef} from 'react';
 
+import {useEditor} from '../../EditorProvider';
+
 import {useObjects, useWorld} from '@verza/sdk/react';
 import {useControls} from 'leva';
 
 const EditorPanelSettings = () => {
   const objects = useObjects();
   const world = useWorld();
+  const editor = useEditor();
 
   const originalTime = useRef(14 * 4600);
 
@@ -36,6 +39,17 @@ const EditorPanelSettings = () => {
           });
         },
       },
+      optimize: {
+        label: 'Optimize Assets on Upload',
+        value: true,
+
+        onChange: (value, _, context) => {
+          if (context.initial) return;
+
+          editor.optimizeAssets = value;
+        },
+      },
+
       /* snap: {
         label: 'Snaps',
         step: 0.01,
