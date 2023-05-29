@@ -18,6 +18,7 @@ import {
   Quaternion,
   QuaternionArray,
 } from '@verza/sdk';
+import {PickObjectProps} from '@verza/sdk/index';
 import {useEvent} from '@verza/sdk/react';
 import {MathUtils} from '@verza/sdk/utils';
 import equal from 'fast-deep-equal';
@@ -197,6 +198,23 @@ const EditorPanelObject = () => {
         }),
 
         render: () => !!editor.activeObject?.supportsShadows,
+      },
+
+      optimized: {
+        label: 'Optimized',
+        value: 'Yes',
+        editable: false,
+
+        render: () => {
+          const object = editor.activeObject;
+          if (object?.objectType !== 'gltf') {
+            return false;
+          }
+
+          const url = (object.props as PickObjectProps<'gltf'>)?.u;
+
+          return !!(url?.includes('o-geo') || url?.includes('o-tex'));
+        },
       },
     }),
     {

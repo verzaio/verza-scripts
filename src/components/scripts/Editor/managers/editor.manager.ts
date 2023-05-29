@@ -44,6 +44,8 @@ class EditorManager {
 
   history: CommandHistoryManager;
 
+  optimizeAssets = true;
+
   controller = createControllerManager({
     enabled: false,
 
@@ -538,14 +540,29 @@ class EditorManager {
       this._engine.ui.showIndicator(indicatorId, 'Uploading model...');
       const file = await createFileTransferFromFile(rawFile);
 
-      assetId = await this._engine.assets.upload(file);
+      assetId = await this._engine.assets.upload(file, {
+        ...(this.optimizeAssets && {
+          optimizeGeometry: true,
+          optimizeTextures: true,
+        }),
+      });
     } catch (e) {
       this._engine.ui.hideIndicator(indicatorId);
 
       console.error(e);
 
+      const isOptimizingError =
+        (e as any)?.message === 'asset/error-optmizing-model';
+
       const isExternalStorage =
         (e as any)?.message === 'asset/external-storage-not-allowed';
+
+      if (isOptimizingError) {
+        this._engine.localPlayer.sendErrorNotification(
+          'An error occurred while optimizing your GLTF model.',
+        );
+        return;
+      }
 
       if (isExternalStorage) {
         this._engine.localPlayer.sendErrorNotification(
