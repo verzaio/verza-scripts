@@ -78,7 +78,7 @@ const CharacterRender = () => {
 
       bottom: '0px',
 
-      zIndex: 10000,
+      zIndex: 10001,
     });
   }, [engine]);
 

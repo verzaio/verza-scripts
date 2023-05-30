@@ -57,7 +57,7 @@ const FlyModeBase = () => {
     },
   );
 
-  useKey('Tab', () => flyMode.toggle());
+  useKey('KeyQ', () => flyMode.toggle());
 
   return (
     <>
@@ -72,7 +72,7 @@ const MainToolbarItem = () => {
   useMainToolbarItem({
     id: 'flymode',
     name: 'Fly Mode',
-    key: 'Tab',
+    key: 'Q',
   });
 
   return null;
