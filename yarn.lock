@@ -1703,10 +1703,10 @@
   dependencies:
     "@use-gesture/core" "10.2.26"
 
-"@verza/sdk@^2.0.18":
-  version "2.0.18"
-  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-2.0.18.tgz#571c753b54c8c42809b016d89d4d117c83b71390"
-  integrity sha512-ZhRc9gLeDt5y10Nw5dDCjvH5KsTmhBL24Msoae6GC1xgXREDd1HmpNozrCDPe6D0MD4ZMdqnCseRbKzVMCy8Tw==
+"@verza/sdk@^2.0.19":
+  version "2.0.19"
+  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-2.0.19.tgz#9686473ab280aa6bbb94e4637578c9f6187adb05"
+  integrity sha512-XW+jsypAPtmLfITjNDMn+gmYYdwEuSY9T7xH99x8EWqaFT6LW+Uo3I/18bfkWYF05KxbopKrZD4wiGpQW59jcA==
   dependencies:
     events "^3.3.0"
     socket.io-client "^4.6.1"
