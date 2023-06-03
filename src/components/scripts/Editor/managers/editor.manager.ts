@@ -410,7 +410,7 @@ class EditorManager {
   }
 
   async placeOnGround(object: ObjectManager, addToHistory = true) {
-    const worldLocation = await object.worldLocationAsync;
+    const worldLocation = await object.worldLocationSync;
     const fromLocation = worldLocation.position.clone();
     const toLocation = worldLocation.position.clone();
 
