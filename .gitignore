@@ -34,5 +34,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-src/components/scripts/Dev/Local.tsx
+src/components/scripts/Dev/Local/*
 src/pages/dev/local.tsx
