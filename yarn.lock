@@ -1703,10 +1703,26 @@
   dependencies:
     "@use-gesture/core" "10.2.26"
 
-"@verza/sdk@^2.0.21", "@verza/sdk@^2.0.22":
+"@verza/sdk@^2.0.21":
   version "2.0.22"
   resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-2.0.22.tgz#76da750f4242d70ef0d03c14faa9d6cd2ccea10f"
   integrity sha512-94ETEjzBo7rbzugHQwP7Bwa1+XFcmh8sJqjCyB+WE5+/7u/f3l5Q00eXe81FPaDZtlCYSRiMOs49u04t8W2r/w==
+  dependencies:
+    "@verza/sdk" "^2.0.21"
+    events "^3.3.0"
+    socket.io-client "^4.6.1"
+    socket.io-msgpack-parser "^3.0.2"
+    three "^0.152.2"
+    three-stdlib "^2.21.11"
+    tweetnacl "^1.0.3"
+    tweetnacl-util "^0.15.1"
+    uuid "^9.0.0"
+    zod "^3.21.4"
+
+"@verza/sdk@^2.0.23":
+  version "2.0.23"
+  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-2.0.23.tgz#db149ac417791ac9a3cc73fa0d95913c7260fcdf"
+  integrity sha512-XN56nYfythUNhx8WZc9kuZ0tPofqwmw5TXqEeMdVqwF2qHcr+yw8OJM/7I8xQsT2pdxLpGbFmCwaXvX6rlGVMA==
   dependencies:
     "@verza/sdk" "^2.0.21"
     events "^3.3.0"
