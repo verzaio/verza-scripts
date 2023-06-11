@@ -58,8 +58,8 @@ const EditorWidget = () => {
   // blur inputs if clicks outside
   useEffect(() => {
     const onClick = () => {
-      if (engine.ui.isActiveInput) {
-        engine.ui.activeInput?.blur();
+      if (engine.input.isActiveInput) {
+        engine.input.activeInput?.blur();
       }
     };
 

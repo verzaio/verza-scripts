@@ -5,7 +5,7 @@ import {BOX_RADIUS} from '../constants';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
 
 import {formatUrl} from '@app/utils/misc';
-import {Box, Group, useWorld} from '@verza/sdk/react';
+import {Box, Group, useEngine} from '@verza/sdk/react';
 import {uuid} from '@verza/sdk/utils';
 
 const formatPath = (name: string) =>
@@ -29,7 +29,7 @@ const SkyExample = () => {
 };
 
 const Scene = () => {
-  const world = useWorld();
+  const {world} = useEngine();
 
   return (
     <>

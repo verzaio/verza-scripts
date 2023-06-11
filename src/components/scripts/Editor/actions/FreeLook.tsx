@@ -1,9 +1,14 @@
 import {TOOLBAR_TOGGLE_FREE_LOOK_ID} from '../misc/constants';
 
-import {useKey, usePointer, useToolbarItemPress, useUI} from '@verza/sdk/react';
+import {
+  useEngine,
+  useKey,
+  usePointer,
+  useToolbarItemPress,
+} from '@verza/sdk/react';
 
 const FreeLook = () => {
-  const ui = useUI();
+  const {ui} = useEngine();
 
   const freeLook = () => ui.toggleInterface(TOOLBAR_TOGGLE_FREE_LOOK_ID);
 

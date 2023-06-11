@@ -5,7 +5,7 @@ import SceneTitle from '../components/SceneTitle';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
 
 import {ObjectManager, Vector3} from '@verza/sdk';
-import {Group, Line, useRaycaster} from '@verza/sdk/react';
+import {Group, Line, useEngine} from '@verza/sdk/react';
 
 const FROM_POINT = new Vector3(0, 1, 2);
 const TO_POINT = new Vector3(0, 1, 6);
@@ -25,7 +25,7 @@ const RaycasterExample = () => {
 };
 
 const Scene = () => {
-  const raycaster = useRaycaster();
+  const {world} = useEngine();
   const lineRef = useRef<ObjectManager>(null!);
   const [inContact, setInContact] = useState<string | null>(null);
 
@@ -37,7 +37,7 @@ const Scene = () => {
       lineRef.current.location.localToWorld(POS1);
       lineRef.current.location.localToWorld(POS2);
 
-      const intersects = await raycaster.raycastPoints(POS1, POS2);
+      const intersects = await world.raycaster.raycastPoints(POS1, POS2);
 
       setInContact(intersects.player?.entity.name ?? null);
     }, 100);
@@ -45,7 +45,7 @@ const Scene = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [raycaster]);
+  }, [world]);
 
   return (
     <>

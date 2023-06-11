@@ -2,7 +2,7 @@ import {useEffect, useRef} from 'react';
 
 import PanelWidget from '@app/components/core/PanelWidget';
 import Provider from '@app/components/core/Provider';
-import {useUI, useWorld} from '@verza/sdk/react';
+import {useEngine} from '@verza/sdk/react';
 import {useControls} from 'leva';
 
 const Time = () => {
@@ -14,8 +14,7 @@ const Time = () => {
 };
 
 const TimeRender = () => {
-  const world = useWorld();
-  const ui = useUI();
+  const {ui, world} = useEngine();
 
   const originalTime = useRef(14 * 4600);
 

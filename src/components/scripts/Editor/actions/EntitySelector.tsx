@@ -15,7 +15,7 @@ const EntitySelector = () => {
   const editor = useEditor();
 
   const canUpdate = () =>
-    !(engine.ui.isSystemMenu() || engine.ui.cursorLock || editor.updating);
+    !(engine.ui.isSystemMenu() || engine.input.cursorLock || editor.updating);
 
   const hoverObjectRef = useRef<ObjectManager | null>(null);
 
