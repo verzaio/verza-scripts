@@ -1719,10 +1719,10 @@
     uuid "^9.0.0"
     zod "^3.21.4"
 
-"@verza/sdk@^2.0.25":
-  version "2.0.25"
-  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-2.0.25.tgz#cf6a9ecfbd23a3904fe65843909bc72b402590c8"
-  integrity sha512-QA6qk4wPWqnqordgj6/A3KzR+pwDrY6wopU5bIZHDAnSqBiO4KforTAvpykoLiuKcnV7i7JhvBXSDAbgn3hbgA==
+"@verza/sdk@^2.0.26":
+  version "2.0.26"
+  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-2.0.26.tgz#bf392227477ff23b21d28311cd4d4ceea5f6aa37"
+  integrity sha512-Q88AYvYzUG0mIVrY6w1GPchD+rhrWw5a1EPivzzbkP0B1ed/4cMuiyRzLGqaYH4aIIzuC1BnGBVPbDuLKzezxw==
   dependencies:
     "@verza/sdk" "^2.0.21"
     events "^3.3.0"
