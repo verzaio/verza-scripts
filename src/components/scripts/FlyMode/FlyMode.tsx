@@ -115,7 +115,7 @@ const FlyModeRender = ({flyMode}: FlyModeRenderProps) => {
       {
         id: TOOLBAR_CANCEL_ID,
         name: 'Exit Fly Mode',
-        key: 'Tab',
+        key: 'Q',
       },
     ],
   });

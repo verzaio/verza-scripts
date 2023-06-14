@@ -2,12 +2,11 @@ import {useRef} from 'react';
 
 import {useEditor} from '../../EditorProvider';
 
-import {useObjects, useWorld} from '@verza/sdk/react';
+import {useEngine} from '@verza/sdk/react';
 import {useControls} from 'leva';
 
 const EditorPanelSettings = () => {
-  const objects = useObjects();
-  const world = useWorld();
+  const {world, objects} = useEngine();
   const editor = useEditor();
 
   const originalTime = useRef(14 * 4600);
