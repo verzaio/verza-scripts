@@ -12,7 +12,7 @@ const FlyModeToolbar = () => {
       {
         id: TOOLBAR_CANCEL_ID,
         name: 'Disable Fly Mode',
-        key: 'TAB',
+        key: 'Q',
       },
     ],
   });
