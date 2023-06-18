@@ -777,6 +777,22 @@ class EditorManager {
     });
   }
 
+  setBloom(status: boolean, object?: ObjectManager) {
+    object = object ?? this.activeObject;
+
+    const currentBloom = object.bloom;
+
+    object.setBloom(status);
+    this.saveObjectAndSync(object);
+
+    this.history.push({
+      type: 'bloom',
+      object: object,
+      undo: object => object.setBloom(currentBloom),
+      redo: object => object.setBloom(status),
+    });
+  }
+
   setCollision(collision: EntityCollisionType | null, object?: ObjectManager) {
     object = object ?? this.activeObject;
 

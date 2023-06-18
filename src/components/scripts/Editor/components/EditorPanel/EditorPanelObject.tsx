@@ -50,6 +50,10 @@ const EditorPanelObject = () => {
         ...(object.supportsShadows && {
           'Object.shadows': object.shadows,
         }),
+
+        ...(object.supportsBloom && {
+          'Object.bloom': object.bloom,
+        }),
       };
 
       const values: any = {
@@ -198,6 +202,17 @@ const EditorPanelObject = () => {
         }),
 
         render: () => !!editor.activeObject?.supportsShadows,
+      },
+
+      bloom: {
+        label: 'Bloom',
+        value: false,
+
+        onChange: on((value: boolean) => {
+          editor.setBloom(value);
+        }),
+
+        render: () => !!editor.activeObject?.supportsBloom,
       },
 
       optimized: {

@@ -958,7 +958,7 @@
   resolved "https://registry.yarnpkg.com/@babel/regjsgen/-/regjsgen-0.8.0.tgz#f0ba69b075e1f05fb2825b7fad991e7adbb18310"
   integrity sha512-x/rqGMdzj+fWZvCOYForTghzbtqPDZ5gPwaoNGHdgDfF2QA/XZbCBp4Moo5scrkAMPhB7z26XM/AaHuIJdgauA==
 
-"@babel/runtime@^7.13.10", "@babel/runtime@^7.16.7", "@babel/runtime@^7.20.7", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.13.10", "@babel/runtime@^7.20.7", "@babel/runtime@^7.8.4":
   version "7.21.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.21.5.tgz#8492dddda9644ae3bda3b45eabe87382caee7200"
   integrity sha512-8jI69toZqqcsnqGGqwGS4Qb1VwLOEp4hz+CXPywcvjs60u3B4Pom/U/7rm4W8tMOYEB+E9wgD0mW1l3r8qlI9Q==
@@ -1556,6 +1556,11 @@
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
   integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
 
+"@types/draco3d@^1.4.0":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@types/draco3d/-/draco3d-1.4.2.tgz#7faccb809db2a5e19b9efb97c5f2eb9d64d527ea"
+  integrity sha512-goh23EGr6CLV6aKPwN1p8kBD/7tT5V/bLpToSbarKrwVejqNrspVrv8DhliteYkkhZYrlq/fwKZRRUzH4XN88w==
+
 "@types/json-schema@^7.0.9":
   version "7.0.11"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.11.tgz#d421b6c527a3037f7c84433fd2c4229e016863d3"
@@ -1606,6 +1611,11 @@
   version "7.5.0"
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.5.0.tgz#591c1ce3a702c45ee15f47a42ade72c2fd78978a"
   integrity sha512-G8hZ6XJiHnuhQKR7ZmysCeJWE08o8T0AXtk5darsCaTVsYZhhgUrq53jizaR2FvsoeCwJhlmwTjkXBY5Pn/ZHw==
+
+"@types/webxr@^0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@types/webxr/-/webxr-0.5.2.tgz#5d9627b0ffe223aa3b166de7112ac8a9460dc54f"
+  integrity sha512-szL74BnIcok9m7QwYtVmQ+EdIKwbjPANudfuvDrAF8Cljg9MKUlIoc1w5tjj9PMpeSH3U1Xnx//czQybJ0EfSw==
 
 "@typescript-eslint/eslint-plugin@^5.59.5":
   version "5.59.6"
@@ -1703,42 +1713,20 @@
   dependencies:
     "@use-gesture/core" "10.2.26"
 
-"@verza/sdk@^2.0.21":
-  version "2.0.22"
-  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-2.0.22.tgz#76da750f4242d70ef0d03c14faa9d6cd2ccea10f"
-  integrity sha512-94ETEjzBo7rbzugHQwP7Bwa1+XFcmh8sJqjCyB+WE5+/7u/f3l5Q00eXe81FPaDZtlCYSRiMOs49u04t8W2r/w==
+"@verza/sdk@^2.0.30":
+  version "2.0.30"
+  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-2.0.30.tgz#be260a6d21c1afcab7e78b992e66dc718c908020"
+  integrity sha512-OgaG5JHUI/yEIQpQCYjoEUVuk+AxcM2fWojohbPr0Jx2EHwYT3V8LtjdYa+YHtWQu933pxKQvuAATE+Fg0MURA==
   dependencies:
-    "@verza/sdk" "^2.0.21"
     events "^3.3.0"
     socket.io-client "^4.6.1"
     socket.io-msgpack-parser "^3.0.2"
-    three "^0.152.2"
-    three-stdlib "^2.21.11"
+    three "^0.153.0"
+    three-stdlib "^2.23.10"
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
     uuid "^9.0.0"
     zod "^3.21.4"
-
-"@verza/sdk@^2.0.29":
-  version "2.0.29"
-  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-2.0.29.tgz#b9274645c52e6ebdd95cb040bd14f4d6334169ae"
-  integrity sha512-tLd9W9QFbcc9sRsAMorxDvKESTHgQoqClHWU/8mnFcc4RXp2LfSlDDARO7mKghr+yju9vx0RwUTMy8hf/ea+jg==
-  dependencies:
-    "@verza/sdk" "^2.0.21"
-    events "^3.3.0"
-    socket.io-client "^4.6.1"
-    socket.io-msgpack-parser "^3.0.2"
-    three "^0.152.2"
-    three-stdlib "^2.21.11"
-    tweetnacl "^1.0.3"
-    tweetnacl-util "^0.15.1"
-    uuid "^9.0.0"
-    zod "^3.21.4"
-
-"@webgpu/glslang@^0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@webgpu/glslang/-/glslang-0.0.15.tgz#f5ccaf6015241e6175f4b90906b053f88483d1f2"
-  integrity sha512-niT+Prh3Aff8Uf1MVBVUsaNjFj9rJAKDXuoHIKiQbB+6IUP/3J3JIhBNyZ7lDhytvXxw6ppgnwKZdDJ08UMj4Q==
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -4331,14 +4319,14 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==
 
-three-stdlib@^2.21.11:
-  version "2.21.11"
-  resolved "https://registry.yarnpkg.com/three-stdlib/-/three-stdlib-2.21.11.tgz#ee058f1522edf17f994b4a80307568dd553bd52e"
-  integrity sha512-fFeaMOc3lpup4A/FrSKHmp/PNYmyxyV8dzMorJpYyZBdIGAn5BmokGSN9ei8t7Wv9thxCW+VLaxA6csxTl5MYg==
+three-stdlib@^2.23.10:
+  version "2.23.10"
+  resolved "https://registry.yarnpkg.com/three-stdlib/-/three-stdlib-2.23.10.tgz#94907a558a00da327bd74308c92078fea72f77fc"
+  integrity sha512-y0DlxaN5HZXI9hKjEtqO2xlCEt7XyDCOMvD2M3JJFBmYjwbU+PbJ1n3Z+7Hr/6BeVGE6KZYcqPMnfKrTK5WTJg==
   dependencies:
-    "@babel/runtime" "^7.16.7"
+    "@types/draco3d" "^1.4.0"
     "@types/offscreencanvas" "^2019.6.4"
-    "@webgpu/glslang" "^0.0.15"
+    "@types/webxr" "^0.5.2"
     chevrotain "^10.1.2"
     draco3d "^1.4.1"
     fflate "^0.6.9"
@@ -4348,10 +4336,10 @@ three-stdlib@^2.21.11:
     potpack "^1.0.1"
     zstddec "^0.0.2"
 
-three@^0.152.2:
-  version "0.152.2"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.152.2.tgz#2ee0f2c504d31a4bc29b45495c12bded9fda7bfc"
-  integrity sha512-Ff9zIpSfkkqcBcpdiFo2f35vA9ZucO+N8TNacJOqaEE6DrB0eufItVMib8bK8Pcju/ZNT6a7blE1GhTpkdsILw==
+three@^0.153.0:
+  version "0.153.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.153.0.tgz#d8f2aab7b49ae4ac947fd0e24cebec11378758f0"
+  integrity sha512-OCP2/uQR6GcDpSLnJt/3a4mdS0kNWcbfUXIwLoEMgLzEUIVIYsSDwskpmOii/AkDM+BBwrl6+CKgrjX9+E2aWg==
 
 tiny-inflate@^1.0.3:
   version "1.0.3"
