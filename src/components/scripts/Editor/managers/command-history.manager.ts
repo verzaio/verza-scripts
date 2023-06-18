@@ -15,6 +15,7 @@ type CommandHistoryType =
   | 'property'
   | 'collision'
   | 'shadows'
+  | 'bloom'
   | 'create';
 
 type CommandHistory = {
