@@ -63,7 +63,7 @@ const FileDrop = () => {
 
   return (
     <div className={styles.container}>
-      <FileContainer onDropFiles={onDropFiles} label="Drop GLTF Model" />
+      <FileContainer onDropFiles={onDropFiles} label="Drop GLB or GLTF Model" />
     </div>
   );
 };
