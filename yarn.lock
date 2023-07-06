@@ -1713,17 +1713,17 @@
   dependencies:
     "@use-gesture/core" "10.2.26"
 
-"@verza/sdk@^2.0.32":
-  version "2.0.32"
-  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-2.0.32.tgz#28c6f44dd6d6576eb6acf59ae1d83b7e0e1533a6"
-  integrity sha512-zvj8gijz9ebPjWUJSUNtdMdbMA5T7Hk31x2YPRkIpbHPmVxSN8tlIeCA9+638CAe6EBbWw0MhXOXFYpzQtQMkA==
+"@verza/sdk@^2.0.34":
+  version "2.0.34"
+  resolved "https://registry.yarnpkg.com/@verza/sdk/-/sdk-2.0.34.tgz#70c1012c7181a7a8b740aa88a0911aeafd017115"
+  integrity sha512-sOFxlAgmFz/hraEif8Gcpl0Skc1MS4oXiaqmxo/UxxzncgVPKQsPBcOvsIyxZP58IBt1S4srTtrbiGapDnJjCg==
   dependencies:
     events "^3.3.0"
     socket.io-client "^4.6.1"
     socket.io-msgpack-parser "^3.0.2"
     suspend-react "^0.1.3"
-    three "^0.153.0"
-    three-stdlib "^2.23.10"
+    three "^0.154.0"
+    three-stdlib "^2.23.11"
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
     uuid "^9.0.0"
@@ -4325,10 +4325,10 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==
 
-three-stdlib@^2.23.10:
-  version "2.23.10"
-  resolved "https://registry.yarnpkg.com/three-stdlib/-/three-stdlib-2.23.10.tgz#94907a558a00da327bd74308c92078fea72f77fc"
-  integrity sha512-y0DlxaN5HZXI9hKjEtqO2xlCEt7XyDCOMvD2M3JJFBmYjwbU+PbJ1n3Z+7Hr/6BeVGE6KZYcqPMnfKrTK5WTJg==
+three-stdlib@^2.23.11:
+  version "2.23.12"
+  resolved "https://registry.yarnpkg.com/three-stdlib/-/three-stdlib-2.23.12.tgz#f269398e3125c77bcd374d87f4c1da8d550e7f21"
+  integrity sha512-YFpuCu/ZVHBiK42bzEihZTA3tvEPQhaKE5tYej41AlNYXbwIWxO93fxYYrX7vs275s0yCKr6Zp6y7kI+mOklRQ==
   dependencies:
     "@types/draco3d" "^1.4.0"
     "@types/offscreencanvas" "^2019.6.4"
@@ -4342,10 +4342,10 @@ three-stdlib@^2.23.10:
     potpack "^1.0.1"
     zstddec "^0.0.2"
 
-three@^0.153.0:
-  version "0.153.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.153.0.tgz#d8f2aab7b49ae4ac947fd0e24cebec11378758f0"
-  integrity sha512-OCP2/uQR6GcDpSLnJt/3a4mdS0kNWcbfUXIwLoEMgLzEUIVIYsSDwskpmOii/AkDM+BBwrl6+CKgrjX9+E2aWg==
+three@^0.154.0:
+  version "0.154.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.154.0.tgz#dbef21e10fe6015ec283acc60d0eb58733991e27"
+  integrity sha512-Uzz8C/5GesJzv8i+Y2prEMYUwodwZySPcNhuJUdsVMH2Yn4Nm8qlbQe6qRN5fOhg55XB0WiLfTPBxVHxpE60ug==
 
 tiny-inflate@^1.0.3:
   version "1.0.3"
