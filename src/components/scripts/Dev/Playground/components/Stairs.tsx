@@ -6,7 +6,6 @@ import {Box, Gltf} from '@verza/sdk/react';
 
 const Stairs = () => {
   const pos = new Vector3(-5, 0, -5);
-  const size: [number, number, number] = [4, 0.2, 5];
 
   return (
     <>
@@ -44,7 +43,7 @@ const Stairs = () => {
         return (
           <SampleBox
             key={idx}
-            size={size}
+            size={[4, 0.2, 5]}
             position={pos
               .clone()
               .add(new Vector3(-0.4 * idx, 0.2 * idx, 0))
