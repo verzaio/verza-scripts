@@ -1,7 +1,9 @@
+import {useEffect} from 'react';
+
 import Provider from '@app/components/core/Provider';
 import {formatUrl} from '@app/utils/misc';
 import {RepeatWrapping} from '@verza/sdk';
-import {Plane} from '@verza/sdk/react';
+import {Plane, useEngine} from '@verza/sdk/react';
 
 const PLAYGROUND_SIZE = 1024 * 2;
 
@@ -14,6 +16,23 @@ const Playground = () => {
 };
 
 const PlaygroundRender = () => {
+  const {audio} = useEngine();
+
+  useEffect(() => {
+    const sound = audio.createSound('ambience/ambience-city-1', {
+      position: [0, 0, 0],
+      type: 'ambience',
+      loop: 'repeat',
+      volume: 0.2,
+      maxDistance: 100,
+      autoplay: true,
+    });
+
+    return () => {
+      sound.destroy();
+    };
+  }, [audio]);
+
   return (
     <>
       <Plane
