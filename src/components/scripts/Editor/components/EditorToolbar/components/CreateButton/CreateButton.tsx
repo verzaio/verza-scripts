@@ -16,11 +16,11 @@ const CreateButton = () => {
   const containerRef = useRef<HTMLDivElement>(null!);
 
   useOnClickOutside(containerRef, () => {
-    containerRef.current.classList.remove(styles.active);
+    containerRef.current?.classList.remove(styles.active);
   });
 
   useEvent('onPointerDown', () => {
-    containerRef.current.classList.remove(styles.active);
+    containerRef.current?.classList.remove(styles.active);
   });
 
   return (
