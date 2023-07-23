@@ -1,7 +1,7 @@
 import SceneTitle from '../components/SceneTitle';
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../Showcase';
 
-import {Group, useEngine} from '@verza/sdk/react';
+import {Group} from '@verza/sdk/react';
 import {uuid} from '@verza/sdk/utils';
 
 const ParticlesExample = () => {
