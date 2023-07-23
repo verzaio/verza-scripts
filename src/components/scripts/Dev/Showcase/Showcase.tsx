@@ -3,6 +3,7 @@ import EventsExample from './examples/EventsExample';
 import MaterialsExample from './examples/MaterialsExample';
 import MoonPhaseExample from './examples/MoonPhaseExample';
 import ObjectsExample from './examples/ObjectsExample';
+import ParticlesExample from './examples/ParticlesExample';
 import PhysicsExample from './examples/PhysicsExample';
 import RaycasterExample from './examples/RaycasterExample';
 import SkyExample from './examples/SkyExample';
@@ -54,6 +55,8 @@ const ShowcaseRender = () => {
       <SkyExample />
 
       <MoonPhaseExample />
+
+      <ParticlesExample />
     </>
   );
 };
