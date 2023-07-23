@@ -5,6 +5,7 @@ import MoonPhaseExample from './examples/MoonPhaseExample';
 import ObjectsExample from './examples/ObjectsExample';
 import ParticlesExample from './examples/ParticlesExample';
 import PhysicsExample from './examples/PhysicsExample';
+import ProximityActionsExample from './examples/ProximityActionsExample';
 import RaycasterExample from './examples/RaycasterExample';
 import SkyExample from './examples/SkyExample';
 
@@ -57,6 +58,8 @@ const ShowcaseRender = () => {
       <MoonPhaseExample />
 
       <ParticlesExample />
+
+      <ProximityActionsExample />
     </>
   );
 };
