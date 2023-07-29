@@ -1,3 +1,4 @@
+import {SHOWCASE_POSITION} from './constants';
 import CameraExample from './examples/CameraExample';
 import EventsExample from './examples/EventsExample';
 import MaterialsExample from './examples/MaterialsExample';
@@ -16,7 +17,7 @@ import {Box, Group, useCommand} from '@verza/sdk/react';
 
 export const SHOWCASE_LOCATION = new Object3D();
 
-SHOWCASE_LOCATION.position.set(30, 60, 30);
+SHOWCASE_LOCATION.position.set(...SHOWCASE_POSITION);
 
 export const SHOWCASE_SIZE = new Vector2(100, 40);
 
@@ -64,7 +65,7 @@ const ShowcaseRender = () => {
   );
 };
 
-const Scene = () => {
+export const Scene = () => {
   const Wall = (
     width: number,
     position: [number, number, number],
