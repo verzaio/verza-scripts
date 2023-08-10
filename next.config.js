@@ -4,7 +4,7 @@ const nextConfig = {
     externalDir: true,
   },
 
-  async headers() {
+  headers() {
     return [
       {
         source: '/:path*',
