@@ -44,7 +44,7 @@ const TimeRender = () => {
   useEffect(() => {
     world.setTimeMode('fixed');
     world.setTime(time * 60);
-    world.setInteriorMode(interiorMode);
+    world.setInteriorModeEnabled(interiorMode);
   }, [world, time, interiorMode]);
 
   // show/hide ui

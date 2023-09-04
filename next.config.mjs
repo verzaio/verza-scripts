@@ -4,7 +4,7 @@ const nextConfig = {
     externalDir: true,
   },
 
-  async headers() {
+  headers() {
     return [
       {
         source: '/:path*',
@@ -34,4 +34,4 @@ const nextConfig = {
   reactStrictMode: true,
 };
 
-module.exports = nextConfig;
+export default nextConfig;

@@ -39,7 +39,10 @@ export function FileComponent() {
 
   const {getRootProps, getInputProps, isDragAccept} = useDropzone({
     maxFiles: 1,
-    accept: 'image/*',
+    accept: {
+      'image/png': ['.png'],
+      'image/jpeg': ['.jpg', '.jpeg'],
+    },
     onDrop,
     disabled,
   });
