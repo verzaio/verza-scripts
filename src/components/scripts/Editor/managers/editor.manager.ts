@@ -442,9 +442,7 @@ class EditorManager {
     // get bounding box and set it from its base
     const box = await object.computeBoundingBox();
 
-    box.getSize(_VECTOR);
-
-    toLocation.y += _VECTOR.y / 2;
+    toLocation.y += object.position.y - box.min.y;
 
     // set from world space, hits are always in world-space
     this.setPosition(toLocation.toArray(), object, addToHistory);
@@ -483,7 +481,7 @@ class EditorManager {
     }
 
     // put to floor level
-    frontLocation.position.y += _VECTOR.y / 2;
+    frontLocation.position.y += object.position.y - box.min.y;
 
     this.setPosition(frontLocation.position.toArray(), object, addToHistory);
     this.setRotation(
