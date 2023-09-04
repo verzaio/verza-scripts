@@ -153,6 +153,12 @@ const CharacterRender = () => {
         masks.forEach(mask => engine.clothes.addSkinMask(mask));
       }
 
+      if (!clothes.length && masks.length) {
+        clothes.push({
+          id: 'empty',
+        });
+      }
+
       if (clothes.length) {
         engine.localPlayer.sendMessage(
           `{lime}[Character] Adding clothes: ${clothes
@@ -160,7 +166,21 @@ const CharacterRender = () => {
             .join(', ')}`,
         );
 
-        clothes.forEach(clothe => (clothe.masks = masks.map(e => e.id)));
+        clothes.forEach(clothe => {
+          clothe.masks = masks
+            .filter(e => !e.id.endsWith('head') && !e.id.endsWith('color'))
+            .map(e => e.id);
+
+          clothe.colorMasks = masks
+            .filter(e => e.id.endsWith('color'))
+            .map(e => e.id);
+
+          clothe.headMasks = masks
+            .filter(e => e.id.endsWith('head'))
+            .map(e => e.id);
+        });
+
+        console.log(masks);
 
         clothes.map(clothe => engine.clothes.addClothe(clothe));
 

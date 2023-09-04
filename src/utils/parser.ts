@@ -95,7 +95,9 @@ export const parseFbx = async (file: File, result: ParsedResult) => {
 export const parseMask = async (file: File, result: ParsedResult) => {
   const url = await fileToDataUrl(file);
 
-  const parts = file.name.split('.')[0];
+  if (!file.name.endsWith('.png') && !file.name.endsWith('.jpg')) return;
+
+  const parts = file.name.substring(0, file.name.lastIndexOf('.'));
 
   const [id, x, y] = parts.split('_');
 

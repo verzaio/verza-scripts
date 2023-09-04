@@ -23,7 +23,7 @@ import {
 } from '@verza/sdk';
 import {ObjectEditActionType} from '@verza/sdk/index';
 import {uuid} from '@verza/sdk/utils';
-import equal from 'fast-deep-equal';
+import deepEqual from 'deep-equal';
 
 const _VECTOR = new Vector3();
 
@@ -662,7 +662,7 @@ class EditorManager {
     if (!addToHistory) return;
 
     if (
-      equal(
+      deepEqual(
         position.map(e => e.toFixed(EQUALS_PRECISION)),
         currentPos.map((e: number) => e.toFixed(EQUALS_PRECISION)),
       )
@@ -694,7 +694,7 @@ class EditorManager {
     if (!addToHistory) return;
 
     if (
-      equal(
+      deepEqual(
         rotation.map(e => e.toFixed(EQUALS_PRECISION)),
         currentRot.map(e => e.toFixed(EQUALS_PRECISION)),
       )
@@ -721,7 +721,7 @@ class EditorManager {
     if (!addToHistory) return;
 
     if (
-      equal(
+      deepEqual(
         scale.map(e => e.toFixed(EQUALS_PRECISION)),
         currentScale.map((e: number) => e.toFixed(EQUALS_PRECISION)),
       )
@@ -751,7 +751,7 @@ class EditorManager {
     object.setProps(props);
     this.saveObjectAndSync(object);
 
-    if (equal(props, currentProps)) return;
+    if (deepEqual(props, currentProps)) return;
 
     this.history.push({
       type: 'property',
@@ -817,7 +817,7 @@ class EditorManager {
 
     // check if transform has changed
     if (
-      equal(
+      deepEqual(
         [
           currentPos.map((e: number) => e.toFixed(EQUALS_PRECISION)),
           currentRot.map((e: number) => e.toFixed(EQUALS_PRECISION)),

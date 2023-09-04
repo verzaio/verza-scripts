@@ -21,7 +21,7 @@ import {
 import {PickObjectProps} from '@verza/sdk/index';
 import {useEvent} from '@verza/sdk/react';
 import {MathUtils} from '@verza/sdk/utils';
-import equal from 'fast-deep-equal';
+import deepEqual from 'deep-equal';
 import {useControls, buttonGroup, levaStore} from 'leva';
 
 const EditorPanelObject = () => {
@@ -122,7 +122,7 @@ const EditorPanelObject = () => {
 
       // remove unchanged values
       Object.keys(values).forEach(key => {
-        if (equal(levaStore.get(key), values[key])) {
+        if (deepEqual(levaStore.get(key), values[key])) {
           delete values[key];
         }
       });

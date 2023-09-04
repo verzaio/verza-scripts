@@ -39,7 +39,12 @@ const Boxes2 = () => {
         color="red"
       />
 
-      <SampleBox position={pos1.clone().add(new Vector3(0, 0, 1)).toArray()} />
+      <SampleBox
+        position={pos1
+          .clone()
+          .add(new Vector3(0, 0, 1))
+          .toArray()}
+      />
     </>
   );
 };
