@@ -48,6 +48,16 @@ const EditorPanelSettings = () => {
           editor.optimizeAssets = value;
         },
       },
+      particles: {
+        label: 'Show Particles Editor',
+        value: false,
+
+        onChange: (value, _, context) => {
+          if (context.initial) return;
+
+          editor.particlesEditor = value;
+        },
+      },
 
       /* snap: {
         label: 'Snaps',
