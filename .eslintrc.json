@@ -3,13 +3,20 @@
   "extends": [
     "next/core-web-vitals",
     "eslint:recommended",
+    "plugin:next-on-pages/recommended",
     "prettier",
     "plugin:prettier/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "plugins": ["@typescript-eslint", "eslint-plugin-import-helpers", "import"],
+  "plugins": [
+    "next-on-pages",
+    "@typescript-eslint",
+    "eslint-plugin-import-helpers",
+    "import"
+  ],
   "rules": {
+    "next-on-pages/no-unsupported-configs": "warn",
     "@typescript-eslint/no-explicit-any": "off",
     "no-return-await": "warn",
     "@typescript-eslint/no-non-null-assertion": "off",
