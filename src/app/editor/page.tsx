@@ -1,6 +1,6 @@
 'use client';
 
-import Editor from '@app/components/scripts/Editor/Editor';
+import Editor from './components/Editor';
 
 export default function EditorPage() {
   return <Editor />;

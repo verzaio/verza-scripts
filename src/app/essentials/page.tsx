@@ -1,7 +1,21 @@
 'use client';
 
-import Essentials from '@app/components/scripts/Essentials/Essentials';
+import EditorPage from '../editor/page';
+import FlyModePage from '../fly-mode/page';
 
-export default function EssentialsPage() {
-  return <Essentials />;
-}
+import Provider from '@app/components/core/Provider';
+
+const EssentialsPage = () => {
+  return (
+    <Provider
+      params={{
+        syncCameraPosition: true,
+      }}>
+      <FlyModePage />
+
+      <EditorPage />
+    </Provider>
+  );
+};
+
+export default EssentialsPage;
