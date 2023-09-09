@@ -52,6 +52,8 @@ class EditorManager {
     editing: false,
 
     updating: false,
+
+    particlesEditor: false,
   });
 
   get activeObject() {
@@ -72,6 +74,16 @@ class EditorManager {
 
   private get _ui() {
     return this._engine.ui;
+  }
+
+  set particlesEditor(status: boolean) {
+    if (this.particlesEditor === status) return;
+
+    this.controller.particlesEditor = status;
+  }
+
+  get particlesEditor() {
+    return this.controller.particlesEditor;
   }
 
   set enabled(status: boolean) {

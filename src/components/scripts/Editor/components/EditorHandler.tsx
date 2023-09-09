@@ -10,6 +10,7 @@ import Reset from '../actions/Reset';
 import {useEditor} from '../EditorProvider';
 import EditorFloatingToolbar from './EditorFloatingToolbar';
 import EditorPanel from './EditorPanel/EditorPanel';
+import {EditorParticles} from './EditorParticles';
 import EditorToolbar from './EditorToolbar/EditorToolbar';
 
 import {useControllerProp, useEngine, useEvent} from '@verza/sdk/react';
@@ -20,6 +21,8 @@ const EditorHandler = () => {
   const editor = useEditor();
 
   const editing = useControllerProp(editor.controller, 'editing');
+
+  const particles = useControllerProp(editor.controller, 'particlesEditor');
 
   useEvent('onObjectEdit', editor.onObjectEdit);
 
@@ -56,6 +59,8 @@ const EditorHandler = () => {
           <Reset />
         </>
       )}
+
+      {particles && <EditorParticles />}
     </>
   );
 };

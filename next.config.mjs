@@ -4,6 +4,9 @@ const nextConfig = {
     externalDir: true,
   },
 
+  swcMinify: true,
+  reactStrictMode: true,
+
   headers() {
     return [
       {
@@ -30,8 +33,6 @@ const nextConfig = {
 
     return config;
   },
-
-  reactStrictMode: true,
 };
 
 export default nextConfig;
