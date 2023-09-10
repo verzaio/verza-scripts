@@ -72,7 +72,6 @@ const DropdownItem = ({type, label, Icon}: DropdownItemProps) => {
   const editor = useEditor();
 
   const onClick = useCallback(() => {
-    console.log('abc');
     editor.createObject(type);
   }, [editor, type]);
 

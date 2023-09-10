@@ -31,7 +31,7 @@ export function FileComponent() {
 
   const clear = useCallback(
     (e: MouseEvent) => {
-      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation();
       onUpdate(undefined);
     },
     [onUpdate],

@@ -16,8 +16,8 @@ const FileContainer = ({onDropFiles, label}: FileContainerProps) => {
     (event: DragEvent) => {
       if (!onDropFiles) return;
 
-      event.preventDefault();
-      event.stopPropagation();
+      event.nativeEvent.preventDefault();
+      event.nativeEvent.stopPropagation();
 
       const filesList = event.dataTransfer?.files;
 
@@ -38,24 +38,18 @@ const FileContainer = ({onDropFiles, label}: FileContainerProps) => {
     <div
       className={styles.fileContainer}
       ref={containerRef}
-      onPointerDownCapture={e => e.stopPropagation()}
-      onPointerUpCapture={e => e.stopPropagation()}
-      onDragOverCapture={() =>
-        containerRef.current.classList.add(styles.active)
-      }
-      onDragEnterCapture={() =>
-        containerRef.current.classList.add(styles.active)
-      }
-      onDragLeaveCapture={() =>
-        containerRef.current.classList.remove(styles.active)
-      }
-      onDragEndCapture={e => {
+      onPointerDown={e => e.nativeEvent.stopImmediatePropagation()}
+      onPointerUp={e => e.nativeEvent.stopImmediatePropagation()}
+      onDragOver={() => containerRef.current.classList.add(styles.active)}
+      onDragEnter={() => containerRef.current.classList.add(styles.active)}
+      onDragLeave={() => containerRef.current.classList.remove(styles.active)}
+      onDragEnd={e => {
         if (onDropFiles) {
-          e.preventDefault();
-          e.stopPropagation();
+          e.nativeEvent.preventDefault();
+          e.nativeEvent.stopPropagation();
         }
       }}
-      onDropCapture={onDrop}>
+      onDrop={onDrop}>
       <FileIcon className={styles.icon} />
 
       <span className={styles.label}>{label ?? 'Drop File'}</span>
