@@ -1,12 +1,15 @@
 import {PropsWithChildren} from 'react';
 
-import {EngineProvider, EngineProviderProps, useEngine} from '@verza/sdk/react';
+import {EngineProviderProps, useEngine} from '@verza/sdk/react';
+import dynamic from 'next/dynamic';
 
-const DEFAULT_SCRIPT_NAME = 'Core';
+const ProviderDynamic = dynamic(() => import('./ProviderDynamic'), {
+  ssr: false,
+});
 
 const Provider = ({
-  params,
   children,
+  params,
 }: PropsWithChildren<EngineProviderProps>) => {
   const engine = useEngine();
 
@@ -14,16 +17,7 @@ const Provider = ({
     return <>{children}</>;
   }
 
-  return (
-    <EngineProvider
-      params={{
-        name: DEFAULT_SCRIPT_NAME,
-
-        ...params,
-      }}>
-      {children}
-    </EngineProvider>
-  );
+  return <ProviderDynamic params={params}>{children}</ProviderDynamic>;
 };
 
 export default Provider;

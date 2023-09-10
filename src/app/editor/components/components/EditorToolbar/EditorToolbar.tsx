@@ -8,8 +8,8 @@ const EditorToolbar = () => {
   return (
     <div
       className={styles.container}
-      onPointerMove={e => e.stopPropagation()}
-      onPointerDown={e => e.stopPropagation()}>
+      onPointerMoveCapture={e => e.stopPropagation()}
+      onPointerDownCapture={e => e.stopPropagation()}>
       <div className={styles.toolbar}>
         <CreateButton />
 

@@ -24,24 +24,22 @@ const CreateButton = () => {
   });
 
   return (
-    <>
-      <div
-        className={styles.container}
-        ref={containerRef}
-        onClick={e =>
-          (e.currentTarget as HTMLDivElement).classList.toggle(styles.active)
-        }>
-        <div className={styles.create}>
-          <span className={styles.icon}>
-            <PlusIcon />
-          </span>
+    <div
+      className={styles.container}
+      ref={containerRef}
+      onClick={e =>
+        (e.currentTarget as HTMLDivElement).classList.toggle(styles.active)
+      }>
+      <div className={styles.create}>
+        <span className={styles.icon}>
+          <PlusIcon />
+        </span>
 
-          <span>Create</span>
-        </div>
-
-        <Dropdown />
+        <span>Create</span>
       </div>
-    </>
+
+      <Dropdown />
+    </div>
   );
 };
 
@@ -73,7 +71,8 @@ type DropdownItemProps = {
 const DropdownItem = ({type, label, Icon}: DropdownItemProps) => {
   const editor = useEditor();
 
-  const onClick = useCallback(async () => {
+  const onClick = useCallback(() => {
+    console.log('abc');
     editor.createObject(type);
   }, [editor, type]);
 

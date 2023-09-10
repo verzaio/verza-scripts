@@ -1,6 +1,6 @@
 'use client';
 
-import {SHOWCASE_POSITION} from './constants';
+import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from './constants';
 import CameraExample from './examples/CameraExample';
 import EventsExample from './examples/EventsExample';
 import MaterialsExample from './examples/MaterialsExample';
@@ -14,14 +14,8 @@ import SkyExample from './examples/SkyExample';
 
 import Provider from '@app/components/core/Provider';
 import {formatUrl} from '@app/utils/misc.utils';
-import {Object3D, ObjectTexture, RepeatWrapping, Vector2} from '@verza/sdk';
+import {ObjectTexture, RepeatWrapping} from '@verza/sdk';
 import {Box, Group, useCommand} from '@verza/sdk/react';
-
-export const SHOWCASE_LOCATION = new Object3D();
-
-SHOWCASE_LOCATION.position.set(...SHOWCASE_POSITION);
-
-export const SHOWCASE_SIZE = new Vector2(100, 40);
 
 const WALL_HEIGHT = 5;
 

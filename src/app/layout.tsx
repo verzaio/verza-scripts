@@ -1,6 +1,7 @@
+'use client';
+
 import '../styles/globals.scss';
 
-import {Metadata} from 'next';
 import {Nunito_Sans} from 'next/font/google';
 
 const nunito = Nunito_Sans({
@@ -11,17 +12,13 @@ const nunito = Nunito_Sans({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  title: 'Scripts',
-};
-
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" className={`${nunito.variable}`}>
       <head>
-        <link rel="icon" href="/favicon.png" type="image/png" />
-
         <meta charSet="utf-8" />
+
+        <link rel="icon" href="/img/favicon.png" />
 
         <meta
           name="viewport"

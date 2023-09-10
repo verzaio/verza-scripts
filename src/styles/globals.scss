@@ -16,11 +16,8 @@ button {
 }
 
 body {
-  background-color: transparent;
-}
-
-#__next {
   display: flex;
+  background-color: transparent;
   flex-direction: column;
   height: 100%;
 }

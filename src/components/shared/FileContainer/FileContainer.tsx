@@ -38,18 +38,24 @@ const FileContainer = ({onDropFiles, label}: FileContainerProps) => {
     <div
       className={styles.fileContainer}
       ref={containerRef}
-      onPointerDown={e => e.stopPropagation()}
-      onPointerUp={e => e.stopPropagation()}
-      onDragOver={() => containerRef.current.classList.add(styles.active)}
-      onDragEnter={() => containerRef.current.classList.add(styles.active)}
-      onDragLeave={() => containerRef.current.classList.remove(styles.active)}
-      onDragEnd={e => {
+      onPointerDownCapture={e => e.stopPropagation()}
+      onPointerUpCapture={e => e.stopPropagation()}
+      onDragOverCapture={() =>
+        containerRef.current.classList.add(styles.active)
+      }
+      onDragEnterCapture={() =>
+        containerRef.current.classList.add(styles.active)
+      }
+      onDragLeaveCapture={() =>
+        containerRef.current.classList.remove(styles.active)
+      }
+      onDragEndCapture={e => {
         if (onDropFiles) {
           e.preventDefault();
           e.stopPropagation();
         }
       }}
-      onDrop={onDrop}>
+      onDropCapture={onDrop}>
       <FileIcon className={styles.icon} />
 
       <span className={styles.label}>{label ?? 'Drop File'}</span>

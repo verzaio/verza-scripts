@@ -1,7 +1,7 @@
 import Description from '../components/Description';
 import Label from '../components/Label';
 import SceneTitle from '../components/SceneTitle';
-import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../page';
+import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../constants';
 
 import {formatUrl} from '@app/utils/misc.utils';
 import {Group, Sphere} from '@verza/sdk/react';

@@ -3,7 +3,7 @@ import {useEffect, useRef} from 'react';
 import Description from '../components/Description';
 import SceneTitle from '../components/SceneTitle';
 import {BOX_RADIUS} from '../constants';
-import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../page';
+import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../constants';
 
 import {ObjectManager} from '@verza/sdk';
 import {Box, Group, Sphere} from '@verza/sdk/react';

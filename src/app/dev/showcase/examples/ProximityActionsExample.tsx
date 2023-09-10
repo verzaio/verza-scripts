@@ -1,5 +1,5 @@
 import SceneTitle from '../components/SceneTitle';
-import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../page';
+import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from '../constants';
 
 import {Vector3} from '@verza/sdk';
 import {Box, Group} from '@verza/sdk/react';

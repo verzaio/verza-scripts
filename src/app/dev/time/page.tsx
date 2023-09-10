@@ -70,8 +70,8 @@ const TimeRender = () => {
     <>
       <div
         className="fade-in"
-        onPointerDown={e => e.stopPropagation()}
-        onPointerUp={e => e.stopPropagation()}>
+        onPointerDownCapture={e => e.stopPropagation()}
+        onPointerUpCapture={e => e.stopPropagation()}>
         <PanelWidget
           collapsed
           title="Time"
