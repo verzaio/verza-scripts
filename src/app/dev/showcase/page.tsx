@@ -61,7 +61,7 @@ const ShowcaseRender = () => {
   );
 };
 
-export const Scene = () => {
+const Scene = () => {
   const Wall = (
     width: number,
     position: [number, number, number],
