@@ -111,7 +111,7 @@ class FlyModeManager {
     this._player.setLinearVelocity([0, 0, 0]);
 
     _LOCATION.position.copy(this._player.position);
-    _LOCATION.quaternion.copy(this._player.rotation);
+    _LOCATION.quaternion.copy(this._player.location.quaternion);
 
     this.controller.enabled = status;
 

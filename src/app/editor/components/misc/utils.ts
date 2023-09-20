@@ -21,12 +21,7 @@ export const isObjectUneditable = async (
 };
 
 export const doesObjectSupportMaterial = (type: ObjectType) => {
-  return !(
-    type === 'group' ||
-    type === 'gltf' ||
-    type === 'model' ||
-    type === 'text'
-  );
+  return !(type === 'group' || type === 'gltf' || type === 'text');
 };
 
 export const createSliderProps = (

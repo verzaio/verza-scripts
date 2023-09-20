@@ -9,6 +9,19 @@ const nextConfig = {
 
   headers() {
     return [
+      /*{
+        source: '/:path*',
+        headers: [
+          {
+            key: 'cross-origin-embedder-policy',
+            value: 'require-corp;report-to="coep"',
+          },
+          {
+            key: 'cross-origin-resource-policy',
+            value: 'cross-origin',
+          },
+        ],
+      }, */
       {
         source: '/:path*',
         headers: [

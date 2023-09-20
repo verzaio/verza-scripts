@@ -349,7 +349,8 @@ class EditorManager {
     if (!object.permanent) {
       object.destroy();
     } else {
-      const parent = object.parent;
+      // fallback to prev SDK versions
+      const parent = (object as any).parent ?? (object as any).parentObject;
 
       // hide object
       object.setVisible(false);
