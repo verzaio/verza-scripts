@@ -1,17 +1,23 @@
-import {defineReactViteConfig} from '@verza/sdk/config';
+//import {defineReactViteConfig} from '@verza/sdk/config';
 import path from 'path';
 import svgr from 'vite-plugin-svgr';
 
+import {defineReactViteConfig} from '../verza-sdk/src/config';
 import customTsConfig from './tsconfig.plugin';
-//import {defineReactViteConfig} from '../verza-sdk/src/config';
 
 const IS_DEV = process.env.NODE_ENV === 'development';
+
+//IS_DEV = true;
 
 const TS_PATHS = {
   '@app': path.resolve(__dirname, '/src'),
 
   ...(IS_DEV && {
     '@verza/sdk/utils': path.resolve(__dirname, '../verza-sdk/src/utils'),
+    '@verza/sdk/react/client': path.resolve(
+      __dirname,
+      '../verza-sdk/src/framework-react-client',
+    ),
     '@verza/sdk/react': path.resolve(
       __dirname,
       '../verza-sdk/src/framework-react',

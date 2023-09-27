@@ -23,4 +23,12 @@ dist-ssr
 *.sln
 *.sw?
 
+# Generated files
+/public/_headers
+/public/_redirects
+/public/serve.json
+/public/vercel.json
+
+
 /src/scripts/local
+

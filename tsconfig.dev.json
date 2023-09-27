@@ -7,6 +7,7 @@
       "engine/*": ["../verza-sdk/src/*"],
       "@verza/sdk/utils": ["../verza-sdk/src/utils"],
       "@verza/sdk/react": ["../verza-sdk/src/framework-react"],
+      "@verza/sdk/react/client": ["../verza-sdk/src/framework-react-client"],
       "@verza/sdk/client": ["../verza-sdk/src/client"],
       "@verza/sdk/config": ["../verza-sdk/src/config"],
       "@verza/sdk": ["../verza-sdk/src"]

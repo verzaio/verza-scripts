@@ -1,4 +1,4 @@
-import {createReactEngineManager} from '@verza/sdk/client';
+import {createReactEngineManager} from '@verza/sdk/react/client';
 
 const render = await createReactEngineManager(import.meta.url, {
   syncCameraPosition: true,
