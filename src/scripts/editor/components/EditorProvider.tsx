@@ -13,8 +13,6 @@ type EditorProviderProps = {
 const EditorProvider = ({children}: EditorProviderProps) => {
   const engine = useEngine();
 
-  console.log('engine', engine);
-
   const editor = useMemo(
     () => new EditorManager(engine),
     // force hot reload to re-create editor
