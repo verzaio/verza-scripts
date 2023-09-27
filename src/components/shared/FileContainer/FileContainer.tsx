@@ -2,7 +2,7 @@ import styles from './FileContainer.module.scss';
 
 import {DragEvent, useCallback, useRef} from 'react';
 
-import FileIcon from './res/file-icon.svg';
+import FileIcon from './res/file-icon.svg?react';
 
 type FileContainerProps = {
   onDropFiles?: (files: File[]) => void;
@@ -50,7 +50,9 @@ const FileContainer = ({onDropFiles, label}: FileContainerProps) => {
         }
       }}
       onDrop={onDrop}>
-      <FileIcon className={styles.icon} />
+      <div className={styles.icon}>
+        <FileIcon />
+      </div>
 
       <span className={styles.label}>{label ?? 'Drop File'}</span>
     </div>
