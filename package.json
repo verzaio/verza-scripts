@@ -15,7 +15,7 @@
     "pre-commit": "npm run lint:fix && npm run ts-check"
   },
   "dependencies": {
-    "@verza/sdk": "^2.0.51-dev.13",
+    "@verza/sdk": "^2.0.51-dev.14",
     "clsx": "^2.0.0",
     "deep-equal": "^2.2.2",
     "leva": "^0.9.35",
