@@ -1,11 +1,15 @@
+import {initReactEngine} from '@verza/sdk/react/client';
+
 import {DEFAULT_SCRIPT_NAME} from '@app/constants';
-import {createReactEngineManager} from '@verza/sdk/react/client';
 
-const render = await createReactEngineManager(import.meta.url, {
-  name: DEFAULT_SCRIPT_NAME,
-  syncCameraPosition: true,
-});
+import {FlyMode} from './components/FlyMode';
 
-const {FlyMode} = await import('./components/FlyMode');
+export default async function script(id: string) {
+  const [render] = await initReactEngine({
+    id,
+    name: DEFAULT_SCRIPT_NAME,
+    syncCameraPosition: true,
+  });
 
-render(<FlyMode />);
+  render(<FlyMode />);
+}

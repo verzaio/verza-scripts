@@ -1,8 +1,9 @@
 import {useEffect, useRef} from 'react';
 
-import PanelWidget from '@app/components/core/PanelWidget';
 import {useEngine} from '@verza/sdk/react';
 import {useControls} from 'leva';
+
+import PanelWidget from '@app/components/core/PanelWidget';
 
 export const Time = () => {
   return <TimeRender />;

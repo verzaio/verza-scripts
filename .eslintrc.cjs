@@ -37,6 +37,8 @@ module.exports = {
 
           ['/^engine/'],
 
+          ['/^@app/'],
+
           ['parent', 'sibling', 'index'],
         ],
 

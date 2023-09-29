@@ -2,10 +2,11 @@ import styles from './EditorWidget.module.scss';
 
 import {KeyboardEvent, MouseEvent, useCallback, useEffect} from 'react';
 
-import PanelWidget from '@app/components/core/PanelWidget';
 import {useEngine} from '@verza/sdk/react';
 import clsx from 'clsx';
 import {levaStore} from 'leva';
+
+import PanelWidget from '@app/components/core/PanelWidget';
 
 import {EDITOR_FOLDERS_REL} from '../../../misc/constants';
 

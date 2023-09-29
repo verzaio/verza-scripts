@@ -1,8 +1,9 @@
 import {useEffect} from 'react';
 
-import {formatUrl} from '@app/utils/misc.utils';
 import {RepeatWrapping} from '@verza/sdk';
 import {Plane, useEngine} from '@verza/sdk/react';
+
+import {formatUrl} from '@app/utils/misc.utils';
 
 const PLAYGROUND_SIZE = 1024 * 2;
 

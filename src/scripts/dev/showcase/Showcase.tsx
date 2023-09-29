@@ -1,6 +1,7 @@
-import {formatUrl} from '@app/utils/misc.utils';
 import {ObjectTexture, RepeatWrapping} from '@verza/sdk';
 import {Box, Group, useCommand} from '@verza/sdk/react';
+
+import {formatUrl} from '@app/utils/misc.utils';
 
 import {SHOWCASE_LOCATION, SHOWCASE_SIZE} from './constants';
 import CameraExample from './examples/CameraExample';

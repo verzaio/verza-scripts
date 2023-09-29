@@ -1,8 +1,9 @@
 import {useCallback, useState} from 'react';
 
-import FileContainer from '@app/components/shared/FileContainer/FileContainer';
 import {CORE_ACTION_EDITOR} from '@verza/sdk';
 import {useEngine, useEvent} from '@verza/sdk/react';
+
+import FileContainer from '@app/components/shared/FileContainer/FileContainer';
 
 import {useEditor} from '../EditorProvider';
 

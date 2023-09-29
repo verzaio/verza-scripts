@@ -1,5 +1,8 @@
 import {useCallback, useEffect, useState} from 'react';
 
+import {CommandParam} from '@verza/sdk';
+import {useCommand, useEngine, useEvent} from '@verza/sdk/react';
+
 import FileContainer from '@app/components/shared/FileContainer/FileContainer';
 import {
   ParsedResult,
@@ -7,8 +10,6 @@ import {
   parseGltf,
   parseMask,
 } from '@app/utils/parser.utils';
-import {CommandParam} from '@verza/sdk';
-import {useCommand, useEngine, useEvent} from '@verza/sdk/react';
 
 export const Character = () => {
   const engine = useEngine();

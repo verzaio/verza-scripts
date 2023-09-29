@@ -1,7 +1,9 @@
-import {createReactEngineManager} from '@verza/sdk/react/client';
+import {initReactEngine} from '@verza/sdk/react/client';
 
-const render = await createReactEngineManager(import.meta.url);
+import {Playground} from './Playground';
 
-const {Playground} = await import('./Playground');
+export default async function script(id: string) {
+  const [render] = await initReactEngine(id);
 
-render(<Playground />);
+  render(<Playground />);
+}

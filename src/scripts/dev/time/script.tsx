@@ -1,9 +1,12 @@
-import {createReactEngineManager} from '@verza/sdk/react/client';
+import {initReactEngine} from '@verza/sdk/react/client';
 
-const render = await createReactEngineManager(import.meta.url, {
-  syncCameraPosition: true,
-});
+import {Time} from './Time';
 
-const {Time} = await import('./Time');
+export default async function script(id: string) {
+  const [render] = await initReactEngine({
+    id,
+    syncCameraPosition: true,
+  });
 
-render(<Time />);
+  render(<Time />);
+}

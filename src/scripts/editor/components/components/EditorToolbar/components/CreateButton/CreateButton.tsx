@@ -2,12 +2,13 @@ import styles from './CreateButton.module.scss';
 
 import {ComponentType, useCallback, useRef} from 'react';
 
-import useOnClickOutside from '@app/hooks/useOnClickOutside';
-import {useEditor} from '@app/scripts/editor/components/EditorProvider';
-import {OBJECTS_INFO} from '@app/scripts/editor/components/misc/constants';
 import {ObjectType} from '@verza/sdk';
 import {useEvent} from '@verza/sdk/react';
 import {useDropzone} from 'react-dropzone';
+
+import useOnClickOutside from '@app/hooks/useOnClickOutside';
+import {useEditor} from '@app/scripts/editor/components/EditorProvider';
+import {OBJECTS_INFO} from '@app/scripts/editor/components/misc/constants';
 
 import PlusIcon from './res/plus-icon.svg?react';
 import UploadIcon from './res/upload-icon.svg?react';

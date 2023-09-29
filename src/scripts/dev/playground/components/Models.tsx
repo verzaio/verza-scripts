@@ -1,5 +1,6 @@
-import {formatUrl} from '@app/utils/misc.utils';
 import {Gltf} from '@verza/sdk/react';
+
+import {formatUrl} from '@app/utils/misc.utils';
 
 const Models = () => {
   return (

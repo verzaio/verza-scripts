@@ -1,4 +1,3 @@
-import {formatUrl} from '@app/utils/misc.utils';
 import {
   AddOperation,
   BackSide,
@@ -26,6 +25,8 @@ import {
   TangentSpaceNormalMap,
   UVMapping,
 } from '@verza/sdk';
+
+import {formatUrl} from '@app/utils/misc.utils';
 
 import {
   BoxIcon,

@@ -1,6 +1,7 @@
-import {formatUrl} from '@app/utils/misc.utils';
 import {EulerArray, Vector3, Vector3Array} from '@verza/sdk';
 import {Box, Gltf} from '@verza/sdk/react';
+
+import {formatUrl} from '@app/utils/misc.utils';
 
 import SampleBox from './SampleBox';
 

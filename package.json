@@ -1,5 +1,5 @@
 {
-  "name": "vite-test",
+  "name": "verza-scripts",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc --p tsconfig.prod.json && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint . --ext ts --fix,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --fix,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "serve": "serve dist -p 8081 --cors",
     "ts-check": "tsc --pretty --noEmit --p tsconfig.prod.json",
@@ -15,7 +15,7 @@
     "pre-commit": "npm run lint:fix && npm run ts-check"
   },
   "dependencies": {
-    "@verza/sdk": "^2.0.51-dev.14",
+    "@verza/sdk": "^2.0.51-dev.21",
     "clsx": "^2.0.0",
     "deep-equal": "^2.2.2",
     "leva": "^0.9.35",

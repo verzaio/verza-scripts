@@ -1,5 +1,6 @@
-import {useEditor} from '@app/scripts/editor/components/EditorProvider';
 import {useControllerProp, useKey} from '@verza/sdk/react';
+
+import {useEditor} from '@app/scripts/editor/components/EditorProvider';
 
 import ToolbarButton from '../ToolbarButton/ToolbarButton';
 import RedoIcon from './res/redo-icon.svg?react';

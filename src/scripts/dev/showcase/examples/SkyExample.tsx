@@ -1,6 +1,7 @@
-import {formatUrl} from '@app/utils/misc.utils';
 import {Box, Group, useEngine} from '@verza/sdk/react';
 import {uuid} from '@verza/sdk/utils';
+
+import {formatUrl} from '@app/utils/misc.utils';
 
 import Description from '../components/Description';
 import Label from '../components/Label';

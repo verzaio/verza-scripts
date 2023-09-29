@@ -2,6 +2,7 @@ import {defineReactViteConfig} from '@verza/sdk/config';
 import path from 'path';
 import svgr from 'vite-plugin-svgr';
 
+//import {defineReactViteConfig} from '../verza-sdk/src/config';
 import customTsConfig from './tsconfig.plugin';
 
 const IS_DEV = process.env.NODE_ENV === 'development';
@@ -21,7 +22,6 @@ const TS_PATHS = {
       __dirname,
       '../verza-sdk/src/framework-react',
     ),
-    '@verza/sdk/client': path.resolve(__dirname, '../verza-sdk/src/client'),
     '@verza/sdk/config': path.resolve(__dirname, '../verza-sdk/src/config'),
     engine: path.resolve(__dirname, '../verza-sdk/src'),
     '@verza/sdk': path.resolve(__dirname, '../verza-sdk/src'),
