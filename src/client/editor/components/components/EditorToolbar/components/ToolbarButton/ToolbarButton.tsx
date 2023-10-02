@@ -1,8 +1,8 @@
-import styles from './ToolbarButton.module.scss';
-
 import {ReactNode} from 'react';
 
 import clsx from 'clsx';
+
+import styles from './ToolbarButton.module.css';
 
 type ToolbarButtonProps = {
   children?: ReactNode;

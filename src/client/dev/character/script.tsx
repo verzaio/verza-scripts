@@ -1,4 +1,4 @@
-import '@app/styles.scss';
+import '@app/styles.css';
 import {initReactEngine} from '@verza/sdk/react/client';
 
 import {DEFAULT_SCRIPT_NAME} from '@app/shared/constants';

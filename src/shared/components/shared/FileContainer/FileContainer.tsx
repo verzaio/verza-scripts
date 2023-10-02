@@ -1,7 +1,6 @@
-import styles from './FileContainer.module.scss';
-
 import {DragEvent, useCallback, useRef} from 'react';
 
+import styles from './FileContainer.module.css';
 import FileIcon from './res/file-icon.svg?react';
 
 type FileContainerProps = {

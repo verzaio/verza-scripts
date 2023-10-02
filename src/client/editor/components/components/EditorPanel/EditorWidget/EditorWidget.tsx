@@ -1,5 +1,3 @@
-import styles from './EditorWidget.module.scss';
-
 import {KeyboardEvent, MouseEvent, useCallback, useEffect} from 'react';
 
 import {useEngine} from '@verza/sdk/react';
@@ -9,6 +7,7 @@ import {levaStore} from 'leva';
 import PanelWidget from '@app/shared/components/core/PanelWidget';
 
 import {EDITOR_FOLDERS_REL} from '../../../misc/constants';
+import styles from './EditorWidget.module.css';
 
 const EditorWidget = () => {
   const engine = useEngine();

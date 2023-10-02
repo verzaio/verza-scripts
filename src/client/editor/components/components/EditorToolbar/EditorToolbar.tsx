@@ -1,8 +1,7 @@
-import styles from './EditorToolbar.module.scss';
-
 import CreateButton from './components/CreateButton/CreateButton';
 import HistoryButton from './components/HistoryButton/HistoryButton';
 import Separator from './components/Separator/Separator';
+import styles from './EditorToolbar.module.css';
 
 const EditorToolbar = () => {
   return (

@@ -1,5 +1,3 @@
-import styles from './CreateButton.module.scss';
-
 import {ComponentType, useCallback, useRef} from 'react';
 
 import {ObjectType} from '@verza/sdk';
@@ -10,6 +8,7 @@ import {useEditor} from '@app/client/editor/components/EditorProvider';
 import {OBJECTS_INFO} from '@app/client/editor/components/misc/constants';
 import useOnClickOutside from '@app/shared/hooks/useOnClickOutside';
 
+import styles from './CreateButton.module.css';
 import PlusIcon from './res/plus-icon.svg?react';
 import UploadIcon from './res/upload-icon.svg?react';
 
