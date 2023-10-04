@@ -25,6 +25,8 @@ dist-ssr
 *.sln
 *.sw?
 
+.wrangler
+
 # Generated files
 /public/_headers
 /public/_redirects
@@ -33,5 +35,6 @@ dist-ssr
 
 
 /src/client/local
-/src/server
+#/src/server
 
+.vercel
