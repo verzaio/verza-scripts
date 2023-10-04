@@ -5,7 +5,7 @@ import svgr from 'vite-plugin-svgr';
 //import {defineReactViteConfig} from '../verza-sdk/src/config';
 import customTsConfig from './tsconfig.plugin';
 
-//const IS_DEV = process.env.NODE_ENV === 'development';
+const IS_DEV = process.env.NODE_ENV === 'development';
 
 //const IS_DEV = true;
 
