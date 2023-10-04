@@ -101,6 +101,7 @@ export const Character = () => {
           }
 
           if (isGltf) {
+            await engine.utils.setupGltfLoaders();
             await parseGltf(engine.utils.gltfLoader, file, result);
             return;
           }
