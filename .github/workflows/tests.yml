@@ -25,19 +25,19 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install packages
-        run: npm install
+        run: yarn install
 
       - name: Typescript type check
-        run: npm run ts-check
+        run: yarn run ts-check
 
       - name: Lint check
-        run: npm run lint
+        run: yarn run lint
 
       #- name: Tests
-      #  run: npm run test:ci
+      #  run: yarn run test:ci
 
       - name: Build test
-        run: npm run build
+        run: yarn run build
 
       - name: Pull request to main
         if: ${{ github.ref == 'refs/heads/dev' }}

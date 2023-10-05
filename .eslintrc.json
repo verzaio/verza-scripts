@@ -1,0 +1,44 @@
+{
+  "root": true,
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:next-on-pages/recommended",
+    "prettier",
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": [
+    "next-on-pages",
+    "@typescript-eslint",
+    "eslint-plugin-import-helpers",
+    "import"
+  ],
+  "rules": {
+    "next-on-pages/no-unsupported-configs": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-return-await": "warn",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-this-alias": "off",
+
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          ["/scss$/"],
+          ["/^react$/"],
+          ["/^verza/sdk$/"],
+
+          ["parent", "sibling", "index"]
+        ],
+
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": true
+        }
+      }
+    ]
+  }
+}
