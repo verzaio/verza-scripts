@@ -1,0 +1,101 @@
+<!-- base dummy page -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Verza Scripts</title>
+
+    <!-- favicon -->
+    <link rel="icon" href="./favicon.png" />
+
+    <style>
+      html,
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #181a1b;
+        color: #e8e6e3;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .flex {
+        display: flex;
+      }
+
+      .p-10 {
+        padding: 2.5rem;
+      }
+
+      .items-center {
+        align-items: center;
+      }
+
+      .flex-col {
+        flex-direction: column;
+      }
+
+      .gap > * + * {
+        margin-top: 30px;
+      }
+
+      .text-2xl {
+        font-size: 1.5rem;
+        line-height: 2rem;
+      }
+
+      .font-bold {
+        font-weight: 700;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .bg-blue-500 {
+        --tw-bg-opacity: 1;
+        background-color: rgba(59, 130, 246, var(--tw-bg-opacity));
+      }
+
+      .hover\:bg-blue-700:hover {
+        --tw-bg-opacity: 1;
+        background-color: rgba(37, 99, 235, var(--tw-bg-opacity));
+      }
+
+      .text-white {
+        --tw-text-opacity: 1;
+        color: rgba(255, 255, 255, var(--tw-text-opacity));
+      }
+
+      .font-bold {
+        font-weight: 700;
+      }
+
+      .py-2 {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+
+      .px-4 {
+        padding: 10px 30px;
+      }
+
+      .rounded {
+        border-radius: 0.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex p-10 items-center flex-col gap">
+      <h4 class="text-2xl font-bold text-center">Verza Scripts</h4>
+
+      <a
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        href="https://docs.verza.io"
+        target="_blank">
+        Visit docs.verza.io
+      </a>
+    </div>
+  </body>
+</html>
