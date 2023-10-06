@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "verza",
-    "build": "tsc --p tsconfig.prod.json && verza build && verza build --m server",
+    "build": "tsc --p tsconfig.prod.json && verza build",
     "start": "verza start",
     "server": "ts-node-esm ./src/server/script.ts",
     "serve": "serve dist -p 8085 --cors",
@@ -16,7 +16,7 @@
     "pre-commit": "npm run lint:fix && npm run ts-check"
   },
   "dependencies": {
-    "@verza/sdk": "^2.0.51-dev.56",
+    "@verza/sdk": "^2.0.51-dev.58",
     "clsx": "^2.0.0",
     "deep-equal": "^2.2.2",
     "leva": "^0.9.35",

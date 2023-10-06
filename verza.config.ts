@@ -1,8 +1,8 @@
-import {defineReactViteConfig} from '@verza/sdk/config';
+import {defineViteConfig} from '@verza/sdk/config';
 import path from 'path';
 import svgr from 'vite-plugin-svgr';
 
-//import {defineReactViteConfig} from '../verza-sdk/src/config';
+///import {defineViteConfig} from '../verza-sdk/src/config';
 import customTsConfig from './tsconfig.plugin';
 
 const IS_DEV = process.env.NODE_ENV === 'development';
@@ -28,7 +28,7 @@ const TS_PATHS = {
   }),
 };
 
-export default defineReactViteConfig({
+export default defineViteConfig({
   plugins: [
     svgr(),
 
