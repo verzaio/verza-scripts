@@ -1,15 +1,12 @@
 import {Command, initEngine} from '@verza/sdk';
 import {CommandParam} from '@verza/sdk';
 
-/* const SERVER_TOKEN =
-  'f9d49e0fd45ed376ed4dec14bb78afb8b4e66a2333871b195a8c160a60f68eae'; */
-
 export default async function script() {
   const engine = await initEngine({
     environment: 'dev',
-    //apiEndpoint: 'http://localhost',
+    apiEndpoint: 'http://localhost',
     name: 'Web Server',
-    accessToken: process.env.SERVER_TOKEN,
+    accessToken: process.env.VERZA_ACCESS_TOKEN,
   });
 
   // command
@@ -26,3 +23,5 @@ export default async function script() {
 
   return engine;
 }
+
+script();
