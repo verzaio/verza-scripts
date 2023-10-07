@@ -2,7 +2,7 @@ import {defineConfig} from '@verza/sdk/config';
 import path from 'path';
 import svgr from 'vite-plugin-svgr';
 
-///import {defineConfig} from '../verza-sdk/src/config';
+//import {defineConfig} from '../verza-sdk/src/config';
 import customTsConfig from './tsconfig.plugin';
 
 const IS_DEV = process.env.NODE_ENV === 'development';
