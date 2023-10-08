@@ -1,13 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
+export default {
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
-    fontFamily: {
-      nunito: ['var(--font-nunito)'],
-      poppins: ['var(--font-poppins)'],
-    },
-
     screens: {
       mobile: {
         max: '600px',
