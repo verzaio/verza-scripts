@@ -37,10 +37,10 @@ cd verza-scripts
 git checkout dev
 
 # install
-yarn install
+npm install
 
 # run
-yarn run dev
+npm run dev
 ```
 
 Open [http://localhost:8085](http://localhost:8085) with your browser.
