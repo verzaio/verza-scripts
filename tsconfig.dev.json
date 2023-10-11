@@ -4,6 +4,7 @@
     "jsx": "react-jsx",
     "paths": {
       "@app/*": ["./src/*"],
+      "editor/*": ["./src/client/editor-v2/*"],
       "engine/*": ["../verza-sdk/src/*"],
       "@verza/sdk/utils": ["../verza-sdk/src/utils"],
       "@verza/sdk/react": ["../verza-sdk/src/framework-react"],
