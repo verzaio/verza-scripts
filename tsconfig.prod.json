@@ -22,7 +22,8 @@
 
     /* Paths */
     "paths": {
-      "@app/*": ["./src/*"]
+      "@app/*": ["./src/*"],
+      "editor/*": ["./src/client/editor-v2/*"]
     },
 
     /* Types */

@@ -11,6 +11,7 @@ const IS_DEV = process.env.NODE_ENV === 'development';
 
 const TS_PATHS = {
   '@app': path.resolve(__dirname, '/src'),
+  editor: path.resolve(__dirname, '/src/client/editor-v2'),
 };
 
 if (IS_DEV) {

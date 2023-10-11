@@ -39,6 +39,8 @@ module.exports = {
 
           ['/^@app/'],
 
+          ['/^editor/'],
+
           ['parent', 'sibling', 'index'],
         ],
 
