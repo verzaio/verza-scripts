@@ -132,15 +132,15 @@ const FONTS: Record<string, string | null> = {
     'editor/fonts/MontserratAlternatesBlack.ttf',
   ),
   MontserratAlternatesRegular: formatUrl(
-    'editor/fonts/MontserratAlternatesRegular.ttf',
+    'assets/editor/fonts/MontserratAlternatesRegular.ttf',
   ),
   MontserratAlternatesThin: formatUrl(
-    'editor/fonts/MontserratAlternatesThin.ttf',
+    'assets/editor/fonts/MontserratAlternatesThin.ttf',
   ),
   MontserratBlack: formatUrl('assets/editor/fonts/MontserratBlack.ttf'),
   MontserratRegular: formatUrl('assets/editor/fonts/MontserratRegular.ttf'),
   MontserratSubrayadaBold: formatUrl(
-    'editor/fonts/MontserratSubrayadaBold.ttf',
+    'assets/editor/fonts/MontserratSubrayadaBold.ttf',
   ),
 };
 
