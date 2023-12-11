@@ -16,9 +16,6 @@ export class EditorManager {
   }
 
   activate() {
-    this._ui.setProps({
-      width: '100%',
-    });
     this._ui.show();
     this._ui.hideComponent('toolbar_right');
     this._ui.hideComponent('chat');
