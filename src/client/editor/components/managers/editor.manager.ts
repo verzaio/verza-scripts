@@ -142,7 +142,6 @@ class EditorManager {
     this._init();
 
     engine.ui.setProps({
-      width: '100%',
       zIndex: 100,
     });
   }
